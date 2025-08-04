@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,10 +18,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen, Clock, Lightbulb, HelpCircle } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast"
-import Link from 'next/link';
+import { Loader2, Rocket, Lightbulb, HelpCircle } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
+import ReactFlow, {
+  Controls,
+  Background,
+  type Node,
+  type Edge,
+} from 'reactflow';
+
+import 'reactflow/dist/style.css';
 
 const formSchema = z.object({
   careerGoal: z.string().min(2, {
@@ -41,7 +48,48 @@ export default function RoadmapGeneratorPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const { nodes, edges } = useMemo(() => {
+    if (!roadmap) return { nodes: [], edges: [] };
+
+    const initialNodes: Node[] = [];
+    const initialEdges: Edge[] = [];
+    let yPos = 0;
+
+    roadmap.roadmap.forEach((item, index) => {
+      const nodeId = `step-${index + 1}`;
+      initialNodes.push({
+        id: nodeId,
+        type: 'default',
+        data: { 
+            label: (
+                <div className="p-2">
+                    <div className='font-bold text-base mb-2'>{`Step ${index + 1}: ${item.step}`}</div>
+                    <div className='text-sm text-muted-foreground'>{item.reasoning}</div>
+                    <div className="text-xs text-muted-foreground mt-2 italic">Duration: {item.duration}</div>
+                </div>
+            )
+        },
+        position: { x: 0, y: yPos },
+        style: { width: 400, background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' },
+      });
+
+      yPos += 200; // Adjust vertical spacing
+
+      if (index > 0) {
+        initialEdges.push({
+          id: `e${index}-${index + 1}`,
+          source: `step-${index}`,
+          target: nodeId,
+          animated: true,
+          style: { stroke: 'hsl(var(--primary))' },
+        });
+      }
+    });
+
+    return { nodes: initialNodes, edges: initialEdges };
+  }, [roadmap]);
+
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setRoadmap(null);
     try {
@@ -53,11 +101,12 @@ export default function RoadmapGeneratorPage() {
         title: "Error",
         description: "Failed to generate roadmap. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [toast]);
+
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -144,56 +193,23 @@ export default function RoadmapGeneratorPage() {
         >
         <motion.div variants={itemVariants}>
             <Card>
-            <CardHeader>
-                <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
-                <CardDescription>
-                    Follow these steps to achieve your career goal. 
-                    <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="relative pl-6">
-                {/* Vertical timeline bar */}
-                <div className="absolute left-[35px] top-0 h-full w-0.5 bg-border -translate-x-1/2"></div>
-                
-                <div className="space-y-12">
-                    {roadmap.roadmap.map((item, index) => (
-                    <div key={index} className="relative">
-                        <div className="absolute left-0 top-1.5 flex items-center justify-center w-12">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ring-8 ring-background">
-                            <Milestone className="h-5 w-5" />
-                        </div>
-                        </div>
-                        
-                        <div className="ml-16">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-semibold">{`Step ${index + 1}: ${item.step}`}</h3>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            <span>{item.duration}</span>
-                            </div>
-                        </div>
-                        <p className="mt-2 text-muted-foreground">{item.reasoning}</p>
-                        
-                        {item.resources && item.resources.length > 0 && (
-                            <div className="mt-4">
-                            <h4 className="font-semibold flex items-center gap-2"><BookOpen className="h-5 w-5 text-primary/80"/>Recommended Resources</h4>
-                            <div className="mt-2 space-y-2">
-                                {item.resources.map((resource, rIndex) => (
-                                <Link href={resource.url} target="_blank" rel="noopener noreferrer" key={rIndex} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group">
-                                    <LinkIcon className="h-4 w-4 text-primary/50 group-hover:text-primary" />
-                                    <span className="underline">{resource.name}</span>
-                                </Link>
-                                ))}
-                            </div>
-                            </div>
-                        )}
-                        </div>
-                    </div>
-                    ))}
-                </div>
-                </div>
-            </CardContent>
+                <CardHeader>
+                    <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
+                    <CardDescription>
+                        Follow these steps to achieve your career goal. 
+                        <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
+                    </CardDescription>
+                </CardHeader>
+                <CardContent style={{ height: 600 }}>
+                     <ReactFlow
+                        nodes={nodes}
+                        edges={edges}
+                        fitView
+                     >
+                        <Controls />
+                        <Background />
+                    </ReactFlow>
+                </CardContent>
             </Card>
         </motion.div>
         
