@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey="pk_test_c2luZ3VsYXItYmFzaWxpc2stNTcuY2xlcmsuYWNjb3VudHMuZGV2JA">
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
@@ -32,3 +32,4 @@ export default function RootLayout({
       </html>
     </ClerkProvider>
   );
+}
