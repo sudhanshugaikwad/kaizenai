@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { matchJobs, type JobMatcherOutput } from '@/ai/flows/job-matcher';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
 
@@ -133,6 +133,10 @@ export default function JobMatcherPage() {
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                     <Building className="w-4 h-4" />
                                     <span>{job.companyName}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <MapPin className="w-4 h-4" />
+                                    <span>{job.location}</span>
                                 </div>
                              </div>
                            </div>
