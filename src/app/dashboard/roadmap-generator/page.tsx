@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen } from 'lucide-react';
+import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen, Clock } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast"
 import Link from 'next/link';
 
@@ -126,7 +126,13 @@ export default function RoadmapGeneratorPage() {
                     </div>
                     
                     <div className="ml-16">
-                      <h3 className="text-lg font-semibold">{`Step ${index + 1}: ${item.step}`}</h3>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold">{`Step ${index + 1}: ${item.step}`}</h3>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Clock className="h-4 w-4" />
+                          <span>{item.duration}</span>
+                        </div>
+                      </div>
                       <p className="mt-2 text-muted-foreground">{item.reasoning}</p>
                       
                       {item.resources && item.resources.length > 0 && (
