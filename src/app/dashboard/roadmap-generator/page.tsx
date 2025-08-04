@@ -212,7 +212,7 @@ export default function RoadmapGeneratorPage() {
         <motion.div variants={itemVariants}>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-primary">Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
+                    <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
                     <CardDescription>
                         Follow these steps to achieve your career goal. 
                         <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
@@ -286,4 +286,3 @@ export default function RoadmapGeneratorPage() {
     </motion.div>
   );
 }
-
