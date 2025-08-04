@@ -62,7 +62,7 @@ export default function DashboardLayout({
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Logo className="w-6 h-6 text-primary" />
-            <span className="font-semibold text-lg">Kaizen AI Lite</span>
+            <span className="font-semibold text-lg">Kaizen AI</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -112,7 +112,7 @@ export default function DashboardLayout({
               </SidebarTrigger>
                <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
                 <Logo className="h-6 w-6 text-primary" />
-                <span className="font-semibold">Kaizen AI Lite</span>
+                <span className="font-semibold">Kaizen AI</span>
               </Link>
             </div>
           <div className="flex items-center gap-4">
