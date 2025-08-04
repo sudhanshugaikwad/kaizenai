@@ -29,7 +29,6 @@ import {
 import { Logo } from '@/components/icons';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
-import { SheetTitle } from '@/components/ui/sheet';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -51,7 +50,6 @@ export default function DashboardLayout({
     <SidebarProvider>
       <Sidebar variant='inset' side='left'>
         <SidebarHeader>
-           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
           <div className="flex items-center gap-2">
             <Logo className="w-6 h-6 text-primary" />
             <span className="font-semibold text-lg">Kaizen AI Lite</span>

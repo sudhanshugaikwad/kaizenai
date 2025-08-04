@@ -86,7 +86,7 @@ export default function Home() {
       >
         <Link href="/" className="flex items-center gap-2">
             <Logo className="w-8 h-8 text-primary" />
-            <h1 className="text-xl sm:text-2xl font-bold">Kaizen AI Lite</h1>
+            <h1 className="text-xl sm:text-2xl font-bold">Kaizen AI </h1>
         </Link>
         <SignedIn>
             <Link href="/dashboard">
@@ -210,7 +210,7 @@ export default function Home() {
               <div className="space-y-2 flex flex-col items-center md:items-start">
                  <div className="flex items-center gap-2">
                     <Logo className="w-8 h-8 text-primary" />
-                    <h3 className="text-xl font-bold">Kaizen AI Lite</h3>
+                    <h3 className="text-xl font-bold">Kaizen Ai</h3>
                 </div>
                 <p className="text-muted-foreground">Your personal AI career coach.</p>
               </div>
@@ -233,7 +233,7 @@ export default function Home() {
               </div>
            </div>
            <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-                <p>&copy; {new Date().getFullYear()} Kaizen AI Lite. Designed by Sudhanshu Gaikwad.</p>
+                <p>&copy; {new Date().getFullYear()} Kaizen AI. Designed by Sudhanshu Gaikwad.</p>
            </div>
         </div>
       </motion.footer>
