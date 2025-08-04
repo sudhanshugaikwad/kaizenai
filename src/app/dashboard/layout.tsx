@@ -8,6 +8,7 @@ import {
   FileText,
   PenSquare,
   MessageSquare,
+  Briefcase,
 } from 'lucide-react';
 
 import {
@@ -31,6 +32,7 @@ const navItems = [
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen AI Chat' },
+  { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
 ];
 
 export default function DashboardLayout({

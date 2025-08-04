@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase } from 'lucide-react';
 
 const features = [
   {
@@ -27,6 +27,12 @@ const features = [
     description: "Have a question? Ask our AI career coach for personalized advice and insights.",
     href: "/dashboard/kaizen-ai-chat",
     icon: MessageSquare,
+  },
+  {
+    title: "Job Matcher",
+    description: "Find your next role. Get job recommendations based on your resume.",
+    href: "/dashboard/job-matcher",
+    icon: Briefcase,
   }
 ];
 
@@ -38,7 +44,7 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Here are your AI-powered tools to accelerate your career.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <Card key={feature.title} className="flex flex-col">
             <CardHeader>
