@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, Zap } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, Zap, LogIn } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { motion } from 'framer-motion';
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 const features = [
   {
@@ -87,11 +88,20 @@ export default function Home() {
             <Logo className="w-8 h-8 text-primary" />
             <h1 className="text-xl sm:text-2xl font-bold">Kaizen AI Lite</h1>
         </Link>
-        <Link href="/dashboard">
-            <Button variant="ghost">
-                Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-        </Link>
+        <SignedIn>
+            <Link href="/dashboard">
+                <Button>
+                    Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+            </Link>
+        </SignedIn>
+        <SignedOut>
+             <Link href="/sign-in">
+                <Button variant="ghost">
+                    Login <LogIn className="ml-2 h-4 w-4" />
+                </Button>
+            </Link>
+        </SignedOut>
       </motion.header>
 
       <main className="flex-grow">
@@ -116,7 +126,7 @@ export default function Home() {
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
           </motion.p>
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button size="lg" className="w-full sm:w-auto">
                 Get Started for Free
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -178,7 +188,7 @@ export default function Home() {
                  <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
                     Stop guessing and start building a winning career strategy. Your next opportunity is just a click away.
                  </p>
-                 <Link href="/dashboard">
+                 <Link href="/sign-up">
                     <Button size="lg">
                         Start Your Journey Now <Rocket className="ml-2 h-5 w-5" />
                     </Button>

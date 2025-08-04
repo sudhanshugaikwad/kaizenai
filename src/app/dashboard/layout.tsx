@@ -12,6 +12,7 @@ import {
   Briefcase,
   Menu,
 } from 'lucide-react';
+import { UserButton } from "@clerk/nextjs";
 
 import {
   SidebarProvider,
@@ -26,9 +27,9 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Logo } from '@/components/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
+import { SheetTitle } from '@/components/ui/sheet';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -50,6 +51,7 @@ export default function DashboardLayout({
     <SidebarProvider>
       <Sidebar variant='inset' side='left'>
         <SidebarHeader>
+           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
           <div className="flex items-center gap-2">
             <Logo className="w-6 h-6 text-primary" />
             <span className="font-semibold text-lg">Kaizen AI Lite</span>
@@ -72,10 +74,7 @@ export default function DashboardLayout({
         <SidebarFooter>
           <div className="flex items-center justify-between">
              <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="user avatar" />
-                    <AvatarFallback>U</AvatarFallback>
-                </Avatar>
+                <UserButton />
                 <span className="text-sm font-medium">User</span>
              </div>
             <ThemeToggle />
@@ -91,7 +90,6 @@ export default function DashboardLayout({
           <SidebarTrigger>
             <Button variant="ghost" size="icon">
               <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle Menu</span>
             </Button>
           </SidebarTrigger>
         </header>
