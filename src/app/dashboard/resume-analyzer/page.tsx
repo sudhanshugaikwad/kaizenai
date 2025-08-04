@@ -4,14 +4,19 @@ import { useState, useCallback } from 'react';
 import { analyzeResume, type AnalyzeResumeOutput } from '@/ai/flows/resume-analyzer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Lightbulb } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast"
+import { Textarea } from '@/components/ui/textarea';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Loader2, FileUp, Lightbulb, CheckCircle, XCircle, FileSearch, Sparkles, Wand } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 export default function ResumeAnalyzerPage() {
   const [feedback, setFeedback] = useState<AnalyzeResumeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>('');
+  const [jobDescription, setJobDescription] = useState('');
   const { toast } = useToast();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +57,7 @@ export default function ResumeAnalyzerPage() {
 
     try {
       const resumeDataUri = await fileToDataUri(file);
-      const result = await analyzeResume({ resumeDataUri });
+      const result = await analyzeResume({ resumeDataUri, jobDescription });
       setFeedback(result);
     } catch (error) {
       console.error('Failed to analyze resume:', error);
@@ -64,66 +69,124 @@ export default function ResumeAnalyzerPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [file, toast]);
+  }, [file, jobDescription, toast]);
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Resume Analyzer</h1>
-        <p className="text-muted-foreground">Upload your resume (PDF) to get instant AI-powered feedback.</p>
+        <p className="text-muted-foreground">Get instant AI-powered feedback. For a tailored analysis, paste the job description.</p>
       </div>
 
-      <Card>
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex items-center justify-center w-full">
-              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-card hover:bg-muted/50">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <FileUp className="w-8 h-8 mb-4 text-muted-foreground" />
-                  <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                  <p className="text-xs text-muted-foreground">PDF (MAX. 5MB)</p>
-                  {fileName && <p className="mt-4 text-sm font-medium text-primary">{fileName}</p>}
-                </div>
-                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept=".pdf" />
-              </label>
-            </div>
-            <Button type="submit" disabled={isLoading || !file} className="w-full sm:w-auto">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                'Analyze Resume'
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      {isLoading && (
-        <div className="flex items-center justify-center pt-10">
-            <Loader2 className="mr-2 h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">Our AI is reviewing your resume...</p>
-        </div>
-      )}
-
-      {feedback && (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-primary"/>
-                AI Feedback
-            </CardTitle>
-            <CardDescription>Here are suggestions to improve your resume.</CardDescription>
+            <CardTitle>Upload Your Resume</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap">
-                {feedback.feedback}
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+               <div className="flex items-center justify-center w-full">
+                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer bg-card hover:bg-muted/50">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <FileUp className="w-8 h-8 mb-4 text-muted-foreground" />
+                    <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p className="text-xs text-muted-foreground">PDF (MAX. 5MB)</p>
+                    {fileName && <p className="mt-4 text-sm font-medium text-primary">{fileName}</p>}
+                  </div>
+                  <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept=".pdf" />
+                </label>
+              </div>
+              <div>
+                <label htmlFor="job-description" className="block text-sm font-medium text-muted-foreground mb-2">Job Description (Optional)</label>
+                <Textarea
+                  id="job-description"
+                  placeholder="Paste the job description here for a more accurate ATS scan..."
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  rows={6}
+                />
+              </div>
+              <Button type="submit" disabled={isLoading || !file} className="w-full sm:w-auto">
+                {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Analyzing...</> : <><Sparkles className="mr-2 h-4 w-4" />Analyze Resume</>}
+              </Button>
+            </form>
           </CardContent>
         </Card>
-      )}
+        
+        <div className="space-y-8">
+            {isLoading && (
+            <Card className="flex flex-col items-center justify-center h-full">
+                <Loader2 className="mr-2 h-12 w-12 animate-spin text-primary" />
+                <p className="mt-4 text-lg text-muted-foreground">Our AI is reviewing your resume...</p>
+                <p className="text-sm text-muted-foreground">This may take a moment.</p>
+            </Card>
+            )}
+
+            {feedback && (
+                <div className="space-y-6">
+                 <Card>
+                    <CardHeader>
+                      <CardTitle>Overall Score</CardTitle>
+                      <CardDescription>Your resume's estimated performance.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-center space-x-4">
+                        <div className="text-5xl font-bold text-primary">{feedback.overallScore}</div>
+                        <div className="text-2xl text-muted-foreground">/ 100</div>
+                      </div>
+                      <Progress value={feedback.overallScore} className="w-full" />
+                      <p className="text-sm text-muted-foreground text-center">{feedback.summary}</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2"><Lightbulb className="h-6 w-6 text-primary"/>Improvement Suggestions</CardTitle>
+                      <CardDescription>Actionable feedback to enhance your resume.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Accordion type="single" collapsible className="w-full">
+                        {feedback.improvements.map((item, index) => (
+                          <AccordionItem value={`item-${index}`} key={index}>
+                            <AccordionTrigger>
+                               <div className="flex items-center gap-3">
+                                  <Wand className="h-5 w-5 text-primary/80"/>
+                                  <span className="font-semibold">{item.section}</span>
+                               </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="prose prose-sm max-w-none text-muted-foreground">
+                              {item.suggestion}
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2"><FileSearch className="h-6 w-6 text-primary"/>ATS Keyword Analysis</CardTitle>
+                      <CardDescription>How well your resume matches the job description keywords.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div>
+                            <h4 className="font-semibold flex items-center gap-2 mb-2"><CheckCircle className="h-5 w-5 text-green-500" /> Matching Keywords</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {feedback.atsKeywords.matchingKeywords.length > 0 ? feedback.atsKeywords.matchingKeywords.map((kw, i) => <Badge key={i} variant="secondary">{kw}</Badge>) : <p className="text-sm text-muted-foreground">No matching keywords found.</p>}
+                            </div>
+                        </div>
+                         <div>
+                            <h4 className="font-semibold flex items-center gap-2 mb-2"><XCircle className="h-5 w-5 text-red-500" /> Missing Keywords</h4>
+                            <div className="flex flex-wrap gap-2">
+                                 {feedback.atsKeywords.missingKeywords.length > 0 ? feedback.atsKeywords.missingKeywords.map((kw, i) => <Badge key={i} variant="destructive">{kw}</Badge>) : <p className="text-sm text-muted-foreground">No missing keywords found.</p>}
+                            </div>
+                        </div>
+                    </CardContent>
+                  </Card>
+                </div>
+            )}
+        </div>
+      </div>
     </div>
   );
 }
