@@ -27,7 +27,7 @@ const RoadmapOutputSchema = z.object({
       resources: z.array(
         z.object({
           name: z.string().describe('The name of the resource.'),
-          url: z.string().url().describe('The URL for the resource.'),
+          url: z.string().describe('The URL for the resource.'),
         })
       ).describe('A list of helpful resources for this step.'),
     })
