@@ -4,3 +4,4 @@ config();
 import '@/ai/flows/roadmap-generator.ts';
 import '@/ai/flows/resume-analyzer.ts';
 import '@/ai/flows/cover-letter-writer.ts';
+import '@/ai/flows/career-chat.ts';
