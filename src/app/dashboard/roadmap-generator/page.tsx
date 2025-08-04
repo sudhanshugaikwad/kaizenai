@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen, Clock } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen, Clock, Lightbulb, HelpCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast"
 import Link from 'next/link';
 
@@ -44,7 +45,7 @@ export default function RoadmapGeneratorPage() {
     try {
       const result = await generateRoadmap(values);
       setRoadmap(result);
-    } catch (error) {
+    } catch (error) => {
       console.error('Failed to generate roadmap:', error);
       toast({
         title: "Error",
@@ -106,6 +107,7 @@ export default function RoadmapGeneratorPage() {
       )}
 
       {roadmap && (
+        <div className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
@@ -158,6 +160,54 @@ export default function RoadmapGeneratorPage() {
             </div>
           </CardContent>
         </Card>
+        
+        {roadmap.recommendedProjects && roadmap.recommendedProjects.length > 0 && (
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Lightbulb className="h-6 w-6 text-primary"/>Recommended Projects</CardTitle>
+                    <CardDescription>Build these projects to create a strong portfolio and showcase your skills.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <Accordion type="single" collapsible className="w-full">
+                        {roadmap.recommendedProjects.map((project, index) => (
+                            <AccordionItem value={`project-${index}`} key={index}>
+                                <AccordionTrigger>
+                                    <span className="font-semibold">{project.name}</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="prose prose-sm max-w-none text-muted-foreground">
+                                    {project.description}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </CardContent>
+            </Card>
+        )}
+
+        {roadmap.interviewQuestions && roadmap.interviewQuestions.length > 0 && (
+             <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><HelpCircle className="h-6 w-6 text-primary"/>Interview Practice</CardTitle>
+                    <CardDescription>Prepare for your interviews with these common questions and answer guidelines.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Accordion type="single" collapsible className="w-full">
+                        {roadmap.interviewQuestions.map((qa, index) => (
+                            <AccordionItem value={`qa-${index}`} key={index}>
+                                <AccordionTrigger>
+                                    <span className="font-semibold text-left">{qa.question}</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="prose prose-sm max-w-none text-muted-foreground">
+                                    {qa.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </CardContent>
+            </Card>
+        )}
+
+        </div>
       )}
     </div>
   );

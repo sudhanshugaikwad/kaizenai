@@ -20,12 +20,12 @@ const RoadmapInputSchema = z.object({
 export type RoadmapInput = z.infer<typeof RoadmapInputSchema>;
 
 const RoadmapOutputSchema = z.object({
-  totalDuration: z.string().describe('The total estimated time to complete the entire roadmap (e.g., "1-2 years").'),
+  totalDuration: z.string().describe('The total estimated time to complete the entire roadmap (e.g., "3-6 months", "1-2 years").'),
   roadmap: z.array(
     z.object({
       step: z.string().describe('A step in the career roadmap.'),
       reasoning: z.string().describe('The reasoning behind this step.'),
-      duration: z.string().describe('An estimated time to complete this step (e.g., "1-2 months").'),
+      duration: z.string().describe('An estimated time to complete this step (e.g., "2-4 weeks", "1-2 months").'),
       resources: z.array(
         z.object({
           name: z.string().describe('The name of the resource.'),
@@ -34,6 +34,18 @@ const RoadmapOutputSchema = z.object({
       ).describe('A list of helpful resources for this step.'),
     })
   ).describe('A structured plan to achieve the career goal.'),
+  recommendedProjects: z.array(
+    z.object({
+      name: z.string().describe('The name of the recommended project.'),
+      description: z.string().describe('A brief description of the project.'),
+    })
+  ).describe('A list of 5 recommended projects to build a portfolio.'),
+  interviewQuestions: z.array(
+    z.object({
+      question: z.string().describe('A sample interview question.'),
+      answer: z.string().describe('A brief, ideal answer or key points to cover for the question.'),
+    })
+  ).describe('A list of practice interview questions with answers.'),
 });
 export type RoadmapOutput = z.infer<typeof RoadmapOutputSchema>;
 
@@ -48,13 +60,16 @@ const prompt = ai.definePrompt({
   prompt: `You are a career coach who helps people achieve their career goals.
 
   Based on the user's desired career goal, generate a personalized career roadmap.
-  For each step, provide a clear title, detailed reasoning, an estimated duration (e.g., "1-2 months"), and a list of 2-3 specific, actionable, and high-quality online resources (like articles, courses, or tutorials) with their names and URLs.
+  For each step, provide a clear title, detailed reasoning, an estimated duration (e.g., "3-4 weeks", "1-2 months"), and a list of 2-3 specific, actionable, and high-quality online resources with their names and URLs.
   Also, calculate and provide the total estimated duration for the entire roadmap.
+
+  In addition, provide:
+  1. A list of 5 recommended project ideas with a brief description for each to help build a strong portfolio.
+  2. A list of relevant practice interview questions along with brief, ideal answers or key points to cover.
+
   Be specific and actionable.
 
   Desired Career Goal: {{{careerGoal}}}
-
-  Roadmap:
   `,
 });
 
