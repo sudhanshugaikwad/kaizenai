@@ -11,8 +11,11 @@ import {
   MessageSquare,
   Briefcase,
   Menu,
+  User,
+  CreditCard,
+  History
 } from 'lucide-react';
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 import {
   SidebarProvider,
@@ -39,12 +42,19 @@ const navItems = [
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
 ];
 
+const accountItems = [
+    { href: '/dashboard/profile', icon: User, label: 'Profile' },
+    { href: '/dashboard/billing', icon: CreditCard, label: 'Billing' },
+    { href: '/dashboard/history', icon: History, label: 'History' },
+]
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { user } = useUser();
 
   return (
     <SidebarProvider>
@@ -67,29 +77,48 @@ export default function DashboardLayout({
                 </Link>
               </SidebarMenuItem>
             ))}
+             <SidebarMenuItem>
+              <div className="my-2 border-t border-sidebar-border" />
+            </SidebarMenuItem>
+             {accountItems.map((item) => (
+              <SidebarMenuItem key={item.href}>
+                <Link href={item.href}>
+                  <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
+                    <item.icon className="w-5 h-5" />
+                    <span>{item.label}</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
           <div className="flex items-center justify-between">
              <div className="flex items-center gap-2">
                 <UserButton />
-                <span className="text-sm font-medium">User</span>
+                <span className="text-sm font-medium truncate">{user?.firstName ?? 'User'}</span>
              </div>
             <ThemeToggle />
           </div>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-         <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 md:hidden">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <Logo className="h-6 w-6 text-primary" />
-            <span className="font-semibold">Kaizen AI Lite</span>
-          </Link>
-          <SidebarTrigger>
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SidebarTrigger>
+         <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+            <div className='flex items-center gap-2'>
+              <SidebarTrigger className='md:hidden'>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SidebarTrigger>
+               <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
+                <Logo className="h-6 w-6 text-primary" />
+                <span className="font-semibold">Kaizen AI Lite</span>
+              </Link>
+            </div>
+          <div className="flex items-center gap-4">
+             <span className='hidden sm:inline text-sm font-medium text-muted-foreground'>Welcome, {user?.firstName ?? 'User'}!</span>
+             <UserButton afterSignOutUrl='/' />
+          </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
       </SidebarInset>
