@@ -109,7 +109,10 @@ export default function RoadmapGeneratorPage() {
         <Card>
           <CardHeader>
             <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
-            <CardDescription>Follow these steps to achieve your career goal.</CardDescription>
+            <CardDescription>
+                Follow these steps to achieve your career goal. 
+                <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative pl-6">

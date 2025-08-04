@@ -20,6 +20,7 @@ const RoadmapInputSchema = z.object({
 export type RoadmapInput = z.infer<typeof RoadmapInputSchema>;
 
 const RoadmapOutputSchema = z.object({
+  totalDuration: z.string().describe('The total estimated time to complete the entire roadmap (e.g., "1-2 years").'),
   roadmap: z.array(
     z.object({
       step: z.string().describe('A step in the career roadmap.'),
@@ -48,6 +49,7 @@ const prompt = ai.definePrompt({
 
   Based on the user's desired career goal, generate a personalized career roadmap.
   For each step, provide a clear title, detailed reasoning, an estimated duration (e.g., "1-2 months"), and a list of 2-3 specific, actionable, and high-quality online resources (like articles, courses, or tutorials) with their names and URLs.
+  Also, calculate and provide the total estimated duration for the entire roadmap.
   Be specific and actionable.
 
   Desired Career Goal: {{{careerGoal}}}
