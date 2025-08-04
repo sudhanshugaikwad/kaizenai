@@ -18,10 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      secretKey={process.env.CLERK_SECRET_KEY}
-    >
+    <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
@@ -35,4 +32,3 @@ export default function RootLayout({
       </html>
     </ClerkProvider>
   );
-}
