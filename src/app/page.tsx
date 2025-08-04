@@ -51,7 +51,7 @@ const features = [
 export default function Home() {
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1
@@ -78,7 +78,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-dvh bg-background text-foreground">
-      <motion.header 
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -106,7 +106,7 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <motion.section 
+        <motion.section
           className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
           initial="hidden"
           animate="visible"
@@ -136,8 +136,8 @@ export default function Home() {
         </motion.section>
 
         {/* Features Section */}
-        <motion.section 
-          id="features" 
+        <motion.section
+          id="features"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
           initial="hidden"
           whileInView="visible"
@@ -174,7 +174,7 @@ export default function Home() {
         </motion.section>
 
         {/* CTA Section */}
-         <motion.section 
+         <motion.section
             className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
             initial="hidden"
             whileInView="visible"
@@ -198,7 +198,7 @@ export default function Home() {
 
       </main>
 
-      <motion.footer 
+      <motion.footer
         className="bg-card/20 border-t border-border/50"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
