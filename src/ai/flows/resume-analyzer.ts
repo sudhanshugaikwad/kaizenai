@@ -56,6 +56,8 @@ const prompt = ai.definePrompt({
   3.  A list of actionable **Improvements**, categorized by resume section (e.g., Summary, Experience, Skills, Education).
   4.  An **ATS Keyword Analysis** that identifies matching and missing keywords based on the job description. If no job description is provided, this section should be based on general best practices for the inferred role.
 
+  **IMPORTANT**: If the provided resume file cannot be processed, is empty, or seems invalid, you MUST set the 'overallScore' to 0, the 'summary' to 'Could not process the provided resume. Please ensure it is a valid and readable file.', and return empty arrays for 'improvements' and 'atsKeywords'. Do not throw an error.
+
   Resume: {{media url=resumeDataUri}}
 
   {{#if jobDescription}}
