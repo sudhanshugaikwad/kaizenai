@@ -88,7 +88,7 @@ export default function DashboardLayout({
             <Logo className="h-6 w-6 text-primary" />
             <span className="font-semibold">Kaizen AI Lite</span>
           </Link>
-          <SidebarTrigger asChild>
+          <SidebarTrigger>
             <Button variant="ghost" size="icon">
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle Menu</span>
