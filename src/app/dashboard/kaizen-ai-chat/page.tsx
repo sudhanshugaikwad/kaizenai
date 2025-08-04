@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -14,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useUser } from '@clerk/nextjs';
 
 const formSchema = z.object({
   question: z.string().min(5, "Question must be at least 5 characters."),
@@ -28,6 +30,7 @@ export default function KaizenAiChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useUser();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -101,7 +104,7 @@ export default function KaizenAiChatPage() {
                     </div>
                      {message.sender === 'user' && (
                        <Avatar className="h-8 w-8">
-                          <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="user avatar" />
+                          <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? 'User'} />
                           <AvatarFallback><User/></AvatarFallback>
                       </Avatar>
                     )}
