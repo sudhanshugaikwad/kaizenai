@@ -1,7 +1,11 @@
+
+'use client';
+
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const features = [
   {
@@ -37,35 +41,62 @@ const features = [
 ];
 
 export default function DashboardPage() {
+
+    const containerVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            staggerChildren: 0.1,
+        },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    };
+
   return (
-    <div className="space-y-8">
-      <div>
+    <motion.div 
+        className="space-y-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+    >
+      <motion.div variants={itemVariants}>
         <h1 className="text-3xl font-bold tracking-tight">Welcome to your Dashboard</h1>
         <p className="text-muted-foreground">Here are your AI-powered tools to accelerate your career.</p>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {features.map((feature) => (
-          <Card key={feature.title} className="flex flex-col">
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <feature.icon className="h-8 w-8 text-primary" />
-                <CardTitle>{feature.title}</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <CardDescription>{feature.description}</CardDescription>
-            </CardContent>
-            <div className="p-6 pt-0">
-              <Link href={feature.href}>
-                <Button className="w-full">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </Card>
+      <motion.div 
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        variants={containerVariants}
+      >
+        {features.map((feature, index) => (
+          <motion.div key={feature.title} variants={itemVariants}>
+            <Card className="flex flex-col h-full">
+                <CardHeader>
+                <div className="flex items-center gap-4">
+                    <feature.icon className="h-8 w-8 text-primary" />
+                    <CardTitle>{feature.title}</CardTitle>
+                </div>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                <CardDescription>{feature.description}</CardDescription>
+                </CardContent>
+                <div className="p-6 pt-0">
+                <Link href={feature.href}>
+                    <Button className="w-full">
+                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
+                </div>
+            </Card>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

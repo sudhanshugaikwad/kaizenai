@@ -1,9 +1,11 @@
 
+'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, Bot, Zap, ShieldCheck } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, Zap } from 'lucide-react';
 import { Logo } from '@/components/icons';
+import { motion } from 'framer-motion';
 
 const features = [
   {
@@ -46,9 +48,41 @@ const features = [
 
 
 export default function Home() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: {duration: 0.5} }
+  };
+
+  const featureCardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5
+      }
+    })
+  };
+
   return (
     <div className="flex flex-col min-h-dvh bg-background text-foreground">
-      <header className="container mx-auto px-4 py-6 flex items-center justify-between">
+      <motion.header 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-6 flex items-center justify-between"
+      >
         <Link href="/" className="flex items-center gap-2">
             <Logo className="w-8 h-8 text-primary" />
             <h1 className="text-2xl font-bold">Kaizen AI Lite</h1>
@@ -58,61 +92,85 @@ export default function Home() {
                 Dashboard <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
         </Link>
-      </header>
+      </motion.header>
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 text-center py-20 md:py-32">
+        <motion.section 
+          className="container mx-auto px-4 text-center py-20 md:py-32"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
             <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
             <div className="absolute left-1/2 right-0 top-0 -z-10 -translate-x-1/2 m-auto h-[480px] w-[640px] rounded-full bg-primary/10 opacity-40 blur-[120px]"></div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+          <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
             Supercharge Your Career with
             <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {' '}
               Kaizen AI
             </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
+          </motion.h1>
+          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-          </p>
-          <div className="flex justify-center gap-4">
+          </motion.p>
+          <motion.div variants={itemVariants} className="flex justify-center gap-4">
             <Link href="/dashboard">
               <Button size="lg">
                 Get Started for Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* Features Section */}
-        <section id="features" className="container mx-auto px-4 py-16">
-            <div className="text-center mb-12">
+        <motion.section 
+          id="features" 
+          className="container mx-auto px-4 py-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+            <motion.div variants={itemVariants} className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
-            </div>
+            </motion.div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <Card key={feature.title} className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1">
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">
-                    {feature.icon}
-                  </div>
-                  <CardTitle>{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                custom={index}
+                variants={featureCardVariants}
+              >
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full">
+                    <CardHeader className="flex flex-col items-center text-center">
+                    <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">
+                        {feature.icon}
+                    </div>
+                    <CardTitle>{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                    <p className="text-muted-foreground">
+                        {feature.description}
+                    </p>
+                    </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* CTA Section */}
-         <section className="container mx-auto px-4 py-16">
+         <motion.section 
+            className="container mx-auto px-4 py-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={itemVariants}
+         >
             <div className="bg-card/50 border border-border/50 rounded-lg p-8 md:p-12 text-center relative overflow-hidden">
                 <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
                 <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
@@ -126,11 +184,17 @@ export default function Home() {
                     </Button>
                  </Link>
             </div>
-         </section>
+         </motion.section>
 
       </main>
 
-      <footer className="bg-card/20 border-t border-border/50">
+      <motion.footer 
+        className="bg-card/20 border-t border-border/50"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container mx-auto px-4 py-8">
            <div className="grid gap-8 md:grid-cols-3">
               <div className="space-y-2">
@@ -162,7 +226,7 @@ export default function Home() {
                 <p>&copy; {new Date().getFullYear()} Kaizen AI Lite. Designed by Sudhanshu Gaikwad.</p>
            </div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 }
