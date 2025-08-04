@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Sparkles, User, Bot } from 'lucide-react';
+import { Loader2, Send, User, Bot } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -77,7 +77,7 @@ export default function KaizenAiChatPage() {
         <p className="text-muted-foreground">Ask me anything about your career path, interviews, or skills!</p>
       </div>
 
-      <Card className="flex-grow flex flex-col">
+      <Card className="flex-grow flex flex-col bg-card/50">
         <CardContent className="flex-grow p-0 flex flex-col">
           <ScrollArea className="flex-grow p-6" ref={scrollAreaRef}>
              <div className="space-y-6">
@@ -92,11 +92,11 @@ export default function KaizenAiChatPage() {
                     className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : ''}`}
                   >
                     {message.sender === 'bot' && (
-                      <Avatar className="h-8 w-8 border">
-                         <AvatarFallback><Bot/></AvatarFallback>
+                       <Avatar className="h-8 w-8 border-2 border-primary/50">
+                         <AvatarFallback className="bg-primary/20"><Bot className="h-5 w-5 text-primary"/></AvatarFallback>
                       </Avatar>
                     )}
-                    <div className={`rounded-lg px-4 py-3 max-w-lg break-words ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card border shadow-sm'}`}>
+                    <div className={`rounded-lg px-4 py-3 max-w-lg break-words ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
                       <p className="text-sm">{message.text}</p>
                     </div>
                      {message.sender === 'user' && (
@@ -114,8 +114,8 @@ export default function KaizenAiChatPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-start gap-3"
                   >
-                     <Avatar className="h-8 w-8 border">
-                       <AvatarFallback><Bot/></AvatarFallback>
+                     <Avatar className="h-8 w-8 border-2 border-primary/50">
+                       <AvatarFallback className="bg-primary/20"><Bot className="h-5 w-5 text-primary"/></AvatarFallback>
                     </Avatar>
                     <div className="rounded-lg px-4 py-3 bg-muted flex items-center shadow-sm">
                       <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -124,7 +124,7 @@ export default function KaizenAiChatPage() {
                 )}
             </div>
           </ScrollArea>
-          <div className="p-4 border-t bg-background">
+          <div className="p-4 border-t bg-background/80 backdrop-blur-sm">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2">
                 <FormField control={form.control} name="question" render={({ field }) => (
@@ -135,8 +135,8 @@ export default function KaizenAiChatPage() {
                     <FormMessage />
                   </FormItem>
                 )} />
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                <Button type="submit" disabled={isLoading} size="icon">
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                   <span className="sr-only">Send</span>
                 </Button>
               </form>

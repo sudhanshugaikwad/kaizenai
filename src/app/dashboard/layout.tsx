@@ -44,7 +44,7 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar variant='inset' side='left'>
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Logo className="w-6 h-6 text-primary" />
@@ -56,7 +56,7 @@ export default function DashboardLayout({
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href}>
-                  <SidebarMenuButton isActive={pathname === item.href}>
+                  <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
                     <item.icon className="w-5 h-5" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
