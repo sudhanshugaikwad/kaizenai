@@ -36,6 +36,60 @@ const formSchema = z.object({
   }),
 });
 
+// Function to arrange nodes in a tree-like structure
+const getTreeLayout = (items: any[]) => {
+    const initialNodes: Node[] = [];
+    const initialEdges: Edge[] = [];
+    const nodeWidth = 400;
+    const nodeHeight = 200;
+    const horizontalSpacing = 50;
+    const verticalSpacing = 100;
+    const itemsPerRow = 2;
+
+    items.forEach((item, index) => {
+        const row = Math.floor(index / itemsPerRow);
+        const col = index % itemsPerRow;
+
+        // Alternate direction for each row
+        const x = (row % 2 === 0) 
+            ? col * (nodeWidth + horizontalSpacing) 
+            : (itemsPerRow - 1 - col) * (nodeWidth + horizontalSpacing);
+        
+        const y = row * (nodeHeight + verticalSpacing);
+        
+        const nodeId = `step-${index + 1}`;
+        initialNodes.push({
+            id: nodeId,
+            type: 'default',
+            data: {
+                label: (
+                    <div className="p-2">
+                        <div className='font-bold text-base mb-2'>{`Step ${index + 1}: ${item.step}`}</div>
+                        <div className='text-sm text-muted-foreground'>{item.reasoning}</div>
+                        <div className="text-xs text-muted-foreground mt-2 italic">Duration: {item.duration}</div>
+                    </div>
+                )
+            },
+            position: { x, y },
+            style: { width: nodeWidth, background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' },
+        });
+
+        if (index > 0) {
+            initialEdges.push({
+                id: `e${index}-${index + 1}`,
+                source: `step-${index}`,
+                target: nodeId,
+                type: 'smoothstep',
+                animated: true,
+                style: { stroke: 'hsl(var(--primary))' },
+            });
+        }
+    });
+
+    return { nodes: initialNodes, edges: initialEdges };
+};
+
+
 export default function RoadmapGeneratorPage() {
   const [roadmap, setRoadmap] = useState<RoadmapOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,43 +104,7 @@ export default function RoadmapGeneratorPage() {
 
   const { nodes, edges } = useMemo(() => {
     if (!roadmap) return { nodes: [], edges: [] };
-
-    const initialNodes: Node[] = [];
-    const initialEdges: Edge[] = [];
-    let yPos = 0;
-
-    roadmap.roadmap.forEach((item, index) => {
-      const nodeId = `step-${index + 1}`;
-      initialNodes.push({
-        id: nodeId,
-        type: 'default',
-        data: { 
-            label: (
-                <div className="p-2">
-                    <div className='font-bold text-base mb-2'>{`Step ${index + 1}: ${item.step}`}</div>
-                    <div className='text-sm text-muted-foreground'>{item.reasoning}</div>
-                    <div className="text-xs text-muted-foreground mt-2 italic">Duration: {item.duration}</div>
-                </div>
-            )
-        },
-        position: { x: 0, y: yPos },
-        style: { width: 400, background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' },
-      });
-
-      yPos += 200; // Adjust vertical spacing
-
-      if (index > 0) {
-        initialEdges.push({
-          id: `e${index}-${index + 1}`,
-          source: `step-${index}`,
-          target: nodeId,
-          animated: true,
-          style: { stroke: 'hsl(var(--primary))' },
-        });
-      }
-    });
-
-    return { nodes: initialNodes, edges: initialEdges };
+    return getTreeLayout(roadmap.roadmap);
   }, [roadmap]);
 
   const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
