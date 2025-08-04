@@ -81,11 +81,11 @@ export default function Home() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-6 flex items-center justify-between"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
             <Logo className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold">Kaizen AI Lite</h1>
+            <h1 className="text-xl sm:text-2xl font-bold">Kaizen AI Lite</h1>
         </Link>
         <Link href="/dashboard">
             <Button variant="ghost">
@@ -97,27 +97,27 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section 
-          className="container mx-auto px-4 text-center py-20 md:py-32"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
             <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-            <div className="absolute left-1/2 right-0 top-0 -z-10 -translate-x-1/2 m-auto h-[480px] w-[640px] rounded-full bg-primary/10 opacity-40 blur-[120px]"></div>
+            <div className="absolute left-1/2 right-0 top-0 -z-10 -translate-x-1/2 m-auto h-[320px] sm:h-[480px] w-[90%] sm:w-[640px] rounded-full bg-primary/10 opacity-40 blur-[100px] sm:blur-[120px]"></div>
 
-          <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
             Supercharge Your Career with
             <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {' '}
               Kaizen AI
             </span>
           </motion.h1>
-          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
+          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
           </motion.p>
-          <motion.div variants={itemVariants} className="flex justify-center gap-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/dashboard">
-              <Button size="lg">
+              <Button size="lg" className="w-full sm:w-auto">
                 Get Started for Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -128,7 +128,7 @@ export default function Home() {
         {/* Features Section */}
         <motion.section 
           id="features" 
-          className="container mx-auto px-4 py-16"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -138,7 +138,7 @@ export default function Home() {
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
             </motion.div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
@@ -165,16 +165,16 @@ export default function Home() {
 
         {/* CTA Section */}
          <motion.section 
-            className="container mx-auto px-4 py-16"
+            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
             variants={itemVariants}
          >
-            <div className="bg-card/50 border border-border/50 rounded-lg p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="bg-card/50 border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
                 <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
                 <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
+                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
                  <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
                     Stop guessing and start building a winning career strategy. Your next opportunity is just a click away.
                  </p>
@@ -195,9 +195,9 @@ export default function Home() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="container mx-auto px-4 py-8">
-           <div className="grid gap-8 md:grid-cols-3">
-              <div className="space-y-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+           <div className="grid gap-8 md:grid-cols-3 text-center md:text-left">
+              <div className="space-y-2 flex flex-col items-center md:items-start">
                  <div className="flex items-center gap-2">
                     <Logo className="w-8 h-8 text-primary" />
                     <h3 className="text-xl font-bold">Kaizen AI Lite</h3>

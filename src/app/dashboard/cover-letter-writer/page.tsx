@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -124,7 +125,7 @@ export default function CoverLetterWriterPage() {
                     <FormField control={form.control} name="experience" render={({ field }) => (
                     <FormItem><FormLabel>Your Experience</FormLabel><FormControl><Textarea placeholder="Briefly describe your relevant experience..." rows={3} {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
-                    <Button type="submit" disabled={isLoading}>
+                    <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
                     {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Cover Letter</>}
                     </Button>
                 </form>
@@ -140,7 +141,7 @@ export default function CoverLetterWriterPage() {
                 <CardTitle>Generated Cover Letter</CardTitle>
                 <CardDescription>Your AI-crafted letter will appear here.</CardDescription>
               </div>
-              {coverLetter && (
+              {coverLetter && !isLoading && (
                 <Button variant="outline" size="icon" onClick={handleCopy}>
                   <Copy className="h-4 w-4" />
                 </Button>

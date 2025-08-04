@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         variants={containerVariants}
       >
-        {features.map((feature, index) => (
+        {features.map((feature) => (
           <motion.div key={feature.title} variants={itemVariants}>
             <Card className="flex flex-col h-full">
                 <CardHeader>
@@ -86,13 +86,13 @@ export default function DashboardPage() {
                 <CardContent className="flex-grow">
                 <CardDescription>{feature.description}</CardDescription>
                 </CardContent>
-                <div className="p-6 pt-0">
-                <Link href={feature.href}>
-                    <Button className="w-full">
-                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                </Link>
-                </div>
+                <CardFooter>
+                  <Link href={feature.href} className="w-full">
+                      <Button className="w-full">
+                      Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                  </Link>
+                </CardFooter>
             </Card>
           </motion.div>
         ))}
