@@ -21,7 +21,7 @@ const JobMatcherInputSchema = z.object({
 export type JobMatcherInput = z.infer<typeof JobMatcherInputSchema>;
 
 const JobMatcherOutputSchema = z.object({
-  userJobRole: z.string().describe("The user's most likely job role based on the resume analysis."),
+  userJobRole: z.string().describe("The user's most likely job role based on the resume analysis. If the resume is empty or cannot be read, state that it could not be processed."),
   matchedJobs: z.array(
     z.object({
       jobTitle: z.string().describe('The title of the job or internship.'),
@@ -30,7 +30,7 @@ const JobMatcherOutputSchema = z.object({
       applyLink: z.string().describe('A direct URL to the job application page (e.g., LinkedIn, Naukri, company website).'),
       postedDate: z.string().describe('How long ago the job was posted (e.g., "5 days ago", "2 weeks ago").')
     })
-  ).describe('A list of 5-10 job roles and internships that are a good match for the resume, prioritizing recent postings.'),
+  ).describe('A list of 5-10 job roles and internships that are a good match for the resume, prioritizing recent postings. If the resume is empty or cannot be read, return an empty array.'),
 });
 export type JobMatcherOutput = z.infer<typeof JobMatcherOutputSchema>;
 
@@ -57,6 +57,8 @@ const prompt = ai.definePrompt({
   5.  The **Posted Date** indicating how recently the position was advertised (e.g., "2 days ago", "1 week ago").
 
   Analyze the resume thoroughly to understand the candidate's skills, experience, and career trajectory to find the best possible matches.
+
+  If the resume file is empty or cannot be processed, you must indicate that in the 'userJobRole' field and return an empty list for 'matchedJobs'.
 
   Resume: {{media url=resumeDataUri}}
   `,
