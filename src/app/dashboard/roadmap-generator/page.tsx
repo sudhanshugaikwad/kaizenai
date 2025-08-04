@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -45,7 +46,7 @@ export default function RoadmapGeneratorPage() {
     try {
       const result = await generateRoadmap(values);
       setRoadmap(result);
-    } catch (error) => {
+    } catch (error) {
       console.error('Failed to generate roadmap:', error);
       toast({
         title: "Error",
