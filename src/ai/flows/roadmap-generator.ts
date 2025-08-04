@@ -24,6 +24,12 @@ const RoadmapOutputSchema = z.object({
     z.object({
       step: z.string().describe('A step in the career roadmap.'),
       reasoning: z.string().describe('The reasoning behind this step.'),
+      resources: z.array(
+        z.object({
+          name: z.string().describe('The name of the resource.'),
+          url: z.string().url().describe('The URL for the resource.'),
+        })
+      ).describe('A list of helpful resources for this step.'),
     })
   ).describe('A structured plan to achieve the career goal.'),
 });
@@ -39,7 +45,8 @@ const prompt = ai.definePrompt({
   output: {schema: RoadmapOutputSchema},
   prompt: `You are a career coach who helps people achieve their career goals.
 
-  Based on the user's desired career goal, generate a personalized career roadmap with reasoning for each step.
+  Based on the user's desired career goal, generate a personalized career roadmap.
+  For each step, provide a clear title, detailed reasoning, and a list of 2-3 specific, actionable, and high-quality online resources (like articles, courses, or tutorials) with their names and URLs.
   Be specific and actionable.
 
   Desired Career Goal: {{{careerGoal}}}

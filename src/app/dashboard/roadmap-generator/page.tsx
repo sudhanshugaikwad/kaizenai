@@ -15,10 +15,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Rocket, Milestone } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Loader2, Rocket, Milestone, Link as LinkIcon, BookOpen } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast"
+import Link from 'next/link';
 
 const formSchema = z.object({
   careerGoal: z.string().min(2, {
@@ -108,24 +108,45 @@ export default function RoadmapGeneratorPage() {
       {roadmap && (
         <Card>
           <CardHeader>
-            <CardTitle>Your Personalized Roadmap</CardTitle>
+            <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
+            <CardDescription>Follow these steps to achieve your career goal.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-              {roadmap.roadmap.map((item, index) => (
-                <AccordionItem value={`item-${index}`} key={index}>
-                  <AccordionTrigger>
-                    <div className="flex items-center gap-3">
-                        <Milestone className="h-5 w-5 text-primary"/>
-                        <span className="font-semibold">{`Step ${index + 1}: ${item.step}`}</span>
+            <div className="relative pl-6">
+              {/* Vertical timeline bar */}
+              <div className="absolute left-[35px] top-0 h-full w-0.5 bg-border -translate-x-1/2"></div>
+              
+              <div className="space-y-12">
+                {roadmap.roadmap.map((item, index) => (
+                  <div key={index} className="relative">
+                    <div className="absolute left-0 top-1.5 flex items-center justify-center w-12">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ring-8 ring-background">
+                        <Milestone className="h-5 w-5" />
+                      </div>
                     </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="prose prose-sm max-w-none text-muted-foreground">
-                    <p>{item.reasoning}</p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                    
+                    <div className="ml-16">
+                      <h3 className="text-lg font-semibold">{`Step ${index + 1}: ${item.step}`}</h3>
+                      <p className="mt-2 text-muted-foreground">{item.reasoning}</p>
+                      
+                      {item.resources && item.resources.length > 0 && (
+                        <div className="mt-4">
+                          <h4 className="font-semibold flex items-center gap-2"><BookOpen className="h-5 w-5 text-primary/80"/>Recommended Resources</h4>
+                          <div className="mt-2 space-y-2">
+                            {item.resources.map((resource, rIndex) => (
+                              <Link href={resource.url} target="_blank" rel="noopener noreferrer" key={rIndex} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group">
+                                <LinkIcon className="h-4 w-4 text-primary/50 group-hover:text-primary" />
+                                <span className="underline">{resource.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}
