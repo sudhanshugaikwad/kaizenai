@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Rocket, Lightbulb, HelpCircle } from 'lucide-react';
+import { Loader2, Rocket, Lightbulb, HelpCircle, Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import ReactFlow, {
@@ -27,6 +27,9 @@ import ReactFlow, {
   type Node,
   type Edge,
 } from 'reactflow';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 import 'reactflow/dist/style.css';
 
@@ -94,6 +97,8 @@ export default function RoadmapGeneratorPage() {
   const [roadmap, setRoadmap] = useState<RoadmapOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const roadmapContentRef = useRef<HTMLDivElement>(null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -124,6 +129,35 @@ export default function RoadmapGeneratorPage() {
       setIsLoading(false);
     }
   }, [toast]);
+
+  const handleDownload = async () => {
+    if (!roadmapContentRef.current || !roadmap) {
+        toast({
+            title: "Error",
+            description: "Could not download roadmap. Please generate a roadmap first.",
+            variant: "destructive"
+        });
+        return;
+    }
+
+    toast({ title: "Generating PDF...", description: "Please wait a moment."});
+
+    const canvas = await html2canvas(roadmapContentRef.current, {
+        scale: 2, // Higher scale for better quality
+        useCORS: true,
+        backgroundColor: null, 
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+    });
+
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save(`Roadmap-for-${form.getValues('careerGoal').replace(/\s+/g, '-')}.pdf`);
+  };
 
 
   const containerVariants = {
@@ -203,20 +237,27 @@ export default function RoadmapGeneratorPage() {
       )}
 
       {roadmap && (
-        <motion.div 
+        <motion.div
             className="space-y-6"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
+            ref={roadmapContentRef}
         >
         <motion.div variants={itemVariants}>
             <Card>
-                <CardHeader>
-                    <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
-                    <CardDescription>
-                        Follow these steps to achieve your career goal. 
-                        <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
-                    </CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
+                        <CardDescription>
+                            Follow these steps to achieve your career goal. 
+                            <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
+                        </CardDescription>
+                    </div>
+                     <Button variant="outline" size="icon" onClick={handleDownload}>
+                      <Download className="h-4 w-4" />
+                      <span className="sr-only">Download Roadmap</span>
+                    </Button>
                 </CardHeader>
                 <CardContent style={{ height: 600 }}>
                      <ReactFlow
