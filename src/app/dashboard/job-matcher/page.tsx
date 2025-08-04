@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { matchJobs, type JobMatcherOutput } from '@/ai/flows/job-matcher';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from '@/components/ui/badge';
 
 export default function JobMatcherPage() {
   const [result, setResult] = useState<JobMatcherOutput | null>(null);
@@ -71,7 +72,7 @@ export default function JobMatcherPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Job Matcher</h1>
-        <p className="text-muted-foreground">Upload your resume and let our AI find the best job openings for you.</p>
+        <p className="text-muted-foreground">Upload your resume and let our AI find the best job openings for you in India.</p>
       </div>
 
       <Card>
@@ -106,8 +107,18 @@ export default function JobMatcherPage() {
       )}
 
       {result && result.matchedJobs.length > 0 && (
-        <div className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight">Recommended Jobs for You</h2>
+        <div className="space-y-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center gap-3 space-y-0">
+                  <UserCheck className="w-8 h-8 text-primary" />
+                  <div>
+                    <CardTitle>Identified Role</CardTitle>
+                    <CardDescription className="text-lg font-semibold text-foreground">{result.userJobRole}</CardDescription>
+                  </div>
+              </CardHeader>
+            </Card>
+
+            <h2 className="text-2xl font-bold tracking-tight">Recommended Jobs & Internships for You</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {result.matchedJobs.map((job, index) => (
                 <Card key={index} className="flex flex-col">
@@ -125,6 +136,10 @@ export default function JobMatcherPage() {
                                 </div>
                              </div>
                            </div>
+                           <Badge variant="outline" className="flex items-center gap-1.5 whitespace-nowrap">
+                                <Clock className="w-3 h-3"/>
+                                {job.postedDate}
+                            </Badge>
                         </div>
                     </CardHeader>
                     <CardContent className="flex-grow">

@@ -21,14 +21,16 @@ const JobMatcherInputSchema = z.object({
 export type JobMatcherInput = z.infer<typeof JobMatcherInputSchema>;
 
 const JobMatcherOutputSchema = z.object({
+  userJobRole: z.string().describe("The user's most likely job role based on the resume analysis."),
   matchedJobs: z.array(
     z.object({
-      jobTitle: z.string().describe('The title of the job.'),
+      jobTitle: z.string().describe('The title of the job or internship.'),
       companyName: z.string().describe('The name of the company.'),
       jobDescription: z.string().describe('A brief description of the job role and responsibilities.'),
-      applyLink: z.string().describe('A direct URL to the job application page (e.g., LinkedIn, company website).'),
+      applyLink: z.string().describe('A direct URL to the job application page (e.g., LinkedIn, Naukri, company website).'),
+      postedDate: z.string().describe('How long ago the job was posted (e.g., "5 days ago", "2 weeks ago").')
     })
-  ).describe('A list of 5-10 job roles that are a good match for the resume.'),
+  ).describe('A list of 5-10 job roles and internships that are a good match for the resume, prioritizing recent postings.'),
 });
 export type JobMatcherOutput = z.infer<typeof JobMatcherOutputSchema>;
 
@@ -41,13 +43,18 @@ const prompt = ai.definePrompt({
   name: 'jobMatcherPrompt',
   input: {schema: JobMatcherInputSchema},
   output: {schema: JobMatcherOutputSchema},
-  prompt: `You are an expert career consultant and recruiter. Your task is to analyze the provided resume and find 5-10 suitable, currently open job roles for the candidate.
+  prompt: `You are an expert career consultant and recruiter specializing in the Indian job market. Your task is to:
 
-  For each job you find, you must provide:
+  1.  Analyze the provided resume to determine the candidate's most likely **Job Role**.
+  2.  Find 5-10 suitable, currently open job roles **and internships** for the candidate **in India**.
+  3.  **Prioritize recently published jobs**, ideally those posted within the last 2, 5, or 10 days.
+
+  For each job or internship you find, you must provide:
   1.  A clear **Job Title**.
   2.  The **Company Name**.
   3.  A brief **Job Description** summarizing the key responsibilities.
   4.  A direct **Apply Link**. You must find real, active job posting URLs from sources like LinkedIn, Naukri, or official company career pages.
+  5.  The **Posted Date** indicating how recently the position was advertised (e.g., "2 days ago", "1 week ago").
 
   Analyze the resume thoroughly to understand the candidate's skills, experience, and career trajectory to find the best possible matches.
 
