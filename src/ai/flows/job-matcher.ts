@@ -58,7 +58,7 @@ const prompt = ai.definePrompt({
 
   Analyze the resume thoroughly to understand the candidate's skills, experience, and career trajectory to find the best possible matches.
 
-  If the resume file is empty or cannot be processed, you must indicate that in the 'userJobRole' field and return an empty list for 'matchedJobs'.
+  **IMPORTANT**: If the provided resume file cannot be processed, is empty, or seems invalid, you MUST set the 'userJobRole' field to 'Could not process resume' and return an empty array for 'matchedJobs'. Do not throw an error.
 
   Resume: {{media url=resumeDataUri}}
   `,
