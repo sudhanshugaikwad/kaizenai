@@ -257,7 +257,7 @@ export default function Home() {
                     </Button>
                  </Link>
             </div>
-         </motion.section>
+         </section>
 
       </main>
 
@@ -269,14 +269,14 @@ export default function Home() {
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-           <div className="grid gap-8 md:grid-cols-3 text-center md:text-left">
-              <div className="space-y-2 flex flex-col items-center md:items-start">
+           <div className="grid gap-8 md:grid-cols-4 text-center md:text-left">
+              <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 md:col-span-1">
                  <div className="flex items-center gap-2">
                     <Logo className="w-auto h-8 text-primary" />
                 </div>
                 <p className="text-muted-foreground">Your personal AI career coach.</p>
               </div>
-               <div>
+               <div className="col-span-1 md:col-span-1">
                   <h4 className="font-semibold mb-2">Tools</h4>
                   <ul className="space-y-2 text-muted-foreground">
                       <li><Link href="/dashboard/roadmap-generator" className="hover:text-primary">Roadmap Generator</Link></li>
@@ -286,7 +286,13 @@ export default function Home() {
                       <li><Link href="/dashboard/kaizen-ai-chat" className="hover:text-primary">AI Chat</Link></li>
                   </ul>
               </div>
-              <div>
+              <div className="col-span-1 md:col-span-1">
+                <h4 className="font-semibold mb-2">Company</h4>
+                <ul className="space-y-2 text-muted-foreground">
+                    <li><Link href="/about" className="hover:text-primary">About</Link></li>
+                </ul>
+              </div>
+              <div className="col-span-1 md:col-span-1">
                   <h4 className="font-semibold mb-2">Legal</h4>
                   <ul className="space-y-2 text-muted-foreground">
                       <li><Link href="#" className="hover:text-primary">Terms of Service</Link></li>
