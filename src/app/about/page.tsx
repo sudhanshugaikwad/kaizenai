@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import Image from "next/image";
@@ -25,6 +26,12 @@ export default function AboutPage() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
+
+  const [year, setYear] = React.useState(new Date().getFullYear());
+
+  React.useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
 
   return (
@@ -114,7 +121,7 @@ export default function AboutPage() {
 
         {/* Footer */}
         <motion.footer variants={itemVariants} className="text-center text-sm text-gray-400 mt-12 border-t pt-6">
-          &copy; {new Date().getFullYear()} Kaizen Ai.
+          &copy; {year} Kaizen Ai.
           <p>Designed by Sudhanshu Gaikwad</p>
         </motion.footer>
       </div>
