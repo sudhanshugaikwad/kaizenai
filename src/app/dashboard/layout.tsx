@@ -60,11 +60,9 @@ export default function DashboardLayout({
     <SidebarProvider>
       <Sidebar variant='inset' side='left'>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <Logo className="w-6 h-6 text-primary" />
-            
-            <span className="font-semibold text-lg">Kaizen Ai</span>
-          </div>
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <Logo className="w-auto h-7 text-primary" />
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
@@ -112,8 +110,7 @@ export default function DashboardLayout({
                 </Button>
               </SidebarTrigger>
                <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
-                <Logo className="h-6 w-6 text-primary" />
-                <span className="font-semibold">Kaizen Ai</span>
+                <Logo className="h-6 w-auto text-primary" />
               </Link>
             </div>
           <div className="flex items-center gap-4">

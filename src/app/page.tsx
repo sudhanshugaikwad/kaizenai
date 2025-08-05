@@ -87,8 +87,7 @@ export default function Home() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
-            <Logo className="w-8 h-8 text-primary" />
-            <h1 className="text-xl sm:text-2xl font-bold">Kaizen Ai</h1>
+            <Logo className="w-auto h-8 text-primary" />
         </Link>
          <SignedIn>
           <div className="flex items-center gap-4">
@@ -273,8 +272,7 @@ export default function Home() {
            <div className="grid gap-8 md:grid-cols-3 text-center md:text-left">
               <div className="space-y-2 flex flex-col items-center md:items-start">
                  <div className="flex items-center gap-2">
-                    <Logo className="w-8 h-8 text-primary" />
-                    <h3 className="text-xl font-bold">Kaizen Ai</h3>
+                    <Logo className="w-auto h-8 text-primary" />
                 </div>
                 <p className="text-muted-foreground">Your personal AI career coach.</p>
               </div>
