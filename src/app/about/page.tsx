@@ -27,7 +27,7 @@ export default function AboutPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
-  const [year, setYear] = React.useState(new Date().getFullYear());
+  const [year, setYear] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     setYear(new Date().getFullYear());
@@ -121,8 +121,12 @@ export default function AboutPage() {
 
         {/* Footer */}
         <motion.footer variants={itemVariants} className="text-center text-sm text-gray-400 mt-12 border-t pt-6">
-          &copy; {year} Kaizen Ai.
-          <p>Designed by Sudhanshu Gaikwad</p>
+          {year && (
+            <>
+              &copy; {year} Kaizen Ai.
+              <p>Designed by Sudhanshu Gaikwad</p>
+            </>
+          )}
         </motion.footer>
       </div>
     </motion.div>
