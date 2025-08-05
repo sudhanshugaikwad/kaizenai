@@ -298,7 +298,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
             <p>Designed by Sudhanshu Gaikwad</p>
           </div>
         </div>
