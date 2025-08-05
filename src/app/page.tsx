@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, Zap, LogIn } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { motion } from 'framer-motion';
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 const features = [
   {
@@ -49,6 +49,8 @@ const features = [
 
 
 export default function Home() {
+  const { user } = useUser();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -89,15 +91,14 @@ export default function Home() {
             <h1 className="text-xl sm:text-2xl font-bold">Kaizen Ai</h1>
         </Link>
         <SignedIn>
-            <Link href="/dashboard">
-                <Button>
-                    Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-            </Link>
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
+            <UserButton afterSignOutUrl="/" />
+          </div>
         </SignedIn>
         <SignedOut>
              <Link href="/sign-in">
-                <Button variant="ghost">
+                <Button>
                     Login <LogIn className="ml-2 h-4 w-4" />
                 </Button>
             </Link>
@@ -126,12 +127,22 @@ export default function Home() {
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
           </motion.p>
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/sign-up">
-              <Button size="lg" className="w-full sm:w-auto">
-                Get Started for Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            <SignedIn>
+              <Link href="/dashboard">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Go to Dashboard
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <Link href="/sign-up">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Get Started for Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </SignedOut>
           </motion.div>
         </motion.section>
 
