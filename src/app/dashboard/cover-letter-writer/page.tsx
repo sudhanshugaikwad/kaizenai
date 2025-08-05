@@ -46,12 +46,32 @@ export default function CoverLetterWriterPage() {
     },
   });
 
+  const saveToHistory = (values: z.infer<typeof formSchema>, generatedCoverLetter: string) => {
+    try {
+      const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+      const newHistoryItem = {
+        type: 'Cover Letter Generated',
+        title: `For ${values.jobTitle} at ${values.companyName}`,
+        timestamp: new Date().toISOString(),
+        data: {
+            ...values,
+            coverLetter: generatedCoverLetter,
+        }
+      };
+      history.unshift(newHistoryItem);
+      localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50))); // limit history
+    } catch (e) {
+      console.error("Could not save to history", e);
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setCoverLetter('');
     try {
       const result = await generateCoverLetter(values);
       setCoverLetter(result.coverLetter);
+      saveToHistory(values, result.coverLetter);
     } catch (error) {
       console.error('Failed to generate cover letter:', error);
        toast({

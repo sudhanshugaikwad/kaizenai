@@ -112,12 +112,33 @@ export default function RoadmapGeneratorPage() {
     return getTreeLayout(roadmap.roadmap);
   }, [roadmap]);
 
+  const saveToHistory = (input: z.infer<typeof formSchema>, output: RoadmapOutput) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'Roadmap Generated',
+            title: `For career goal: ${input.careerGoal}`,
+            timestamp: new Date().toISOString(),
+            data: {
+                input,
+                output
+            }
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
+
   const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setRoadmap(null);
     try {
       const result = await generateRoadmap(values);
       setRoadmap(result);
+      saveToHistory(values, result);
     } catch (error) {
       console.error('Failed to generate roadmap:', error);
       toast({

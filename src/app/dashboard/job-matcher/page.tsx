@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -39,6 +40,22 @@ export default function JobMatcherPage() {
     });
   };
 
+  const saveToHistory = (output: JobMatcherOutput) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'Job Matcher Run',
+            title: `Found ${output.matchedJobs.length} jobs for role: ${output.userJobRole}`,
+            timestamp: new Date().toISOString(),
+            data: output
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
   const handleSubmit = useCallback(async (event: React.FormEvent) => {
     event.preventDefault();
     if (!file) {
@@ -57,6 +74,7 @@ export default function JobMatcherPage() {
       const resumeDataUri = await fileToDataUri(file);
       const matchedJobsResult = await matchJobs({ resumeDataUri });
       setResult(matchedJobsResult);
+      saveToHistory(matchedJobsResult);
     } catch (error) {
       console.error('Failed to match jobs:', error);
       toast({

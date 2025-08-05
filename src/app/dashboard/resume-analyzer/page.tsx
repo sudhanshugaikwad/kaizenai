@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -42,6 +43,26 @@ export default function ResumeAnalyzerPage() {
     });
   };
 
+   const saveToHistory = (output: AnalyzeResumeOutput) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'Resume Analysis',
+            title: `Analyzed: ${fileName}`,
+            timestamp: new Date().toISOString(),
+            data: {
+                fileName,
+                jobDescription,
+                feedback: output,
+            }
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
   const handleSubmit = useCallback(async (event: React.FormEvent) => {
     event.preventDefault();
     if (!file) {
@@ -60,6 +81,7 @@ export default function ResumeAnalyzerPage() {
       const resumeDataUri = await fileToDataUri(file);
       const result = await analyzeResume({ resumeDataUri, jobDescription });
       setFeedback(result);
+      saveToHistory(result);
     } catch (error) {
       console.error('Failed to analyze resume:', error);
       toast({
@@ -70,7 +92,7 @@ export default function ResumeAnalyzerPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [file, jobDescription, toast]);
+  }, [file, fileName, jobDescription, toast]);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },

@@ -49,6 +49,25 @@ export default function KaizenAiChatPage() {
     }
   }, [messages]);
 
+  const saveToHistory = (userMessage: Message, botMessage: Message) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'Kaizen Ai Chat',
+            title: `Chat conversation started`,
+            timestamp: new Date().toISOString(),
+            data: {
+                conversation: [userMessage, botMessage]
+            }
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     const userMessage: Message = { sender: 'user', text: values.question };
@@ -59,6 +78,7 @@ export default function KaizenAiChatPage() {
       const result = await chatWithCoach(values);
       const botMessage: Message = { sender: 'bot', text: result.answer };
       setMessages((prev) => [...prev, botMessage]);
+      saveToHistory(userMessage, botMessage);
     } catch (error) {
       console.error('Failed to get chat response:', error);
       toast({
