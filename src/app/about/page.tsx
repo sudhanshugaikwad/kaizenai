@@ -114,7 +114,7 @@ export default function AboutPage() {
 
         {/* Footer */}
         <motion.footer variants={itemVariants} className="text-center text-sm text-gray-400 mt-12 border-t pt-6">
-          &copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.
+          &copy; {new Date().getFullYear()} Kaizen Ai.
           <p>Designed by Sudhanshu Gaikwad</p>
         </motion.footer>
       </div>
