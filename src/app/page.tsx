@@ -301,7 +301,7 @@ export default function Home() {
               </div>
            </div>
            <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-                <p>&copy; {new Date().getFullYear()} Kaizen Ai. Designed by Sudhanshu Gaikwad.</p>
+                <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
            </div>
         </div>
       </motion.footer>
