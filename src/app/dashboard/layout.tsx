@@ -38,7 +38,7 @@ const navItems = [
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
-  { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen AI Chat' },
+  { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
 ];
 
@@ -62,7 +62,7 @@ export default function DashboardLayout({
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Logo className="w-6 h-6 text-primary" />
-            <span className="font-semibold text-lg">Kaizen AI</span>
+            <span className="font-semibold text-lg">Kaizen Ai</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -112,7 +112,7 @@ export default function DashboardLayout({
               </SidebarTrigger>
                <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
                 <Logo className="h-6 w-6 text-primary" />
-                <span className="font-semibold">Kaizen AI</span>
+                <span className="font-semibold">Kaizen Ai</span>
               </Link>
             </div>
           <div className="flex items-center gap-4">

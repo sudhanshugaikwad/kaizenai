@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -29,7 +30,7 @@ const prompt = ai.definePrompt({
   name: 'careerChatPrompt',
   input: {schema: CareerChatInputSchema},
   output: {schema: CareerChatOutputSchema},
-  prompt: `You are Kaizen AI, an expert career coach. Your role is to provide supportive, insightful, and actionable advice to users about their career questions.
+  prompt: `You are Kaizen Ai, an expert career coach. Your role is to provide supportive, insightful, and actionable advice to users about their career questions.
 
   User's Question: {{{question}}}
 

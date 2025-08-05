@@ -76,7 +76,7 @@ export default function KaizenAiChatPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
       <div className="mb-4">
-        <h1 className="text-3xl font-bold tracking-tight">Kaizen AI Chat</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Kaizen Ai Chat</h1>
         <p className="text-muted-foreground">Ask me anything about your career path, interviews, or skills!</p>
       </div>
 

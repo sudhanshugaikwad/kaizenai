@@ -27,7 +27,7 @@ const features = [
     icon: PenSquare,
   },
   {
-    title: "Kaizen AI Chat",
+    title: "Kaizen Ai Chat",
     description: "Have a question? Ask our AI career coach for personalized advice and insights.",
     href: "/dashboard/kaizen-ai-chat",
     icon: MessageSquare,
