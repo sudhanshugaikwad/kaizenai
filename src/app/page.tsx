@@ -194,7 +194,7 @@ export default function Home() {
                     </Button>
                  </Link>
             </div>
-         </section>
+         </motion.section>
 
       </main>
 
