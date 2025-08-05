@@ -288,7 +288,7 @@ export default function Home() {
               <div className="col-span-1 md:col-span-1">
                 <h4 className="font-semibold mb-2">Company</h4>
                 <ul className="space-y-2 text-muted-foreground">
-                    <li><Link href="#" className="hover:text-primary">About</Link></li>
+                    <li><Link href="/about" className="hover:text-primary">About</Link></li>
                 </ul>
               </div>
               <div className="col-span-1 md:col-span-1">
