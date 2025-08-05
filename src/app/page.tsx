@@ -90,7 +90,7 @@ export default function Home() {
             <Logo className="w-8 h-8 text-primary" />
             <h1 className="text-xl sm:text-2xl font-bold">Kaizen Ai</h1>
         </Link>
-        <SignedIn>
+         <SignedIn>
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
             <UserButton afterSignOutUrl="/" />
@@ -181,6 +181,59 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </motion.section>
+
+        {/* How It Works Section */}
+        <motion.section
+          id="how-it-works"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How Kaizen Ai Works</h2>
+            <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">A simple, streamlined process to accelerate your career growth.</p>
+          </motion.div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <motion.div variants={itemVariants}>
+                <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border-2 border-primary/20 mb-4">
+                        <span className="text-2xl font-bold text-primary">1</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Create Your Account</h3>
+                    <p className="text-muted-foreground">Sign up for free to get instant access to our full suite of AI-powered career tools.</p>
+                </div>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+                <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border-2 border-primary/20 mb-4">
+                        <span className="text-2xl font-bold text-primary">2</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Use the AI Tools</h3>
+                    <p className="text-muted-foreground">From roadmaps to resumes, leverage our specialized AI to generate personalized career assets.</p>
+                </div>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+                <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border-2 border-primary/20 mb-4">
+                        <span className="text-2xl font-bold text-primary">3</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Get Instant Feedback</h3>
+                    <p className="text-muted-foreground">Receive actionable insights, scores, and content to improve your job application materials.</p>
+                </div>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+                <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border-2 border-primary/20 mb-4">
+                        <span className="text-2xl font-bold text-primary">4</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Land Your Dream Job</h3>
+                    <p className="text-muted-foreground">Apply with confidence using your newly optimized resume and compelling cover letter.</p>
+                </div>
+            </motion.div>
           </div>
         </motion.section>
 

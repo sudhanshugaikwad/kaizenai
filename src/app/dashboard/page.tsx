@@ -9,6 +9,12 @@ import { motion } from 'framer-motion';
 
 const features = [
   {
+    title: "Kaizen Ai Chat",
+    description: "Have a question? Ask our AI career coach for personalized advice and insights.",
+    href: "/dashboard/kaizen-ai-chat",
+    icon: MessageSquare,
+  },
+  {
     title: "Roadmap Generator",
     description: "Chart your path to success. Get a personalized career roadmap based on your goals.",
     href: "/dashboard/roadmap-generator",
@@ -25,12 +31,6 @@ const features = [
     description: "Craft the perfect pitch. Generate compelling cover letters for any job application.",
     href: "/dashboard/cover-letter-writer",
     icon: PenSquare,
-  },
-  {
-    title: "Kaizen Ai Chat",
-    description: "Have a question? Ask our AI career coach for personalized advice and insights.",
-    href: "/dashboard/kaizen-ai-chat",
-    icon: MessageSquare,
   },
   {
     title: "Job Matcher",
