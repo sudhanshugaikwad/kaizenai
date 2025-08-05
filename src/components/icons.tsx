@@ -25,7 +25,7 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       >
         Kaizen
       </text>
-      <rect x="110" y="4" width="46" height="32" rx="6" fill="#4A69FF" />
+      <rect x="110" y="4" width="46" height="32" rx="6" fill="hsl(var(--primary))" />
       <text
         x="117"
         y="29"
