@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -5,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import FeedbackForm from './FeedbackForm';
 
 const features = [
   {
@@ -101,6 +103,9 @@ export default function DashboardPage() {
             </Card>
           </motion.div>
         ))}
+         <motion.div variants={itemVariants} className="lg:col-span-3">
+            <FeedbackForm />
+        </motion.div>
       </motion.div>
     </motion.div>
   );

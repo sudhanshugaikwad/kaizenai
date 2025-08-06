@@ -17,6 +17,7 @@ import {
 import { Logo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
+import TestimonialsSection from './TestimonialsSection';
 
 const features = [
   {
@@ -183,6 +184,17 @@ export default function Home() {
           </div>
         </motion.section>
 
+        <motion.section 
+            id="testimonials"
+            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+        >
+            <TestimonialsSection />
+        </motion.section>
+
         {/* How It Works Section */}
         <motion.section
           id="how-it-works"
@@ -306,3 +318,4 @@ export default function Home() {
     </div>
   );
 }
+
