@@ -15,6 +15,7 @@ import {
   History,
   HelpCircle,
   Star,
+  Award,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -49,6 +50,7 @@ const accountItems = [
     { href: '/dashboard/billing', icon: CreditCard, label: 'Billing' },
     { href: '/dashboard/history', icon: History, label: 'History' },
     { href: '/dashboard/feedback', icon: Star, label: 'Manage Feedback' },
+    { href: '/dashboard/certification', icon: Award, label: 'Generate Certification' },
 ]
 
 export default function DashboardLayout({
