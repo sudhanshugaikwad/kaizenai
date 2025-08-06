@@ -9,7 +9,7 @@ import DeveloperTeamSection from "./DeveloperTeamSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from 'framer-motion';
-
+import logo from "../Kaizenai.png"
 export default function AboutPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,7 +56,7 @@ export default function AboutPage() {
           {/* Image Section */}
           <div className="flex justify-center items-center">
             <Image
-              src="https://placehold.co/400x400.png"
+              src={logo}
               alt="Kaizen AI"
               data-ai-hint="abstract technology"
               className="rounded-xl shadow-md"

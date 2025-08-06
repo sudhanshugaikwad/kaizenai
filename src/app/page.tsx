@@ -18,6 +18,8 @@ import { Logo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import TestimonialsSection from './TestimonialsSection';
+import Image from "next/image";
+import logo from "./Kaizenai.png"
 
 const features = [
   {
@@ -97,7 +99,12 @@ export default function Home() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
-          <Logo className="w-auto h-8 text-primary" />
+        <Image
+              src={logo}
+              alt="Kaizen AI"
+              width={150}
+              height={100}
+            />
         </Link>
         <SignedIn>
           <div className="flex items-center gap-4">
