@@ -63,6 +63,13 @@ export default function InterviewQuestionsPage({ params }: { params: { category:
         fetchQuestions();
     }, [fetchQuestions]);
 
+    const getLeetCodeLink = (topic: string, difficulty: string) => {
+        const baseUrl = 'https://leetcode.com/problemset/';
+        const topicQuery = `?topicSlugs=${topic.toLowerCase().replace(/\s+/g, '-')}`;
+        const difficultyQuery = `&difficulty=${difficulty.toUpperCase()}`;
+        return baseUrl + topicQuery + difficultyQuery;
+    }
+
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -126,7 +133,7 @@ export default function InterviewQuestionsPage({ params }: { params: { category:
                     <Card>
                         <CardHeader>
                             <CardTitle>Generated Questions</CardTitle>
-                            <CardDescription>Click on a question to reveal the answer. Use the solve button to open an online compiler.</CardDescription>
+                            <CardDescription>Click on a question to reveal the answer. Use the "Solve on LeetCode" button to practice.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Accordion type="single" collapsible className="w-full">
@@ -143,10 +150,10 @@ export default function InterviewQuestionsPage({ params }: { params: { category:
                                         </AccordionTrigger>
                                         <AccordionContent className="prose prose-sm max-w-none text-muted-foreground space-y-4">
                                             <p>{item.answer}</p>
-                                            <Link href="https://www.programiz.com/dsa/online-compiler/" target="_blank" rel="noopener noreferrer">
+                                            <Link href={getLeetCodeLink(item.topic, difficulty)} target="_blank" rel="noopener noreferrer">
                                                 <Button size="sm">
                                                     <ExternalLink className="mr-2 h-4 w-4" />
-                                                    Solve Now
+                                                    Solve on LeetCode
                                                 </Button>
                                             </Link>
                                         </AccordionContent>

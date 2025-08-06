@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -22,11 +23,11 @@ export type InterviewQuestionsInput = z.infer<typeof InterviewQuestionsInputSche
 const InterviewQuestionsOutputSchema = z.object({
   questions: z.array(
     z.object({
-      question: z.string().describe('The interview question.'),
-      answer: z.string().describe('A detailed, ideal answer to the question.'),
+      question: z.string().describe('The interview question, framed like a LeetCode problem statement.'),
+      answer: z.string().describe('A detailed, ideal answer to the question, explaining the approach and concepts.'),
       topic: z.string().describe('The specific topic this question relates to.'),
     })
-  ).describe('A list of generated interview questions.'),
+  ).describe('A list of generated LeetCode-style interview questions.'),
 });
 export type InterviewQuestionsOutput = z.infer<typeof InterviewQuestionsOutputSchema>;
 
@@ -40,18 +41,18 @@ const prompt = ai.definePrompt({
   name: 'interviewQuestionPrompt',
   input: { schema: InterviewQuestionsInputSchema },
   output: { schema: InterviewQuestionsOutputSchema },
-  prompt: `You are an expert interviewer for a top tech company.
+  prompt: `You are an expert interviewer for a top tech company and your task is to generate LeetCode-style problems.
 
   Generate {{{count}}} interview questions for a candidate applying for a **{{{category}}}** role.
   The questions should be of **{{{difficulty}}}** difficulty.
   Focus on the following topics: **{{{topics}}}**.
 
   For each question, provide:
-  1. A clear and concise **question**.
-  2. A detailed, ideal **answer** that demonstrates a deep understanding of the topic.
+  1. A clear and concise **question** that reads like a LeetCode problem statement. Include examples if necessary.
+  2. A detailed, ideal **answer** that explains the logic, algorithm, and data structures used to solve the problem.
   3. The specific **topic** the question falls under.
 
-  Ensure the questions are practical and relevant to a real-world job scenario.`,
+  Ensure the questions are practical, relevant, and similar in style to what one would find on LeetCode. Do not include a direct link.`,
 });
 
 const generateInterviewQuestionsFlow = ai.defineFlow(
