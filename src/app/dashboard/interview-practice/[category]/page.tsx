@@ -6,7 +6,7 @@ import { generateInterviewQuestions, type InterviewQuestionsOutput } from '@/ai/
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Sparkles, Wand, RefreshCw } from 'lucide-react';
+import { Loader2, Wand, RefreshCw, ExternalLink } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Link from 'next/link';
 
 const categoryDetails: { [key: string]: { title: string; topics: string } } = {
     'web-developer': { title: 'Web Developer', topics: 'HTML, CSS, Bootstrap, Basic JavaScript' },
@@ -27,7 +28,8 @@ const categoryDetails: { [key: string]: { title: string; topics: string } } = {
 };
 
 
-export default function InterviewQuestionsPage({ params: { category } }: { params: { category: string } }) {
+export default function InterviewQuestionsPage({ params }: { params: { category: string } }) {
+    const { category } = params;
     const details = categoryDetails[category] || { title: 'Practice', topics: '' };
     const [questions, setQuestions] = useState<InterviewQuestionsOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -124,7 +126,7 @@ export default function InterviewQuestionsPage({ params: { category } }: { param
                     <Card>
                         <CardHeader>
                             <CardTitle>Generated Questions</CardTitle>
-                            <CardDescription>Click on a question to reveal the answer.</CardDescription>
+                            <CardDescription>Click on a question to reveal the answer. Use the solve button to open an online compiler.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Accordion type="single" collapsible className="w-full">
@@ -139,8 +141,14 @@ export default function InterviewQuestionsPage({ params: { category } }: { param
                                                 </div>
                                             </div>
                                         </AccordionTrigger>
-                                        <AccordionContent className="prose prose-sm max-w-none text-muted-foreground">
-                                            {item.answer}
+                                        <AccordionContent className="prose prose-sm max-w-none text-muted-foreground space-y-4">
+                                            <p>{item.answer}</p>
+                                            <Link href="https://www.programiz.com/dsa/online-compiler/" target="_blank" rel="noopener noreferrer">
+                                                <Button size="sm">
+                                                    <ExternalLink className="mr-2 h-4 w-4" />
+                                                    Solve Now
+                                                </Button>
+                                            </Link>
                                         </AccordionContent>
                                     </AccordionItem>
                                 ))}
