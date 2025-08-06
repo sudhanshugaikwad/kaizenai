@@ -41,59 +41,6 @@ export default function InterviewQuestionsPage({ params }: InterviewQuestionsPag
     const [difficulty, setDifficulty] = useState<'Beginner' | 'Intermediate' | 'Advanced'>('Beginner');
     const { toast } = useToast();
 
-    const fetchQuestions = useCallback(async (). The `use` hook is not needed here and was also removed.
-3.  An unused `Link` import from Next.js was also removed to keep the code clean.
-
-These changes will resolve the build error and allow your deployment to succeed.
-
-Here are the changes to fix the build error.
-<changes>
-  <description>This change fixes a TypeScript error in the Interview Practice page that was causing the Vercel deployment to fail. The `PageProps` type was being incorrectly imported, and the `use` hook was not needed. This change replaces the incorrect type with a specific interface for the component's props and removes the unused imports, ensuring the build will succeed.</description>
-  <change>
-    <file>/src/app/dashboard/interview-practice/[category]/page.tsx</file>
-    <content><![CDATA[
-'use client';
-
-import { useState, useEffect, useCallback } from 'react';
-import { generateInterviewQuestions, type InterviewQuestionsOutput } from '@/ai/flows/interview-question-generator';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Wand, RefreshCw, ExternalLink } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
-import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import Link from 'next/link';
-
-const categoryDetails: { [key: string]: { title: string; topics: string } } = {
-    'web-developer': { title: 'Web Developer', topics: 'HTML, CSS, Bootstrap, Basic JavaScript' },
-    'frontend-developer': { title: 'Frontend Developer', topics: 'JavaScript, React.js, APIs, JSON' },
-    'backend-developer': { title: 'Backend Developer', topics: 'Node.js, Express.js, MongoDB, MySQL' },
-    'software-engineer': { title: 'Software Engineer', topics: 'Data Structures, Algorithms, System Design, Networking, OS' },
-    'dsa': { title: 'Data Structures & Algorithms', topics: 'Arrays, Strings, Linked Lists, Trees, Graphs, Sorting, Searching' },
-};
-
-interface InterviewQuestionsPageProps {
-    params: {
-        category: string;
-    };
-}
-
-export default function InterviewQuestionsPage({ params }: InterviewQuestionsPageProps) {
-    const { category } = params;
-    const details = categoryDetails[category] || { title: 'Practice', topics: '' };
-    const [questions, setQuestions] = useState<InterviewQuestionsOutput | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [difficulty, setDifficulty] = useState<'Beginner' | 'Intermediate' | 'Advanced'>('Beginner');
-    const { toast } = useToast();
-
     const fetchQuestions = useCallback(async () => {
         setIsLoading(true);
         setQuestions(null);
