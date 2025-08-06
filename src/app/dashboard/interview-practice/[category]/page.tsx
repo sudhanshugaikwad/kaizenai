@@ -30,7 +30,7 @@ const categoryDetails: { [key: string]: { title: string; topics: string } } = {
 interface InterviewQuestionsPageProps {
     params: {
         category: string;
-    }
+    };
 }
 
 export default function InterviewQuestionsPage({ params }: InterviewQuestionsPageProps) {
