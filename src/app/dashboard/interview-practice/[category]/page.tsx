@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, use } from 'react';
+import type { PageProps } from 'next';
 import { generateInterviewQuestions, type InterviewQuestionsOutput } from '@/ai/flows/interview-question-generator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -27,14 +28,8 @@ const categoryDetails: { [key: string]: { title: string; topics: string } } = {
     'dsa': { title: 'Data Structures & Algorithms', topics: 'Arrays, Strings, Linked Lists, Trees, Graphs, Sorting, Searching' },
 };
 
-interface InterviewQuestionsPageProps {
-    params: {
-        category: string;
-    };
-}
-
-export default function InterviewQuestionsPage({ params }: InterviewQuestionsPageProps) {
-    const { category } = params;
+export default function InterviewQuestionsPage({ params }: PageProps) {
+    const { category } = use(params);
     const details = categoryDetails[category] || { title: 'Practice', topics: '' };
     const [questions, setQuestions] = useState<InterviewQuestionsOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
