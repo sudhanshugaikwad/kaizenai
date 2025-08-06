@@ -27,8 +27,13 @@ const categoryDetails: { [key: string]: { title: string; topics: string } } = {
     'dsa': { title: 'Data Structures & Algorithms', topics: 'Arrays, Strings, Linked Lists, Trees, Graphs, Sorting, Searching' },
 };
 
+interface InterviewQuestionsPageProps {
+    params: {
+        category: string;
+    }
+}
 
-export default function InterviewQuestionsPage({ params }: { params: { category: string } }) {
+export default function InterviewQuestionsPage({ params }: InterviewQuestionsPageProps) {
     const { category } = params;
     const details = categoryDetails[category] || { title: 'Practice', topics: '' };
     const [questions, setQuestions] = useState<InterviewQuestionsOutput | null>(null);
