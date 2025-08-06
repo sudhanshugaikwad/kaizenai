@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -13,7 +12,8 @@ import {
   Menu,
   User,
   CreditCard,
-  History
+  History,
+  HelpCircle
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -40,6 +40,7 @@ const navItems = [
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
+  { href: '/dashboard/interview-practice', icon: HelpCircle, label: 'Interview Practice' },
 ];
 
 const accountItems = [
@@ -69,7 +70,7 @@ export default function DashboardLayout({
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href}>
-                  <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
+                  <SidebarMenuButton isActive={pathname.startsWith(item.href)} tooltip={item.label}>
                     <item.icon className="w-5 h-5" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
