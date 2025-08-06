@@ -10,7 +10,7 @@ export default clerkMiddleware((auth, req) => {
     auth().protect();
   }
 }, {
-  publishableKey: 'pk_test_c2luZ3VsYXItYmFzaWxpc2stNTcuY2xlcmsuYWNjb3VudHMuZGV2JA',
+  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
   secretKey: process.env.CLERK_SECRET_KEY,
 });
 
