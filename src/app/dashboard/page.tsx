@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, HelpCircle } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 
@@ -39,12 +39,6 @@ const features = [
     href: "/dashboard/job-matcher",
     icon: Briefcase,
   },
-   {
-    title: "Interview Practice",
-    description: "Ace your next interview. Practice with AI-generated questions tailored to your role.",
-    href: "/dashboard/interview-practice",
-    icon: HelpCircle,
-  }
 ];
 
 export default function DashboardPage() {

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -13,7 +14,6 @@ import {
   User,
   CreditCard,
   History,
-  HelpCircle,
   Star,
   Award,
 } from 'lucide-react';
@@ -43,7 +43,6 @@ const navItems = [
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
-  { href: '/dashboard/interview-practice', icon: HelpCircle, label: 'Interview Practice' },
 ];
 
 const accountItems = [
