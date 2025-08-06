@@ -9,7 +9,8 @@ import DeveloperTeamSection from "./DeveloperTeamSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from 'framer-motion';
-import logo from "../Kaizenai.png"
+import { Logo } from "@/components/icons";
+
 export default function AboutPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -55,13 +56,10 @@ export default function AboutPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center p-6 border rounded-xl bg-card shadow-sm">
           {/* Image Section */}
           <div className="flex justify-center items-center">
-            <Image
-              src={logo}
+            <Logo
               alt="Kaizen AI"
               data-ai-hint="abstract technology"
-              className="rounded-xl shadow-md"
-              width={400}
-              height={400}
+              className="rounded-xl shadow-md w-[400px] h-[400px]"
             />
           </div>
 

@@ -18,8 +18,7 @@ import { Logo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import TestimonialsSection from './TestimonialsSection';
-import Image from "next/image";
-import logo from "./Kaizenai.png"
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const features = [
   {
@@ -99,26 +98,24 @@ export default function Home() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
-        <Image
-              src={logo}
-              alt="Kaizen AI"
-              width={150}
-              height={100}
-            />
+            <Logo className="w-auto h-8 text-primary" />
         </Link>
-        <SignedIn>
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </SignedIn>
-        <SignedOut>
-          <Link href="/sign-in">
-            <Button>
-              Login <LogIn className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </SignedOut>
+        <div className='flex items-center gap-2'>
+            <SignedIn>
+            <div className="flex items-center gap-4">
+                <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
+                <UserButton afterSignOutUrl="/" />
+            </div>
+            </SignedIn>
+            <SignedOut>
+            <Link href="/sign-in">
+                <Button variant="outline">
+                Login <LogIn className="ml-2 h-4 w-4" />
+                </Button>
+            </Link>
+            </SignedOut>
+            <ThemeToggle />
+        </div>
       </motion.header>
 
       <main className="flex-grow">
@@ -330,4 +327,3 @@ export default function Home() {
     </div>
   );
 }
-
