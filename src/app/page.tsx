@@ -291,6 +291,11 @@ export default function Home() {
                     About
                   </Link>
                 </li>
+                <li>
+                  <Link href="/verify-certificate" className="hover:text-primary">
+                    Verify Certificate
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="col-span-1 md:col-span-1">
