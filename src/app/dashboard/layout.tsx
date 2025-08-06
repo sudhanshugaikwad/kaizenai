@@ -16,6 +16,7 @@ import {
   History,
   Star,
   Award,
+  BookOpenCheck
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -34,6 +35,8 @@ import {
 import { Logo } from '@/components/icons';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
+import Image from "next/image";
+import logo from "../Kaizenai.png"
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -65,7 +68,8 @@ export default function DashboardLayout({
       <Sidebar variant='inset' side='left'>
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Logo className="h-8 w-auto text-primary" />
+          <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
+        
           </Link>
         </SidebarHeader>
         <SidebarContent>

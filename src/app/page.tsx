@@ -19,7 +19,8 @@ import { motion } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import TestimonialsSection from './TestimonialsSection';
 import { ThemeToggle } from '@/components/theme-toggle';
-
+import Image from "next/image";
+import logo from "./Kaizenai.png"
 const features = [
   {
     icon: <Rocket className="h-8 w-8 text-primary" />,
@@ -98,7 +99,7 @@ export default function Home() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
-            <Logo className="w-auto h-8 text-primary" />
+        <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
         </Link>
         <div className='flex items-center gap-2'>
             <SignedIn>
@@ -270,9 +271,9 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid gap-8 md:grid-cols-4 text-center md:text-left">
             <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 md:col-span-1">
-              <div className="flex items-center gap-2">
-                <Logo className="w-auto h-8 text-primary" />
-              </div>
+              <Link href="/" className="flex items-center gap-2">
+                <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
+              </Link>
               <p className="text-muted-foreground">Your personal AI career coach.</p>
             </div>
             <div className="col-span-1 md:col-span-1">

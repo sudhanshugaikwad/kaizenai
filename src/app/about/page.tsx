@@ -2,6 +2,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import logo from "../Kaizenai.png"
 
 import { Linkedin, Github, Newspaper } from "lucide-react";
 import ServicesSection from "./ServicesSection";
@@ -9,8 +10,6 @@ import DeveloperTeamSection from "./DeveloperTeamSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from 'framer-motion';
-import { Logo } from "@/components/icons";
-
 export default function AboutPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,11 +55,7 @@ export default function AboutPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center p-6 border rounded-xl bg-card shadow-sm">
           {/* Image Section */}
           <div className="flex justify-center items-center">
-            <Logo
-              alt="Kaizen AI"
-              data-ai-hint="abstract technology"
-              className="rounded-xl shadow-md w-[400px] h-[400px]"
-            />
+          <Image src={logo} alt="Kaizen Ai"/>
           </div>
 
           {/* Text Section */}
