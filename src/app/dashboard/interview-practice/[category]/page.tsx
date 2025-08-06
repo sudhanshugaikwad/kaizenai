@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -26,8 +27,7 @@ const categoryDetails: { [key: string]: { title: string; topics: string } } = {
 };
 
 
-export default function InterviewQuestionsPage({ params }: { params: { category: string } }) {
-    const { category } = params;
+export default function InterviewQuestionsPage({ params: { category } }: { params: { category: string } }) {
     const details = categoryDetails[category] || { title: 'Practice', topics: '' };
     const [questions, setQuestions] = useState<InterviewQuestionsOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
