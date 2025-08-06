@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Send, User, Bot } from 'lucide-react';
+import { Loader2, Send, User, Bot, Plus, ArrowRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -25,6 +25,12 @@ type Message = {
   sender: 'user' | 'bot';
   text: string;
 };
+
+const promptSuggestions = [
+    'What skills do I need for a Data Analyst role?',
+    'How do I switch careers to UX Design?',
+    'Java Developer Roadmap?',
+];
 
 export default function KaizenAiChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -42,10 +48,13 @@ export default function KaizenAiChatPage() {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
+      const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        viewport.scrollTo({
+            top: viewport.scrollHeight,
+            behavior: 'smooth'
+        });
+      }
     }
   }, [messages]);
 
@@ -93,44 +102,82 @@ export default function KaizenAiChatPage() {
     }
   }
 
+  const handleSuggestionClick = (suggestion: string) => {
+    form.setValue('question', suggestion);
+    onSubmit({ question: suggestion });
+  };
+
+  const handleNewChat = () => {
+    setMessages([]);
+  };
+
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
-      <div className="mb-4">
-        <h1 className="text-3xl font-bold tracking-tight">Kaizen Ai Chat</h1>
-        <p className="text-muted-foreground">Ask me anything about your career path, interviews, or skills!</p>
+      <div className="flex justify-between items-start mb-4">
+        <div>
+            <h1 className="text-3xl font-bold tracking-tight">Kaizen Ai Chat</h1>
+            <p className="text-muted-foreground">Ask me anything about your career path, interviews, or skills!</p>
+        </div>
+        <Button variant="outline" onClick={handleNewChat}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Chat
+        </Button>
       </div>
 
       <Card className="flex-grow flex flex-col bg-card/50">
         <CardContent className="flex-grow p-0 flex flex-col">
           <ScrollArea className="flex-grow p-6" ref={scrollAreaRef}>
              <div className="space-y-6">
-              <AnimatePresence>
-                {messages.map((message, index) => (
-                   <motion.div
-                    key={index}
+              {messages.length === 0 && !isLoading ? (
+                  <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : ''}`}
+                    className="flex flex-col items-center justify-center h-full text-center"
                   >
-                    {message.sender === 'bot' && (
-                       <Avatar className="h-8 w-8 border-2 border-primary/50">
-                         <AvatarFallback className="bg-primary/20"><Bot className="h-5 w-5 text-primary"/></AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div className={`rounded-lg px-4 py-3 max-w-lg break-words ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                      <p className="text-sm">{message.text}</p>
+                    <h2 className="text-xl font-semibold mb-4">Ask anything to Kaizen Ai Career Q/A Chat Agent</h2>
+                    <div className="space-y-3 w-full max-w-md">
+                        {promptSuggestions.map((prompt, index) => (
+                            <Button
+                                key={index}
+                                variant="outline"
+                                className="w-full justify-between"
+                                onClick={() => handleSuggestionClick(prompt)}
+                            >
+                                {prompt}
+                                <ArrowRight className="h-4 w-4" />
+                            </Button>
+                        ))}
                     </div>
-                     {message.sender === 'user' && (
-                       <Avatar className="h-8 w-8">
-                          <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? 'User'} />
-                          <AvatarFallback><User/></AvatarFallback>
-                      </Avatar>
-                    )}
                   </motion.div>
-                ))}
-              </AnimatePresence>
+              ) : (
+                <AnimatePresence>
+                    {messages.map((message, index) => (
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : ''}`}
+                    >
+                        {message.sender === 'bot' && (
+                        <Avatar className="h-8 w-8 border-2 border-primary/50">
+                            <AvatarFallback className="bg-primary/20"><Bot className="h-5 w-5 text-primary"/></AvatarFallback>
+                        </Avatar>
+                        )}
+                        <div className={`rounded-lg px-4 py-3 max-w-lg break-words ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
+                        <p className="text-sm">{message.text}</p>
+                        </div>
+                        {message.sender === 'user' && (
+                        <Avatar className="h-8 w-8">
+                            <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? 'User'} />
+                            <AvatarFallback><User/></AvatarFallback>
+                        </Avatar>
+                        )}
+                    </motion.div>
+                    ))}
+                </AnimatePresence>
+              )}
                {isLoading && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
