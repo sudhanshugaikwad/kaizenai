@@ -18,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Sparkles, Copy } from 'lucide-react';
+import { Loader2, Sparkles, Copy, Download } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
 
@@ -85,10 +85,28 @@ export default function CoverLetterWriterPage() {
   }
 
   const handleCopy = () => {
+    if (!coverLetter) return;
     navigator.clipboard.writeText(coverLetter);
     toast({
         title: "Copied!",
         description: "Cover letter copied to clipboard.",
+    });
+  };
+
+  const handleDownload = () => {
+    if (!coverLetter) return;
+    const blob = new Blob([coverLetter], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Cover-Letter-${form.getValues('companyName') || 'Untitled'}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+     toast({
+        title: "Downloaded!",
+        description: "Cover letter saved as a .txt file.",
     });
   };
 
@@ -156,15 +174,22 @@ export default function CoverLetterWriterPage() {
 
         <motion.div className="space-y-4" variants={itemVariants}>
           <Card className="min-h-[400px] lg:min-h-full flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
               <div>
                 <CardTitle>Generated Cover Letter</CardTitle>
-                <CardDescription>Your AI-crafted letter will appear here.</CardDescription>
+                <CardDescription>Your AI-crafted letter will appear here. You can edit it directly.</CardDescription>
               </div>
               {coverLetter && !isLoading && (
-                <Button variant="outline" size="icon" onClick={handleCopy}>
-                  <Copy className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handleCopy}>
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copy
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={handleDownload}>
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                    </Button>
+                </div>
               )}
             </CardHeader>
             <CardContent className="flex-grow">
@@ -174,8 +199,8 @@ export default function CoverLetterWriterPage() {
                  </div>
               ) : (
                 <Textarea
-                  readOnly
                   value={coverLetter}
+                  onChange={(e) => setCoverLetter(e.target.value)}
                   placeholder="Your cover letter will be generated here..."
                   className="h-full min-h-[300px] lg:min-h-full resize-none"
                 />
