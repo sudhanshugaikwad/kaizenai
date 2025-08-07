@@ -23,7 +23,7 @@ const prompt = ai.definePrompt({
   name: 'interviewQuestionPrompt',
   input: {schema: InterviewQuestionsInputSchema},
   output: {schema: InterviewQuestionsOutputSchema},
-  prompt: `You are an expert interviewer and career coach. Your task is to generate a list of 40 multiple-choice questions (MCQs) based on the provided details. For each question, provide 4 distinct options and clearly indicate the correct answer.
+  prompt: `You are an expert interviewer and career coach. Your task is to generate a list of 20-30 multiple-choice questions (MCQs) based on the provided details. For each question, provide 4 distinct options and clearly indicate the correct answer.
 
   **Interview Details:**
   - **Job Role:** {{{role}}}
