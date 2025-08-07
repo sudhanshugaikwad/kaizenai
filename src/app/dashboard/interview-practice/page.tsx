@@ -25,7 +25,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { FileUp, Loader2, Sparkles } from 'lucide-react';
+import { FileUp, Loader2, Sparkles, Clock } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { matchJobs } from '@/ai/flows/job-matcher';
@@ -34,9 +34,6 @@ const formSchema = z.object({
   role: z.string().min(2, "Role name is required."),
   roundType: z.enum(['Coding', 'Beginner', 'Role Related', 'Fresher'], {
     required_error: "You need to select a round type.",
-  }),
-  duration: z.enum(['5', '15', '30'], {
-    required_error: "You need to select a duration.",
   }),
   language: z.string().optional(),
   resume: z.any().optional(),
@@ -194,32 +191,13 @@ export default function InterviewPracticeSetupPage() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>Interview Duration *</FormLabel>
-                    <FormControl>
-                       <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-wrap gap-4"
-                      >
-                         {['5', '15', '30'].map(duration => (
-                           <FormItem key={duration} className="flex items-center space-x-2 space-y-0">
-                            <FormControl>
-                                <RadioGroupItem value={duration} id={`${duration}-min`} />
-                            </FormControl>
-                            <FormLabel htmlFor={`${duration}-min`} className="font-normal">{duration} Mins</FormLabel>
-                          </FormItem>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <div className="space-y-3">
+                    <FormLabel>Interview Duration</FormLabel>
+                    <div className="flex items-center gap-2 text-muted-foreground p-3 border rounded-md">
+                        <Clock className="w-5 h-5" />
+                        <span className="font-medium">35 Minutes</span>
+                    </div>
+                </div>
               
               {roundType === 'Coding' && (
                  <FormField
