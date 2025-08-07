@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 
@@ -38,6 +38,12 @@ const features = [
     description: "Find your next role. Get job recommendations based on your resume.",
     href: "/dashboard/job-matcher",
     icon: Briefcase,
+  },
+   {
+    title: "Interview Practice",
+    description: "Ace your next interview with AI-powered mock interviews and real-time feedback.",
+    href: "/dashboard/interview-practice",
+    icon: BookOpenCheck,
   },
 ];
 

@@ -202,7 +202,7 @@ export default function CoverLetterWriterPage() {
                   value={coverLetter}
                   onChange={(e) => setCoverLetter(e.target.value)}
                   placeholder="Your cover letter will be generated here..."
-                  className="h-full min-h-[300px] lg:min-h-full resize-none"
+                  className="h-[80vh] min-h-[300px] lg:min-h-full resize-none"
                 />
               )}
             </CardContent>
