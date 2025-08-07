@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { generateInterviewQuestions, InterviewQuestionsInput } from '@/ai/flows/interview-question-generator';
+import { generateInterviewQuestions } from '@/ai/flows/interview-question-generator';
+import type { InterviewQuestionsInput, InterviewQuestionsOutput } from '@/ai/flows/interview-question-generator.types';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
