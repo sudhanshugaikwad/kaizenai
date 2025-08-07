@@ -18,6 +18,6 @@ export const InterviewQuestionsOutputSchema = z.object({
     question: z.string().describe('The interview question.'),
     options: z.array(z.string()).length(4).describe('An array of 4 multiple-choice options.'),
     correctAnswer: z.string().describe('The correct answer from the options array.'),
-  })).length(40).describe('A list of 40 multiple-choice interview questions.'),
+  })).describe('A list of multiple-choice interview questions.'),
 });
 export type InterviewQuestionsOutput = z.infer<typeof InterviewQuestionsOutputSchema>;
