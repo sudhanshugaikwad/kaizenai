@@ -1,34 +1,19 @@
-
 'use server';
 
 /**
  * @fileOverview AI-powered interview question generator.
  *
  * - generateInterviewQuestions - A function that generates interview questions.
- * - InterviewQuestionsInput - The input type for the generateInterviewQuestions function.
- * - InterviewQuestionsOutput - The return type for the generateInterviewQuestions function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+  InterviewQuestionsInputSchema,
+  InterviewQuestionsOutputSchema,
+  type InterviewQuestionsInput,
+  type InterviewQuestionsOutput,
+} from './interview-question-generator.types';
 
-export const InterviewQuestionsInputSchema = z.object({
-  role: z.string().describe('The job role for the interview (e.g., "Software Engineer").'),
-  roundType: z.enum(['Coding', 'Beginner', 'Role Related', 'Fresher']).describe('The type of interview round.'),
-  language: z.string().optional().describe('The programming language for a coding round.'),
-  resumeDataUri: z.string().optional().describe(
-      "A resume file, as a data URI, to tailor questions. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
-  ),
-});
-export type InterviewQuestionsInput = z.infer<typeof InterviewQuestionsInputSchema>;
-
-export const InterviewQuestionsOutputSchema = z.object({
-  questions: z.array(z.object({
-    question: z.string().describe('The interview question.'),
-    answer: z.string().describe('A brief, ideal answer or key points to cover for the question.'),
-  })).describe('A list of 5-10 interview questions with answers.'),
-});
-export type InterviewQuestionsOutput = z.infer<typeof InterviewQuestionsOutputSchema>;
 
 export async function generateInterviewQuestions(input: InterviewQuestionsInput): Promise<InterviewQuestionsOutput> {
   return generateInterviewQuestionsFlow(input);
