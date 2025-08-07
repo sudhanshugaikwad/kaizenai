@@ -16,7 +16,8 @@ export type InterviewQuestionsInput = z.infer<typeof InterviewQuestionsInputSche
 export const InterviewQuestionsOutputSchema = z.object({
   questions: z.array(z.object({
     question: z.string().describe('The interview question.'),
-    answer: z.string().describe('A brief, ideal answer or key points to cover for the question.'),
-  })).describe('A list of 5-10 interview questions with answers.'),
+    options: z.array(z.string()).length(4).describe('An array of 4 multiple-choice options.'),
+    correctAnswer: z.string().describe('The correct answer from the options array.'),
+  })).min(20).max(30).describe('A list of 20 to 30 multiple-choice interview questions.'),
 });
 export type InterviewQuestionsOutput = z.infer<typeof InterviewQuestionsOutputSchema>;

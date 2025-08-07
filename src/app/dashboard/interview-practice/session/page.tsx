@@ -9,29 +9,30 @@ import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { generateInterviewQuestions, InterviewQuestionsInput } from '@/ai/flows/interview-question-generator';
 import { useToast } from '@/hooks/use-toast';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 type InterviewQuestion = {
     question: string;
-    answer: string;
+    options: string[];
+    correctAnswer: string;
 };
 
 export default function InterviewSessionPage() {
     const [settings, setSettings] = useState<InterviewQuestionsInput | null>(null);
     const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [timer, setTimer] = useState(0);
+    const [answers, setAnswers] = useState<{[key: number]: string}>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
     const router = useRouter();
     const { toast } = useToast();
-    const timerRef = useRef<NodeJS.Timeout>();
-
+    
     useEffect(() => {
         const storedSettings = sessionStorage.getItem('interviewSettings');
         if (storedSettings) {
             const parsedSettings = JSON.parse(storedSettings);
-            const durationInSeconds = parseInt(parsedSettings.duration, 10) * 60;
             setSettings(parsedSettings);
-            setTimer(durationInSeconds);
         } else {
             router.push('/dashboard/interview-practice');
         }
@@ -40,6 +41,7 @@ export default function InterviewSessionPage() {
     useEffect(() => {
         if (settings) {
             const fetchQuestions = async () => {
+                setIsLoading(true);
                 try {
                     const result = await generateInterviewQuestions(settings);
                     setQuestions(result.questions);
@@ -59,42 +61,39 @@ export default function InterviewSessionPage() {
         }
     }, [settings, router, toast]);
     
-    useEffect(() => {
-        if (!isLoading && questions.length > 0) {
-            timerRef.current = setInterval(() => {
-                setTimer(prev => {
-                    if (prev <= 1) {
-                        clearInterval(timerRef.current);
-                        endInterview();
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-        }
-        return () => clearInterval(timerRef.current);
-    }, [isLoading, questions]);
-
-    const endInterview = () => {
-        // In a real app, you would save the results here.
-        // For now, we'll just navigate to a summary page (to be created).
-        toast({ title: "Interview Ended", description: "Generating your summary." });
-        // router.push('/dashboard/interview-practice/summary');
-        // For now, let's go back to setup
-        router.push('/dashboard/interview-practice');
+    const handleAnswerChange = (questionIndex: number, value: string) => {
+        setAnswers(prev => ({
+            ...prev,
+            [questionIndex]: value
+        }));
     };
 
-    const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+        let score = 0;
+        questions.forEach((q, index) => {
+            if (answers[index] === q.correctAnswer) {
+                score++;
+            }
+        });
+
+        sessionStorage.setItem('interviewResults', JSON.stringify({
+            score,
+            total: questions.length,
+            questions,
+            answers
+        }));
+
+        toast({ title: "Quiz Submitted!", description: "Redirecting to your results." });
+        router.push('/dashboard/interview-practice/summary');
     };
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex flex-col items-center justify-center h-full text-center">
                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                <p className="ml-4 text-lg">Preparing your interview...</p>
+                <p className="mt-4 text-lg font-semibold">Preparing your interview questions...</p>
+                <p className="text-muted-foreground">This may take a moment. Please don't leave this page.</p>
             </div>
         );
     }
@@ -103,66 +102,66 @@ export default function InterviewSessionPage() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="h-full flex flex-col gap-4"
+            className="space-y-8"
         >
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>Interview: {settings?.role}</CardTitle>
-                    <div className="text-lg font-semibold tabular-nums">Time: {formatTime(timer)}</div>
+                <CardHeader>
+                    <CardTitle className="text-2xl">Interview Practice: {settings?.role}</CardTitle>
+                    <CardDescription>Answer all the questions to the best of your ability. Good luck!</CardDescription>
                 </CardHeader>
             </Card>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-grow">
-                 <Card className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle>AI Camera</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow flex items-center justify-center bg-muted/50 rounded-b-lg">
-                        <p className="text-muted-foreground">AI camera feed placeholder</p>
-                    </CardContent>
-                </Card>
-                 <Card className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle>User Camera</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow flex items-center justify-center bg-muted/50 rounded-b-lg">
-                        <p className="text-muted-foreground">User camera feed placeholder</p>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-grow">
-                <Card className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle>Question {currentQuestionIndex + 1} of {questions.length}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                        <p>{questions[currentQuestionIndex]?.question}</p>
-                    </CardContent>
-                </Card>
-                <Card className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle>Code / Answer</CardTitle>
-                    </CardHeader>
-                     <CardContent className="flex-grow flex items-center justify-center bg-muted/50 rounded-b-lg">
-                        <p className="text-muted-foreground">Code/Answer section placeholder</p>
-                    </CardContent>
-                </Card>
+            <div className="space-y-6">
+                {questions.map((q, index) => (
+                    <motion.div 
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                    >
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Question {index + 1} of {questions.length}</CardTitle>
+                                <CardDescription className="pt-2 text-base text-foreground">{q.question}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <RadioGroup
+                                    value={answers[index]}
+                                    onValueChange={(value) => handleAnswerChange(index, value)}
+                                >
+                                    {q.options.map((option, optionIndex) => (
+                                        <div key={optionIndex} className="flex items-center space-x-2 py-2">
+                                            <RadioGroupItem value={option} id={`q${index}-o${optionIndex}`} />
+                                            <Label htmlFor={`q${index}-o${optionIndex}`} className="flex-1 cursor-pointer">{option}</Label>
+                                        </div>
+                                    ))}
+                                </RadioGroup>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                ))}
             </div>
             
-            <div className="flex justify-end gap-4 mt-4">
-                <Button variant="secondary" onClick={() => {
-                     if (currentQuestionIndex < questions.length - 1) {
-                         setCurrentQuestionIndex(currentQuestionIndex + 1);
-                     } else {
-                         endInterview();
-                     }
-                }}>
-                    {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Submit"}
+            <div className="flex justify-end gap-4 mt-8">
+                <Button 
+                    variant="outline" 
+                    onClick={() => router.push('/dashboard/interview-practice')}
+                    disabled={isSubmitting}
+                >
+                    Cancel
                 </Button>
-                <Button variant="destructive" onClick={endInterview}>End Interview</Button>
+                <Button 
+                    onClick={handleSubmit} 
+                    disabled={isSubmitting || Object.keys(answers).length !== questions.length}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Submitting...
+                        </>
+                    ) : "Submit Answers"}
+                </Button>
             </div>
-
         </motion.div>
     );
 }

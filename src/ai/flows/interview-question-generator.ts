@@ -23,7 +23,7 @@ const prompt = ai.definePrompt({
   name: 'interviewQuestionPrompt',
   input: {schema: InterviewQuestionsInputSchema},
   output: {schema: InterviewQuestionsOutputSchema},
-  prompt: `You are an expert interviewer and career coach. Your task is to generate a list of 5-10 relevant interview questions based on the provided details. For each question, provide a sample answer or key points.
+  prompt: `You are an expert interviewer and career coach. Your task is to generate a list of 20-30 multiple-choice questions (MCQs) based on the provided details. For each question, provide 4 distinct options and clearly indicate the correct answer.
 
   **Interview Details:**
   - **Job Role:** {{{role}}}
@@ -35,7 +35,7 @@ const prompt = ai.definePrompt({
     Resume: {{media url=resumeDataUri}}
   {{/if}}
 
-  Generate questions that are appropriate for the specified round type and job role. For "Coding" rounds, the questions should be language-specific if a language is provided.
+  Generate MCQs that are appropriate for the specified round type and job role. For "Coding" rounds, the questions should be language-specific if a language is provided.
   `,
 });
 
