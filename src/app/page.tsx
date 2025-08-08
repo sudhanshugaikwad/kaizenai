@@ -28,7 +28,7 @@ import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
 import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
-
+ 
 const features = [
   {
     icon: <Rocket className="h-8 w-8 text-primary" />,
@@ -166,7 +166,7 @@ const HowItWorksSection = () => {
 };
 
 const logos = [
-    { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Wipro_Limited_Logo.svg', alt: 'Wipro' },
+    { src: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Wipro_Primary_Logo_Color_RGB.svg', alt: 'Wipro' },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/UpGrad_Logo.svg/2560px-UpGrad_Logo.svg.png', alt: 'upGrad' },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Urban_Company_logo.svg/2560px-Urban_Company_logo.svg.png', alt: 'Urban Company' },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Zepto_logo.svg', alt: 'Zepto' },
