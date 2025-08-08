@@ -44,6 +44,9 @@ import { MoreHorizontal, Trash2, Edit, CheckCircle, Trash, ListTodo, Plus, Wand,
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { suggestTaskContent } from '@/ai/flows/task-suggester';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 type TaskStatus = 'Pending' | 'Working on' | 'Completed';
 
@@ -381,7 +384,9 @@ export default function StickyNotesPage() {
                                         </DialogDescription>
                                     </DialogHeader>
                                     <div className="py-4 prose prose-sm max-w-none text-muted-foreground dark:prose-invert">
-                                        <p>{viewingTask?.content || 'No details provided.'}</p>
+                                        <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
+                                            {viewingTask?.content || 'No details provided.'}
+                                        </ReactMarkdown>
                                     </div>
                                     <DialogFooter>
                                         <DialogClose asChild>
