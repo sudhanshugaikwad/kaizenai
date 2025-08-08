@@ -465,5 +465,3 @@ export default function StickyNotesPage() {
     </motion.div>
   );
 }
-
-    
