@@ -24,6 +24,11 @@ import logo from "./Kaizenai.png"
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import bgimg from "./assets/home_page_bg_top.png"
+import CreateAccount from "./assets/CreateYourAccount.png"
+import UsetheAITools from "./assets/UsetheAITools.png"
+import GetInstantFeedback from "./assets/GetInstantFeedback.png"
+import LandYourDreamJob from "./assets/LandYourDreamJob.png"
+
 const features = [
   {
     icon: <Rocket className="h-8 w-8 text-primary" />,
@@ -67,25 +72,25 @@ const howItWorksSteps = [
   {
     title: 'Create Your Account',
     description: 'Sign up for free to get instant access to our full suite of AI-powered career tools.',
-    image: 'https://placehold.co/600x450.png',
+    image: CreateAccount,
     "data-ai-hint": "account creation signup"
   },
   {
     title: 'Use the AI Tools',
     description: 'From roadmaps to resumes, leverage our specialized AI to generate personalized career assets.',
-    image: 'https://placehold.co/600x450.png',
+    image: UsetheAITools,
      "data-ai-hint": "dashboard tools"
   },
   {
     title: 'Get Instant Feedback',
     description: 'Receive actionable insights, scores, and content to improve your job application materials.',
-    image: 'https://placehold.co/600x450.png',
+    image: GetInstantFeedback,
      "data-ai-hint": "feedback results"
   },
   {
     title: 'Land Your Dream Job',
     description: 'Apply with confidence using your newly optimized resume and compelling cover letter.',
-    image: 'https://placehold.co/600x450.png',
+    image: LandYourDreamJob,
      "data-ai-hint": "job offer success"
   },
 ];
@@ -159,6 +164,45 @@ const HowItWorksSection = () => {
         </motion.section>
     );
 };
+
+const logos = [
+    { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Wipro_Limited_Logo.svg', alt: 'Wipro' },
+    { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/UpGrad_Logo.svg/2560px-UpGrad_Logo.svg.png', alt: 'upGrad' },
+    { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Urban_Company_logo.svg/2560px-Urban_Company_logo.svg.png', alt: 'Urban Company' },
+    { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Zepto_logo.svg', alt: 'Zepto' },
+    { src: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/45/Iowa_State_University_seal.svg/1200px-Iowa_State_University_seal.svg.png', alt: 'Iowa State University' },
+    { src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a1/The_Maharaja_Sayajirao_University_of_Baroda_logo.svg/1200px-The_Maharaja_Sayajirao_University_of_Baroda_logo.svg.png', alt: 'MSU Baroda' },
+    { src: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e9/University_of_Massachusetts_seal.svg/1200px-University_of_Massachusetts_seal.svg.png', alt: 'UMass' }
+];
+
+const LogoCarousel = () => {
+    const duplicatedLogos = [...logos, ...logos];
+    return (
+        <section className="py-12">
+            <div className="container mx-auto text-center">
+                 <h2 className="text-xl font-semibold text-muted-foreground mb-8">
+                    Trusted by professionals and students globally
+                </h2>
+                <div className="relative overflow-hidden group">
+                    <div className="flex animate-scroll group-hover:pause">
+                        {duplicatedLogos.map((logo, index) => (
+                             <div key={index} className="flex-shrink-0 w-48 h-20 flex items-center justify-center mx-4">
+                                <Image
+                                    src={logo.src}
+                                    alt={logo.alt}
+                                    width={120}
+                                    height={40}
+                                    className="object-contain max-h-10 w-auto filter grayscale hover:grayscale-0 transition-all duration-300"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
 
 export default function Home() {
   const { user } = useUser();
@@ -269,6 +313,8 @@ export default function Home() {
             </SignedOut>
           </motion.div>
         </motion.section>
+
+        <LogoCarousel />
 
         {/* Features Section */}
         <motion.section

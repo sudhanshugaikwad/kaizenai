@@ -22,15 +22,15 @@ type Feedback = {
 
 const defaultTestimonials: Feedback[] = [
     {
-        name: "Priya Sharma",
-        feedback: "Kaizen Ai's roadmap generator gave me a clear path to becoming a Data Scientist. The resource suggestions were incredibly helpful!",
+        name: "Sudhanshu Gaikwad",
+        feedback: "This website is very useful for students, it solves all the problems they face, such as interview preparation, resume analysis, finding jobs and internships, and many more options available on the website.",
         rating: 5,
         avatar: "https://i.pravatar.cc/150?img=1"
     },
     {
         name: "Rohan Verma",
         feedback: "The resume analyzer is a game-changer. I got actionable feedback that helped my resume stand out and I landed more interviews.",
-        rating: 5,
+        rating: 3,
         avatar: "https://i.pravatar.cc/150?img=2"
     },
     {
@@ -48,7 +48,7 @@ const defaultTestimonials: Feedback[] = [
     {
         name: "Sneha Reddy",
         feedback: "The AI chat feature is like having a career coach in your pocket. I got great advice on negotiating my salary.",
-        rating: 5,
+        rating: 4,
         avatar: "https://i.pravatar.cc/150?img=5"
     }
 ];
