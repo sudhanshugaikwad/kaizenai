@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 
@@ -44,6 +44,12 @@ const features = [
     description: "Ace your next interview with AI-powered mock interviews and real-time feedback.",
     href: "/dashboard/interview-practice",
     icon: BookOpenCheck,
+  },
+  {
+    title: "Sticky Notes",
+    description: "Organize your day. Create and manage your tasks with this simple tool.",
+    href: "/dashboard/sticky-notes",
+    icon: StickyNote,
   },
 ];
 
