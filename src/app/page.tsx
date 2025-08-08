@@ -23,6 +23,7 @@ import Image from "next/image";
 import logo from "./Kaizenai.png"
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
+import bgimg from "./assets/home_page_bg_top.png"
 const features = [
   {
     icon: <Rocket className="h-8 w-8 text-primary" />,
@@ -64,24 +65,28 @@ const features = [
 
 const howItWorksSteps = [
   {
-    title: 'Select your desired role and other interview details to start practicing.',
+    title: 'Create Your Account',
+    description: 'Sign up for free to get instant access to our full suite of AI-powered career tools.',
     image: 'https://placehold.co/600x450.png',
-    "data-ai-hint": "interview setup"
+    "data-ai-hint": "account creation signup"
   },
   {
-    title: 'Practice in real-time with live followup questions.',
+    title: 'Use the AI Tools',
+    description: 'From roadmaps to resumes, leverage our specialized AI to generate personalized career assets.',
     image: 'https://placehold.co/600x450.png',
-     "data-ai-hint": "questions list"
+     "data-ai-hint": "dashboard tools"
   },
   {
-    title: 'Get actionable feedback based on industry evaluation parameters.',
+    title: 'Get Instant Feedback',
+    description: 'Receive actionable insights, scores, and content to improve your job application materials.',
     image: 'https://placehold.co/600x450.png',
      "data-ai-hint": "feedback results"
   },
   {
-    title: 'Track and improve your performance through mock practices.',
+    title: 'Land Your Dream Job',
+    description: 'Apply with confidence using your newly optimized resume and compelling cover letter.',
     image: 'https://placehold.co/600x450.png',
-     "data-ai-hint": "performance chart"
+     "data-ai-hint": "job offer success"
   },
 ];
 
@@ -114,14 +119,17 @@ const HowItWorksSection = () => {
                         )}
                         whileHover={{ scale: 1.02 }}
                     >
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-start gap-4">
                             <div className={cn(
                                 "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold transition-all",
                                 activeStep === index ? 'bg-primary text-primary-foreground' : 'bg-border text-muted-foreground'
                             )}>
                                 {index + 1}
                             </div>
-                            <p className="text-md font-medium">{step.title}</p>
+                            <div>
+                                <p className="text-md font-medium">{step.title}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
+                            </div>
                         </div>
                     </motion.div>
                 ))}
@@ -221,7 +229,7 @@ export default function Home() {
         >
           <div className="absolute inset-0 -z-10 h-full w-full">
             <Image 
-              src="https://placehold.co/1920x1080.png"
+              src={bgimg}
               data-ai-hint="abstract background"
               alt="Hero Background"
               layout="fill"
