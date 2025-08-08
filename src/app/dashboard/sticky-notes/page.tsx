@@ -40,9 +40,10 @@ import {
     DialogFooter,
     DialogClose,
   } from "@/components/ui/dialog"
-import { MoreHorizontal, Trash2, Edit, CheckCircle, Trash, ListTodo, Plus, Wand } from 'lucide-react';
+import { MoreHorizontal, Trash2, Edit, CheckCircle, Trash, ListTodo, Plus, Wand, Bold, Italic, Underline, List, ListOrdered } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { suggestTaskContent } from '@/ai/flows/task-suggester';
 
 type TaskStatus = 'Pending' | 'Working on' | 'Completed';
 
@@ -60,6 +61,8 @@ export default function StickyNotesPage() {
   const [content, setContent] = useState('');
   const [isMounted, setIsMounted] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [viewingTask, setViewingTask] = useState<Task | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -155,6 +158,24 @@ export default function StickyNotesPage() {
     e.preventDefault();
   };
 
+  const handleAiSuggest = async () => {
+    if (!title.trim()) {
+      toast({ title: 'Please enter a task title first', variant: 'destructive' });
+      return;
+    }
+    setIsAiLoading(true);
+    try {
+        const result = await suggestTaskContent({ title });
+        setContent(result.content);
+        toast({ title: 'AI suggestion added!' });
+    } catch(e) {
+        console.error("AI suggestion failed", e);
+        toast({ title: 'AI suggestion failed', description: 'Could not generate a suggestion. Please try again.', variant: 'destructive' });
+    } finally {
+        setIsAiLoading(false);
+    }
+  }
+
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
         case 'Completed': return 'text-green-500';
@@ -188,9 +209,12 @@ export default function StickyNotesPage() {
               <CardTitle>Create a New Task</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-               {/* This is a placeholder for the rich text editor toolbar */}
-               <div className="p-2 border rounded-md text-sm text-muted-foreground bg-muted/50">
-                Rich text editor toolbar coming soon...
+              <div className="p-2 border rounded-md flex items-center gap-2 text-muted-foreground bg-muted/50">
+                <Button variant="ghost" size="icon" disabled><Bold className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" disabled><Italic className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" disabled><Underline className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" disabled><List className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" disabled><ListOrdered className="h-4 w-4" /></Button>
               </div>
               <Input
                 placeholder="Task Title"
@@ -203,9 +227,8 @@ export default function StickyNotesPage() {
                 onChange={e => setContent(e.target.value)}
                 rows={5}
               />
-               <Button className="w-full" variant="outline" disabled>
-                <Wand className="mr-2 h-4 w-4" />
-                Task AI Suggestions
+               <Button className="w-full" variant="outline" onClick={handleAiSuggest} disabled={isAiLoading}>
+                {isAiLoading ? 'Generating...' : <><Wand className="mr-2 h-4 w-4" /> Task AI Suggestions</>}
               </Button>
               <div className="flex gap-2">
                 <Button onClick={handleAddTask} className="w-full">
@@ -285,10 +308,31 @@ export default function StickyNotesPage() {
                         onDragOver={handleDragOver}
                         className="p-4 border rounded-lg flex items-center justify-between cursor-grab active:cursor-grabbing bg-card"
                       >
-                        <div>
-                          <p className="font-semibold">{task.title}</p>
-                          <p className={`text-xs ${getStatusColor(task.status)}`}>{task.status}</p>
-                        </div>
+                         <Dialog onOpenChange={(isOpen) => !isOpen && setViewingTask(null)}>
+                            <DialogTrigger asChild>
+                                <div className="cursor-pointer flex-grow" onClick={() => setViewingTask(task)}>
+                                    <p className="font-semibold">{task.title}</p>
+                                    <p className={`text-xs ${getStatusColor(task.status)}`}>{task.status}</p>
+                                </div>
+                             </DialogTrigger>
+                              <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>{viewingTask?.title}</DialogTitle>
+                                        <DialogDescription>
+                                           Created on {viewingTask ? new Date(viewingTask.createdAt).toLocaleDateString() : ''}
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="py-4 prose prose-sm max-w-none text-muted-foreground dark:prose-invert">
+                                        <p>{viewingTask?.content || 'No details provided.'}</p>
+                                    </div>
+                                    <DialogFooter>
+                                        <DialogClose asChild>
+                                            <Button>Close</Button>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </DialogContent>
+                         </Dialog>
+
                         <Dialog open={editingTask?.id === task.id} onOpenChange={(isOpen) => !isOpen && setEditingTask(null)}>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>

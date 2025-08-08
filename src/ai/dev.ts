@@ -8,3 +8,4 @@ import '@/ai/flows/cover-letter-writer.ts';
 import '@/ai/flows/career-chat.ts';
 import '@/ai/flows/job-matcher.ts';
 import '@/ai/flows/interview-question-generator.ts';
+import '@/ai/flows/task-suggester.ts';
