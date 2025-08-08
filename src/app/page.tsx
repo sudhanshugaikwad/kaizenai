@@ -93,8 +93,8 @@ const HowItWorksSection = () => {
         <motion.section
           id="how-it-works"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="text-center mb-12">
@@ -214,12 +214,23 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section
-          className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+          <div className="absolute inset-0 -z-10 h-full w-full">
+            <Image 
+              src="https://placehold.co/1920x1080.png"
+              data-ai-hint="abstract background"
+              alt="Hero Background"
+              layout="fill"
+              objectFit="cover"
+              className="opacity-10"
+            />
+             <div className="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
+          </div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-background/50 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
           <div className="absolute left-1/2 right-0 top-0 -z-10 -translate-x-1/2 m-auto h-[320px] sm:h-[480px] w-[90%] sm:w-[640px] rounded-full bg-primary/10 opacity-40 blur-[100px] sm:blur-[120px]" />
 
           <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
