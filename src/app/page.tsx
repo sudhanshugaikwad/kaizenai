@@ -27,6 +27,7 @@ import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
 import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
+import ScrollRevealText from './ScrollRevealText';
 
 const features = [
   {
@@ -304,6 +305,8 @@ export default function Home() {
             ))}
           </div>
         </motion.section>
+
+        <ScrollRevealText />
 
         <motion.section 
             id="testimonials"
