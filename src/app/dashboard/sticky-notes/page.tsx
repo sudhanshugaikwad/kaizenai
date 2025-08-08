@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Card,
   CardContent,
@@ -64,6 +64,7 @@ export default function StickyNotesPage() {
   const [viewingTask, setViewingTask] = useState<Task | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const { toast } = useToast();
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -166,7 +167,7 @@ export default function StickyNotesPage() {
     setIsAiLoading(true);
     try {
         const result = await suggestTaskContent({ title });
-        setContent(result.content);
+        setContent(prev => prev ? `${prev}\n${result.content}`: result.content);
         toast({ title: 'AI suggestion added!' });
     } catch(e) {
         console.error("AI suggestion failed", e);
@@ -175,6 +176,30 @@ export default function StickyNotesPage() {
         setIsAiLoading(false);
     }
   }
+
+   const applyFormat = (format: 'bold' | 'italic' | 'underline') => {
+    const textarea = contentRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+
+    let markdown;
+    switch(format) {
+        case 'bold': markdown = `**${selectedText}**`; break;
+        case 'italic': markdown = `*${selectedText}*`; break;
+        case 'underline': markdown = `<u>${selectedText}</u>`; break;
+    }
+    
+    const newContent = content.substring(0, start) + markdown + content.substring(end);
+    setContent(newContent);
+    
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + 2, end + 2);
+    }, 0);
+  };
 
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
@@ -205,14 +230,51 @@ export default function StickyNotesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:col-span-1">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Create a New Task</CardTitle>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="outline" size="sm">
+                            <Plus className="mr-2 h-4 w-4"/> Add New Task
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Create a New Task</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                        <Input
+                            placeholder="Task Title"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                        />
+                         <Textarea
+                            placeholder="Task details..."
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
+                            rows={5}
+                            ref={contentRef}
+                        />
+                         <Button className="w-full" variant="outline" onClick={handleAiSuggest} disabled={isAiLoading}>
+                            {isAiLoading ? 'Generating...' : <><Wand className="mr-2 h-4 w-4" /> Task AI Suggestions</>}
+                        </Button>
+                        </div>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button variant="outline" onClick={() => {setTitle(''); setContent('');}}>Cancel</Button>
+                            </DialogClose>
+                            <DialogClose asChild>
+                                <Button onClick={handleAddTask}>Add Task</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-2 border rounded-md flex items-center gap-2 text-muted-foreground bg-muted/50">
-                <Button variant="ghost" size="icon" disabled><Bold className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" disabled><Italic className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" disabled><Underline className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => applyFormat('bold')}><Bold className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => applyFormat('italic')}><Italic className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => applyFormat('underline')}><Underline className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" disabled><List className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" disabled><ListOrdered className="h-4 w-4" /></Button>
               </div>
@@ -226,18 +288,14 @@ export default function StickyNotesPage() {
                 value={content}
                 onChange={e => setContent(e.target.value)}
                 rows={5}
+                ref={contentRef}
               />
                <Button className="w-full" variant="outline" onClick={handleAiSuggest} disabled={isAiLoading}>
                 {isAiLoading ? 'Generating...' : <><Wand className="mr-2 h-4 w-4" /> Task AI Suggestions</>}
               </Button>
-              <div className="flex gap-2">
-                <Button onClick={handleAddTask} className="w-full">
-                    <Plus className="mr-2 h-4 w-4"/> Add New Task
-                </Button>
-                <Button variant="outline" className="w-full" onClick={() => { setTitle(''); setContent(''); }}>
-                  Cancel
-                </Button>
-              </div>
+              <Button onClick={handleAddTask} className="w-full">
+                <Plus className="mr-2 h-4 w-4"/> Add Task
+              </Button>
             </CardContent>
           </Card>
         </motion.div>
