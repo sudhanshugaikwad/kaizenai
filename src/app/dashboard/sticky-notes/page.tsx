@@ -367,7 +367,7 @@ export default function StickyNotesPage() {
                         draggable
                         onDragStart={(e: any) => handleDragStart(e, task.id)}
                         onDrop={(e: any) => handleDrop(e, task.id)}
-                        onDragOver={(e: any) => handleDragOver(e)}
+                        onDragOver={handleDragOver}
                         className="p-4 border rounded-lg flex items-center justify-between cursor-grab active:cursor-grabbing bg-card"
                       >
                          <Dialog onOpenChange={(isOpen) => !isOpen && setViewingTask(null)}>
