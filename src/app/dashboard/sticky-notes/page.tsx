@@ -365,9 +365,9 @@ export default function StickyNotesPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -20 }}
                         draggable
-                        onDragStart={(e) => handleDragStart(e, task.id)}
-                        onDrop={(e) => handleDrop(e, task.id)}
-                        onDragOver={handleDragOver}
+                        onDragStart={(e: any) => handleDragStart(e, task.id)}
+                        onDrop={(e: any) => handleDrop(e, task.id)}
+                        onDragOver={(e: any) => handleDragOver(e)}
                         className="p-4 border rounded-lg flex items-center justify-between cursor-grab active:cursor-grabbing bg-card"
                       >
                          <Dialog onOpenChange={(isOpen) => !isOpen && setViewingTask(null)}>
@@ -465,5 +465,3 @@ export default function StickyNotesPage() {
     </motion.div>
   );
 }
-
-    
