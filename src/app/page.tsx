@@ -15,12 +15,14 @@ import {
   LogIn,
 } from 'lucide-react';
 import { Logo } from '@/components/icons';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import TestimonialsSection from './TestimonialsSection';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Image from "next/image";
 import logo from "./Kaizenai.png"
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 const features = [
   {
     icon: <Rocket className="h-8 w-8 text-primary" />,
@@ -59,6 +61,96 @@ const features = [
     href: '/dashboard',
   },
 ];
+
+const howItWorksSteps = [
+  {
+    title: 'Select your desired role and other interview details to start practicing.',
+    image: 'https://placehold.co/600x450.png',
+    "data-ai-hint": "interview setup"
+  },
+  {
+    title: 'Practice in real-time with live followup questions.',
+    image: 'https://placehold.co/600x450.png',
+     "data-ai-hint": "questions list"
+  },
+  {
+    title: 'Get actionable feedback based on industry evaluation parameters.',
+    image: 'https://placehold.co/600x450.png',
+     "data-ai-hint": "feedback results"
+  },
+  {
+    title: 'Track and improve your performance through mock practices.',
+    image: 'https://placehold.co/600x450.png',
+     "data-ai-hint": "performance chart"
+  },
+];
+
+
+const HowItWorksSection = () => {
+    const [activeStep, setActiveStep] = useState(0);
+
+    return (
+        <motion.section
+          id="how-it-works"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How it Works?</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="flex flex-col gap-4">
+                {howItWorksSteps.map((step, index) => (
+                    <motion.div
+                        key={index}
+                        onClick={() => setActiveStep(index)}
+                        className={cn(
+                            'p-6 rounded-lg cursor-pointer border-2 transition-all',
+                            activeStep === index
+                            ? 'border-primary bg-primary/10 shadow-lg'
+                            : 'border-transparent bg-muted/50 hover:bg-muted'
+                        )}
+                        whileHover={{ scale: 1.02 }}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={cn(
+                                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold transition-all",
+                                activeStep === index ? 'bg-primary text-primary-foreground' : 'bg-border text-muted-foreground'
+                            )}>
+                                {index + 1}
+                            </div>
+                            <p className="text-md font-medium">{step.title}</p>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+            <div className="relative h-[450px] w-full">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeStep}
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -50 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0"
+                    >
+                        <Image
+                            src={howItWorksSteps[activeStep].image}
+                            alt={howItWorksSteps[activeStep].title}
+                            data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
+                            width={600}
+                            height={450}
+                            className="rounded-lg shadow-2xl object-cover w-full h-full"
+                        />
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+          </div>
+        </motion.section>
+    );
+};
 
 export default function Home() {
   const { user } = useUser();
@@ -200,42 +292,7 @@ export default function Home() {
             <TestimonialsSection />
         </motion.section>
 
-        {/* How It Works Section */}
-        <motion.section
-          id="how-it-works"
-          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How Kaizen Ai Works</h2>
-            <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">A simple, streamlined process to accelerate your career growth.</p>
-          </motion.div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {[1, 2, 3, 4].map((step, i) => (
-              <motion.div key={step} variants={itemVariants}>
-                <div className="flex flex-col items-center text-center">
-                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border-2 border-primary/20 mb-4">
-                    <span className="text-2xl font-bold text-primary">{step}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">
-                    {['Create Your Account', 'Use the AI Tools', 'Get Instant Feedback', 'Land Your Dream Job'][i]}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    {[
-                      'Sign up for free to get instant access to our full suite of AI-powered career tools.',
-                      'From roadmaps to resumes, leverage our specialized AI to generate personalized career assets.',
-                      'Receive actionable insights, scores, and content to improve your job application materials.',
-                      'Apply with confidence using your newly optimized resume and compelling cover letter.',
-                    ][i]}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+        <HowItWorksSection />
 
         {/* CTA Section */}
         <motion.section
