@@ -47,6 +47,7 @@ import { suggestTaskContent } from '@/ai/flows/task-suggester';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type TaskStatus = 'Pending' | 'Working on' | 'Completed';
 
@@ -237,7 +238,7 @@ export default function StickyNotesPage() {
               <CardTitle>Create a New Task</CardTitle>
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => {setTitle(''); setContent('');}}>
                             <Plus className="mr-2 h-4 w-4"/> Add New Task
                         </Button>
                     </DialogTrigger>
@@ -383,12 +384,14 @@ export default function StickyNotesPage() {
                                            Created on {viewingTask ? new Date(viewingTask.createdAt).toLocaleDateString() : ''}
                                         </DialogDescription>
                                     </DialogHeader>
-                                    <div className="py-4 prose prose-sm max-w-none text-muted-foreground dark:prose-invert">
-                                        <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
-                                            {viewingTask?.content || 'No details provided.'}
-                                        </ReactMarkdown>
-                                    </div>
-                                    <DialogFooter>
+                                    <ScrollArea className="h-60 mt-4 rounded-md border bg-muted/50 p-4">
+                                        <div className="prose prose-sm max-w-none text-muted-foreground dark:prose-invert">
+                                            <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
+                                                {viewingTask?.content || 'No details provided.'}
+                                            </ReactMarkdown>
+                                        </div>
+                                    </ScrollArea>
+                                    <DialogFooter className="mt-4">
                                         <DialogClose asChild>
                                             <Button>Close</Button>
                                         </DialogClose>
@@ -462,3 +465,5 @@ export default function StickyNotesPage() {
     </motion.div>
   );
 }
+
+    
