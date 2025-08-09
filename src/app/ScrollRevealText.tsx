@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const text =
-  'Kaizen AI is your intelligent career companion, transforming the way individuals navigate their professional journey. Powered by Kaizen Ai, it delivers resume feedback, personalised learning paths, and actionable career guidance—helping students, job seekers, and professionals unlock new opportunities with confidence.';
+ "Kaizen AI is your intelligent career companion, transforming the way individuals navigate their professional journey. Powered by Kaizen Ai, it delivers resume feedback, personalised learning paths, and actionable career guidance—helping students, job seekers, and professionals unlock new opportunities with confidence."
 
 export default function ScrollRevealText() {
   const containerRef = useRef<HTMLParagraphElement>(null);
@@ -16,15 +16,17 @@ export default function ScrollRevealText() {
   });
 
   return (
+  
     <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.2 }}
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
     >
+   
         <p
             ref={containerRef}
-            className="text-2xl md:text-4xl font-bold max-w-5xl mx-auto text-center leading-relaxed"
+            className="text-2xl md:text-4xl font-bold max-w-6xl mx-auto leading-relaxed"
         >
             {words.map((word, i) => {
             const start = i / words.length;
