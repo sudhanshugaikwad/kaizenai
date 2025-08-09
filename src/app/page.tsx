@@ -233,7 +233,7 @@ export default function Home() {
           animate="visible"
           variants={containerVariants}
         >
-          <div className="absolute inset-0 -z-10 h-full w-full bg-background [background-image:radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(0,0,0,0))]"></div>
           
           <div className="relative z-10">
             <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
@@ -319,18 +319,21 @@ export default function Home() {
           viewport={{ once: true, amount: 0.5 }}
           variants={itemVariants}
         >
-          <div className="bg-card/50 border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
-            <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
-              Stop guessing and start building a winning career strategy. Your next opportunity is just a click away.
-            </p>
-            <Link href="/sign-up">
-              <Button size="lg">
-                Start Your Journey Now <Rocket className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+          <div className="bg-gradient-to-r from-purple-600 to-pink-600 border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden text-white">
+            <div className="absolute inset-0 bg-black/20"></div>
+             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white/10 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-[50px]" />
+            <div className="relative z-10">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
+                <p className="max-w-2xl mx-auto mt-2 text-white/80 mb-8">
+                Stop guessing and start building a winning career strategy. Your next opportunity is just a click away.
+                </p>
+                <Link href="/sign-up">
+                <Button size="lg" variant="secondary" className="bg-white/90 hover:bg-white text-purple-700 font-bold">
+                    Start Your Journey Now <Rocket className="ml-2 h-5 w-5" />
+                </Button>
+                </Link>
+            </div>
           </div>
         </motion.section>
       </main>
@@ -339,7 +342,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
