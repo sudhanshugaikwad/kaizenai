@@ -239,7 +239,7 @@ export default function Home() {
               muted
               loop
               playsInline
-              className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
+              className="absolute top-0 left-0 w-full h-full object-cover"
               src="/kaizenai.mp4"
             >
               Your browser does not support the video tag.
@@ -351,5 +351,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
