@@ -28,6 +28,7 @@ import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import ScrollRevealText from './ScrollRevealText';
 import Footer from './footer';
+import BackgroundImage from './assets/bg.png';
 
 const features = [
   {
@@ -228,12 +229,14 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section
-          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32 overflow-hidden"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(0,0,0,0))]"></div>
+          <div
+            className="absolute -z-10 -top-1/2 left-1/2 -translate-x-1/2 w-[200%] h-[200%] bg-rays opacity-20 dark:opacity-10 animate-rotate"
+          />
           
           <div className="relative z-10">
             <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
@@ -341,3 +344,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
