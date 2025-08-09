@@ -22,12 +22,12 @@ import Image from "next/image";
 import logo from "./Kaizenai.png"
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import bgimg from "./assets/home_page_bg_top.png"
 import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
 import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import ScrollRevealText from './ScrollRevealText';
+import Footer from './footer';
 
 const features = [
   {
@@ -228,52 +228,54 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section
-          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32 overflow-hidden"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
           <div className="absolute inset-0 -z-10 h-full w-full">
-            <Image 
-              src={bgimg}
-              data-ai-hint="abstract background"
-              alt="Hero Background"
-              layout="fill"
-              objectFit="cover"
-              className="opacity-10"
-            />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
+              src="/kaizenai.mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
              <div className="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
           </div>
-          <div className="absolute inset-0 -z-10 h-full w-full bg-background/50 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
-          <div className="absolute left-1/2 right-0 top-0 -z-10 -translate-x-1/2 m-auto h-[320px] sm:h-[480px] w-[90%] sm:w-[640px] rounded-full bg-primary/10 opacity-40 blur-[100px] sm:blur-[120px]" />
-
-          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
-            Supercharge Your Career with{' '}
-            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Kaizen Ai
-            </span>
-          </motion.h1>
-          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
-            The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-          </motion.p>
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-            <SignedIn>
-              <Link href="/dashboard">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Go to Dashboard
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </SignedIn>
-            <SignedOut>
-              <Link href="/sign-up">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Get Started for Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </SignedOut>
-          </motion.div>
+          
+          <div className="relative z-10">
+            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+              Supercharge Your Career with{' '}
+              <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                Kaizen Ai
+              </span>
+            </motion.h1>
+            <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
+              The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
+            </motion.p>
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
+              <SignedIn>
+                <Link href="/dashboard">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Go to Dashboard
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <Link href="/sign-up">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Get Started for Free
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </SignedOut>
+            </motion.div>
+          </div>
         </motion.section>
 
         {/* Features Section */}
@@ -345,70 +347,9 @@ export default function Home() {
         </motion.section>
       </main>
 
-      <motion.footer
-        className="bg-card/20 border-t border-border/50"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid gap-8 md:grid-cols-4 text-center md:text-left">
-            <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 md:col-span-1">
-              <Link href="/" className="flex items-center gap-2">
-                <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
-              </Link>
-              <p className="text-muted-foreground">Your personal AI career coach.</p>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Tools</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                {features.slice(0, 5).map((f) => (
-                  <li key={f.title}>
-                    <Link href={f.href} className="hover:text-primary">
-                      {f.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Company</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>
-                  <Link href="/about" className="hover:text-primary">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/verify-certificate" className="hover:text-primary">
-                    Verify Certificate
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Legal</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>
-                  <Link href="#" className="hover:text-primary">
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-primary">
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
-            <p>Designed by Sudhanshu Gaikwad</p>
-          </div>
-        </div>
-      </motion.footer>
+      <Footer />
     </div>
   );
 }
+
+    

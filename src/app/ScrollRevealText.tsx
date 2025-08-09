@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const text =
- "Kaizen AI is your intelligent career companion, transforming the way individuals navigate their professional journey. Powered by Kaizen Ai, it delivers resume feedback, personalised learning paths, and actionable career guidance—helping students, job seekers, and professionals unlock new opportunities with confidence."
+ "Kaizen AI is your smart career coach agent, offering resume analysis, personalized learning paths, and career guidance to help students, job seekers, and professionals unlock new opportunities."
 
 export default function ScrollRevealText() {
   const containerRef = useRef<HTMLParagraphElement>(null);
