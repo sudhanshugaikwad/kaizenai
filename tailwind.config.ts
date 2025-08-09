@@ -17,7 +17,6 @@ export default {
     },
     extend: {
       backgroundImage: {
-        rays: "repeating-conic-gradient(from var(--gradient-angle), hsl(var(--primary)) 0%, hsl(var(--primary)) 1%, transparent 1%, transparent 5%)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],
@@ -98,23 +97,12 @@ export default {
             height: '0',
           },
         },
-        'rotate': {
-          '0%': {
-            '--gradient-angle': '0deg',
-          },
-          '100%': {
-            '--gradient-angle': '360deg',
-          },
-        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'rotate': 'rotate 20s linear infinite',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
-
-    

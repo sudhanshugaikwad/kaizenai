@@ -229,44 +229,38 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section
-          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32 overflow-hidden"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <div
-            className="absolute -z-10 -top-1/2 left-1/2 -translate-x-1/2 w-[200%] h-[200%] bg-rays opacity-20 dark:opacity-10 animate-rotate"
-          />
-          
-          <div className="relative z-10">
-            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
-              Supercharge Your Career with{' '}
-              <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                Kaizen Ai
-              </span>
-            </motion.h1>
-            <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
-              The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-            </motion.p>
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-              <SignedIn>
-                <Link href="/dashboard">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Go to Dashboard
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-              </SignedIn>
-              <SignedOut>
-                <Link href="/sign-up">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Get Started for Free
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-              </SignedOut>
-            </motion.div>
-          </div>
+          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+            Supercharge Your Career with{' '}
+            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Kaizen Ai
+            </span>
+          </motion.h1>
+          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
+            The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
+          </motion.p>
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
+            <SignedIn>
+              <Link href="/dashboard">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Go to Dashboard
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <Link href="/sign-up">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Get Started for Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </SignedOut>
+          </motion.div>
         </motion.section>
 
         {/* Features Section */}
@@ -344,5 +338,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
