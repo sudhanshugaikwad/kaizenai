@@ -228,24 +228,12 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <motion.section
-          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32 overflow-hidden"
+          className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <div className="absolute inset-0 -z-10 h-full w-full">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute top-0 left-0 w-full h-full object-cover"
-              src="/kaizenai.mp4"
-            >
-              Your browser does not support the video tag.
-            </video>
-             <div className="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
-          </div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-background [background-image:radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
           
           <div className="relative z-10">
             <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
