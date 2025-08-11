@@ -94,7 +94,7 @@ export default function HrContactFinderPage() {
       }
       const hrResult = await findHrContacts({ department: values.department, resumeDataUri });
       setResult(hrResult);
-    } catch (error) => {
+    } catch (error) {
       console.error('Failed to find HR contacts:', error);
       toast({
         title: "Error",
