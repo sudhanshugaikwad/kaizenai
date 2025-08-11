@@ -26,7 +26,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter, DialogDescription } from '@/components/ui/dialog';
-import { Loader2, FileUp, Sparkles, UserSearch, Building, Mail, Phone, ExternalLink, MessageCircle, Linkedin, Briefcase } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, UserSearch, Building, Mail, Phone, ExternalLink, MessageCircle, Linkedin, Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
@@ -54,7 +54,10 @@ export default function HrContactFinderPage() {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>('');
   const [selectedContact, setSelectedContact] = useState<HrContact | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
+
+  const contactsPerPage = 5;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,6 +85,7 @@ export default function HrContactFinderPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setResult(null);
+    setCurrentPage(1);
 
     try {
       let resumeDataUri: string | undefined = undefined;
@@ -90,7 +94,7 @@ export default function HrContactFinderPage() {
       }
       const hrResult = await findHrContacts({ department: values.department, resumeDataUri });
       setResult(hrResult);
-    } catch (error) {
+    } catch (error) => {
       console.error('Failed to find HR contacts:', error);
       toast({
         title: "Error",
@@ -110,6 +114,18 @@ export default function HrContactFinderPage() {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  // Pagination logic
+  const indexOfLastContact = currentPage * contactsPerPage;
+  const indexOfFirstContact = indexOfLastContact - contactsPerPage;
+  const currentContacts = result?.hrContacts.slice(indexOfFirstContact, indexOfLastContact) || [];
+  const totalPages = result ? Math.ceil(result.hrContacts.length / contactsPerPage) : 0;
+
+  const paginate = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+    }
   };
 
 
@@ -183,7 +199,7 @@ export default function HrContactFinderPage() {
         </motion.div>
       )}
 
-      {result && (
+      {result && result.hrContacts.length > 0 && (
         <motion.div className="space-y-6" variants={containerVariants}>
             {result.userRole &&
                 <motion.div variants={itemVariants}>
@@ -202,7 +218,7 @@ export default function HrContactFinderPage() {
             <motion.h2 className="text-2xl font-bold tracking-tight" variants={itemVariants}>Found {result.hrContacts.length} HR Contacts</motion.h2>
 
             <div className="space-y-4">
-                {result.hrContacts.map((contact, index) => (
+                {currentContacts.map((contact, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <Card className="flex flex-col sm:flex-row items-center justify-between p-4">
                             <div className="flex-grow">
@@ -228,6 +244,24 @@ export default function HrContactFinderPage() {
                     </motion.div>
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <motion.div className="flex justify-center items-center gap-4" variants={itemVariants}>
+                    <Button variant="outline" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                        <ChevronLeft className="w-4 h-4 mr-2" />
+                        Previous
+                    </Button>
+                    <span className="text-sm font-medium">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <Button variant="outline" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+                        Next
+                        <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                </motion.div>
+            )}
+
+
              <Dialog open={!!selectedContact} onOpenChange={(isOpen) => !isOpen && setSelectedContact(null)}>
                 <DialogContent>
                     <DialogHeader>
