@@ -13,10 +13,7 @@ import {
   Briefcase,
   Zap,
   LogIn,
-  ChevronDown,
   BookOpenCheck,
-  UserSearch,
-  StickyNote
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
@@ -32,12 +29,7 @@ import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import ScrollRevealText from './ScrollRevealText';
 import Footer from './footer';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+
 
 const features = [
   {
@@ -78,16 +70,6 @@ const features = [
   },
 ];
 
-const dashboardFeatures = [
-    { href: '/dashboard/roadmap-generator', label: 'Roadmap Generator' },
-    { href: '/dashboard/resume-analyzer', label: 'Resume Analyzer' },
-    { href: '/dashboard/cover-letter-writer', label: 'Cover Letter Writer' },
-    { href: '/dashboard/kaizen-ai-chat', label: 'Kaizen Ai Chat' },
-    { href: '/dashboard/job-matcher', label: 'Job Matcher' },
-    { href: '/dashboard/interview-practice', label: 'Interview Practice' },
-    { href: '/dashboard/hr-contact-finder', label: 'HR Contact Finder' },
-    { href: '/dashboard/sticky-notes', label: 'Sticky Notes' },
-];
 
 const howItWorksSteps = [
   {
@@ -228,37 +210,27 @@ export default function Home() {
         <Link href="/" className="flex items-center gap-2">
             <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-          <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors">
-                More <ChevronDown className="h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                {dashboardFeatures.map(feature => (
-                    <DropdownMenuItem key={feature.href} asChild>
-                        <Link href={feature.href}>{feature.label}</Link>
-                    </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </nav>
-        <div className='flex items-center gap-2'>
-            <SignedIn>
-            <div className="flex items-center gap-4">
-                <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
-                <UserButton afterSignOutUrl="/" />
+        <div className="flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+            </nav>
+            <div className='flex items-center gap-2'>
+                <SignedIn>
+                <div className="flex items-center gap-4">
+                    <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
+                    <UserButton afterSignOutUrl="/" />
+                </div>
+                </SignedIn>
+                <SignedOut>
+                <Link href="/sign-in">
+                    <Button variant="outline">
+                    Login <LogIn className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
+                </SignedOut>
+                <ThemeToggle />
             </div>
-            </SignedIn>
-            <SignedOut>
-            <Link href="/sign-in">
-                <Button variant="outline">
-                Login <LogIn className="ml-2 h-4 w-4" />
-                </Button>
-            </Link>
-            </SignedOut>
-            <ThemeToggle />
         </div>
       </motion.header>
 
