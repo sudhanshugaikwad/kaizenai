@@ -36,10 +36,10 @@ import { Badge } from '@/components/ui/badge';
 
 const features = [
   {
-    icon: <Rocket className="h-8 w-8 text-primary" />,
-    title: 'AI Roadmap Generator',
-    description: 'Chart your path to success. Get a personalized career roadmap with timelines, resources, and project ideas.',
-    href: '/dashboard/roadmap-generator',
+    icon: <MessageSquare className="h-8 w-8 text-primary" />,
+    title: 'Kaizen Ai Chat',
+    description: 'Get instant career advice from an AI coach. Ask about interviews, skills, and career paths.',
+    href: '/dashboard/kaizen-ai-chat',
   },
   {
     icon: <FileText className="h-8 w-8 text-primary" />,
@@ -54,17 +54,20 @@ const features = [
     href: '/dashboard/cover-letter-writer',
   },
   {
+    icon: <Rocket className="h-8 w-8 text-primary" />,
+    title: 'AI Roadmap Generator',
+    description: 'Chart your path to success. Get a personalized career roadmap with timelines, resources, and project ideas.',
+    href: '/dashboard/roadmap-generator',
+    new: true,
+  },
+  {
     icon: <Briefcase className="h-8 w-8 text-primary" />,
     title: 'AI Job Matcher',
     description: 'Upload your resume and let our AI find the best, most recent job openings for you in India.',
     href: '/dashboard/job-matcher',
+    new: true,
   },
-  {
-    icon: <MessageSquare className="h-8 w-8 text-primary" />,
-    title: 'Kaizen Ai Chat',
-    description: 'Get instant career advice from an AI coach. Ask about interviews, skills, and career paths.',
-    href: '/dashboard/kaizen-ai-chat',
-  },
+
   {
     icon: <BookOpenCheck className="h-8 w-8 text-primary" />,
     title: 'Interview Practice',
@@ -313,7 +316,10 @@ export default function Home() {
               <motion.div key={feature.title} custom={index} variants={featureCardVariants}>
                 <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
                   {feature.new && (
-                    <Badge className="absolute top-4 right-4">New</Badge>
+                    <span className="absolute top-4 right-4 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
                   )}
                   <CardHeader className="flex flex-col items-center text-center">
                     <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
@@ -373,5 +379,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
