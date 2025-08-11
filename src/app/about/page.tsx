@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import logo from "../Kaizenai.png"
 
-import { Linkedin, Github, Newspaper } from "lucide-react";
+import { Linkedin, Github, Newspaper, Home } from "lucide-react";
 import ServicesSection from "./ServicesSection";
 import DeveloperTeamSection from "./DeveloperTeamSection";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,13 @@ export default function AboutPage() {
     >
       <div className="max-w-6xl mx-auto space-y-16">
         
-        <motion.div variants={itemVariants} className="text-center">
+        <motion.div variants={itemVariants} className="text-center relative">
+             <Link href="/" className="absolute top-0 left-0">
+                <Button variant="outline">
+                    <Home className="mr-2 h-4 w-4" />
+                    Go back to home
+                </Button>
+             </Link>
              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
                 About <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">Kaizen Ai</span>
              </h1>
