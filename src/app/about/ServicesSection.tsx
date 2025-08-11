@@ -1,6 +1,6 @@
 
 'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { Rocket, FileText, PenSquare, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch } from 'lucide-react';
 import React from 'react';
 
@@ -54,15 +54,11 @@ export default function ServicesSection() {
                 <h3 className="text-3xl font-bold text-center mb-8">Our Core Features</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {services.map((service, index) => (
-                        <Card key={index} className="text-center">
-                            <CardHeader className="items-center">
-                                 <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{service.icon}</div>
-                                <CardTitle>{service.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">{service.description}</p>
-                            </CardContent>
-                        </Card>
+                        <SpotlightCard key={index} className="text-center p-6">
+                            <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20 inline-block">{service.icon}</div>
+                            <h4 className="text-lg font-semibold text-foreground mb-2">{service.title}</h4>
+                            <p className="text-muted-foreground text-sm">{service.description}</p>
+                        </SpotlightCard>
                     ))}
                 </div>
             </div>
