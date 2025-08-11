@@ -13,6 +13,7 @@ import {
   Briefcase,
   Zap,
   LogIn,
+  ChevronDown,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
@@ -28,7 +29,12 @@ import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import ScrollRevealText from './ScrollRevealText';
 import Footer from './footer';
-import BackgroundImage from './assets/bg.png';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
 
 const features = [
   {
@@ -206,8 +212,22 @@ export default function Home() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
-        <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
+            <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
         </Link>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors">
+                More <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem asChild><Link href="/dashboard/roadmap-generator">Roadmap Generator</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/dashboard/resume-analyzer">Resume Analyzer</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/dashboard/cover-letter-writer">Cover Letter Writer</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </nav>
         <div className='flex items-center gap-2'>
             <SignedIn>
             <div className="flex items-center gap-4">
