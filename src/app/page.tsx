@@ -14,6 +14,9 @@ import {
   Zap,
   LogIn,
   ChevronDown,
+  BookOpenCheck,
+  UserSearch,
+  StickyNote
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
@@ -73,6 +76,17 @@ const features = [
     description: 'Powered by advanced generative AI to provide you with the most accurate and relevant career tools.',
     href: '/dashboard',
   },
+];
+
+const dashboardFeatures = [
+    { href: '/dashboard/roadmap-generator', label: 'Roadmap Generator' },
+    { href: '/dashboard/resume-analyzer', label: 'Resume Analyzer' },
+    { href: '/dashboard/cover-letter-writer', label: 'Cover Letter Writer' },
+    { href: '/dashboard/kaizen-ai-chat', label: 'Kaizen Ai Chat' },
+    { href: '/dashboard/job-matcher', label: 'Job Matcher' },
+    { href: '/dashboard/interview-practice', label: 'Interview Practice' },
+    { href: '/dashboard/hr-contact-finder', label: 'HR Contact Finder' },
+    { href: '/dashboard/sticky-notes', label: 'Sticky Notes' },
 ];
 
 const howItWorksSteps = [
@@ -222,9 +236,11 @@ export default function Home() {
                 More <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem asChild><Link href="/dashboard/roadmap-generator">Roadmap Generator</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/dashboard/resume-analyzer">Resume Analyzer</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/dashboard/cover-letter-writer">Cover Letter Writer</Link></DropdownMenuItem>
+                {dashboardFeatures.map(feature => (
+                    <DropdownMenuItem key={feature.href} asChild>
+                        <Link href={feature.href}>{feature.label}</Link>
+                    </DropdownMenuItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
