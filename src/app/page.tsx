@@ -317,8 +317,8 @@ export default function Home() {
                 <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
                   {feature.new && (
                     <span className="absolute top-4 right-4 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#b692f4] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#b692f4]"></span>
                     </span>
                   )}
                   <CardHeader className="flex flex-col items-center text-center">
