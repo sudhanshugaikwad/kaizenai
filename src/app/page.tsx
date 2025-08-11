@@ -14,6 +14,8 @@ import {
   Zap,
   LogIn,
   BookOpenCheck,
+  UserSearch,
+  StickyNote,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
@@ -29,6 +31,7 @@ import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import ScrollRevealText from './ScrollRevealText';
 import Footer from './footer';
+import { Badge } from '@/components/ui/badge';
 
 
 const features = [
@@ -61,6 +64,27 @@ const features = [
     title: 'Kaizen Ai Chat',
     description: 'Get instant career advice from an AI coach. Ask about interviews, skills, and career paths.',
     href: '/dashboard/kaizen-ai-chat',
+  },
+  {
+    icon: <BookOpenCheck className="h-8 w-8 text-primary" />,
+    title: 'Interview Practice',
+    description: 'Ace your interviews with AI-powered mock sessions and real-time feedback.',
+    href: '/dashboard/interview-practice',
+    new: true,
+  },
+  {
+    icon: <UserSearch className="h-8 w-8 text-primary" />,
+    title: 'HR Contact Finder',
+    description: 'Find HR contacts by department or by analyzing your resume for the best fit.',
+    href: '/dashboard/hr-contact-finder',
+    new: true,
+  },
+  {
+    icon: <StickyNote className="h-8 w-8 text-primary" />,
+    title: 'Sticky Notes',
+    description: 'Organize your daily tasks and stay productive with AI-powered suggestions.',
+    href: '/dashboard/sticky-notes',
+    new: true,
   },
   {
     icon: <Zap className="h-8 w-8 text-primary" />,
@@ -287,7 +311,10 @@ export default function Home() {
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
               <motion.div key={feature.title} custom={index} variants={featureCardVariants}>
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
+                  {feature.new && (
+                    <Badge className="absolute top-4 right-4">New</Badge>
+                  )}
                   <CardHeader className="flex flex-col items-center text-center">
                     <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
                     <CardTitle>{feature.title}</CardTitle>
@@ -346,3 +373,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
