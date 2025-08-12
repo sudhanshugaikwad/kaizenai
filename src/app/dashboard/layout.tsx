@@ -18,9 +18,10 @@ import {
   Award,
   BookOpenCheck,
   StickyNote,
-  UserSearch
+  UserSearch,
+  Shield,
 } from 'lucide-react';
-import { UserButton, useUser } from "@clerk/nextjs";
+import { UserButton, useUser, Protect } from "@clerk/nextjs";
 
 import {
   SidebarProvider,
@@ -102,6 +103,19 @@ export default function DashboardLayout({
                 </Link>
               </SidebarMenuItem>
             ))}
+            <Protect role="org:admin">
+                <SidebarMenuItem>
+                    <div className="my-2 border-t border-sidebar-border" />
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                    <Link href="/admin/dashboard">
+                    <SidebarMenuButton isActive={pathname.startsWith('/admin')} tooltip="Admin">
+                        <Shield className="w-5 h-5" />
+                        <span>Admin Panel</span>
+                    </SidebarMenuButton>
+                    </Link>
+                </SidebarMenuItem>
+            </Protect>
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
