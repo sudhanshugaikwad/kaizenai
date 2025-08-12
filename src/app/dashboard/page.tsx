@@ -65,7 +65,7 @@ const features = [
 ];
 
 export default function DashboardPage() {
-    const { orgId, orgRole, has } = useAuth();
+    const { has } = useAuth();
     const isPro = has && has({ permission: 'org:feature:pro_plan' });
 
 
