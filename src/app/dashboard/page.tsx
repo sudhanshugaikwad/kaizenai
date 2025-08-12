@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
+import { useAuth } from '@clerk/nextjs';
+import { Badge } from '@/components/ui/badge';
+
 
 const features = [
   {
@@ -20,12 +23,14 @@ const features = [
     description: "Chart your path to success. Get a personalized career roadmap based on your goals.",
     href: "/dashboard/roadmap-generator",
     icon: Rocket,
+    pro: true,
   },
   {
     title: "Resume Analyzer",
     description: "Optimize your resume. Get AI-powered feedback to stand out to recruiters.",
     href: "/dashboard/resume-analyzer",
     icon: FileText,
+    pro: true,
   },
   {
     title: "Cover Letter Writer",
@@ -60,6 +65,9 @@ const features = [
 ];
 
 export default function DashboardPage() {
+    const { orgId, orgRole, has } = useAuth();
+    const isPro = has && has({ permission: 'org:feature:pro_plan' });
+
 
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -97,9 +105,16 @@ export default function DashboardPage() {
           <motion.div key={feature.title} variants={itemVariants}>
             <Card className="flex flex-col h-full">
                 <CardHeader>
-                <div className="flex items-center gap-4">
-                    <feature.icon className="h-8 w-8 text-primary" />
-                    <CardTitle>{feature.title}</CardTitle>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                       <feature.icon className="h-8 w-8 text-primary" />
+                       <CardTitle>{feature.title}</CardTitle>
+                    </div>
+                    {feature.pro && (
+                        <Badge variant={isPro ? "default" : "secondary"}>
+                            {isPro ? "Pro" : "Pro"}
+                        </Badge>
+                    )}
                 </div>
                 </CardHeader>
                 <CardContent className="flex-grow">
