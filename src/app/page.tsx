@@ -58,7 +58,7 @@ const features = [
     title: 'AI Roadmap Generator',
     description: 'Chart your path to success. Get a personalized career roadmap with timelines, resources, and project ideas.',
     href: '/dashboard/roadmap-generator',
-    new: true,
+
   },
   {
     icon: <Briefcase className="h-8 w-8 text-primary" />,
