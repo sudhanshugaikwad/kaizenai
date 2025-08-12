@@ -17,7 +17,6 @@ import {
   UserSearch,
   StickyNote,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import TestimonialsSection from './TestimonialsSection';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -29,9 +28,7 @@ import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
 import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
-import ScrollRevealText from './ScrollRevealText';
-import Footer from './footer';
-import { Badge } from '@/components/ui/badge';
+import { Logo } from '@/components/icons';
 
 
 const features = [
@@ -97,6 +94,29 @@ const features = [
   },
 ];
 
+const footerFeatures = [
+    {
+      title: 'AI Roadmap Generator',
+      href: '/dashboard/roadmap-generator',
+    },
+    {
+      title: 'AI Resume Analyzer',
+      href: '/dashboard/resume-analyzer',
+    },
+    {
+      title: 'AI Cover Letter Writer',
+      href: '/dashboard/cover-letter-writer',
+    },
+    {
+      title: 'AI Job Matcher',
+      href: '/dashboard/job-matcher',
+    },
+    {
+      title: 'Kaizen Ai Chat',
+      href: '/dashboard/kaizen-ai-chat',
+    },
+  ];
+
 
 const howItWorksSteps = [
   {
@@ -130,12 +150,9 @@ const HowItWorksSection = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        <motion.section
+        <section
           id="how-it-works"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
         >
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How it Works?</h2>
@@ -143,7 +160,7 @@ const HowItWorksSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="flex flex-col gap-4">
                 {howItWorksSteps.map((step, index) => (
-                    <motion.div
+                    <div
                         key={index}
                         onClick={() => setActiveStep(index)}
                         className={cn(
@@ -152,7 +169,6 @@ const HowItWorksSection = () => {
                             ? 'border-primary bg-primary/10 shadow-lg'
                             : 'border-transparent bg-muted/50 hover:bg-muted'
                         )}
-                        whileHover={{ scale: 1.02 }}
                     >
                         <div className="flex items-start gap-4">
                             <div className={cn(
@@ -166,32 +182,21 @@ const HowItWorksSection = () => {
                                 <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
             <div className="relative h-[450px] w-full">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeStep}
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -50 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute inset-0"
-                    >
-                        <Image
-                            src={howItWorksSteps[activeStep].image}
-                            alt={howItWorksSteps[activeStep].title}
-                            data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
-                            width={600}
-                            height={450}
-                            className="rounded-lg shadow-2xl object-cover w-full h-full"
-                        />
-                    </motion.div>
-                </AnimatePresence>
+                <Image
+                    src={howItWorksSteps[activeStep].image}
+                    alt={howItWorksSteps[activeStep].title}
+                    data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
+                    width={600}
+                    height={450}
+                    className="rounded-lg shadow-2xl object-cover w-full h-full"
+                />
             </div>
           </div>
-        </motion.section>
+        </section>
     );
 };
 
@@ -199,39 +204,9 @@ const HowItWorksSection = () => {
 export default function Home() {
   const { user } = useUser();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
-  const featureCardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-      },
-    }),
-  };
-
   return (
     <div className="flex flex-col min-h-dvh bg-background text-foreground">
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
+      <header
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between"
       >
         <Link href="/" className="flex items-center gap-2">
@@ -259,26 +234,23 @@ export default function Home() {
                 <ThemeToggle />
             </div>
         </div>
-      </motion.header>
+      </header>
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <motion.section
+        <section
           className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
         >
-          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
             Supercharge Your Career with{' '}
             <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
               Kaizen Ai
             </span>
-          </motion.h1>
-          <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
+          </h1>
+          <p className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-          </motion.p>
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <SignedIn>
               <Link href="/dashboard">
                 <Button size="lg" className="w-full sm:w-auto">
@@ -295,26 +267,21 @@ export default function Home() {
                 </Button>
               </Link>
             </SignedOut>
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
 
         {/* Features Section */}
-        <motion.section
+        <section
           id="features"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
             <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
-          </motion.div>
+          </div>
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
-              <motion.div key={feature.title} custom={index} variants={featureCardVariants}>
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
+              <Card key={feature.title} className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
                   {feature.new && (
                     <span className="absolute top-4 right-4 flex h-3 w-3">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#b692f4] opacity-75"></span>
@@ -329,33 +296,22 @@ export default function Home() {
                     <p className="text-muted-foreground">{feature.description}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
             ))}
           </div>
-        </motion.section>
+        </section>
 
-        <ScrollRevealText />
-
-        <motion.section 
+        <section 
             id="testimonials"
             className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={containerVariants}
         >
             <TestimonialsSection />
-        </motion.section>
+        </section>
 
         <HowItWorksSection />
 
         {/* CTA Section */}
-        <motion.section
+        <section
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          variants={itemVariants}
         >
           <div className="bg-card border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
@@ -363,7 +319,7 @@ export default function Home() {
             <div className="relative z-10">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
-                Stop guessing and start building a winning career strategy. Your next opportunity is just a click away.
+                Stop guessing and start winning career strategy. Your next opportunity is just a click away.
                 </p>
                 <Link href="/sign-up">
                 <Button size="lg">
@@ -372,10 +328,69 @@ export default function Home() {
                 </Link>
             </div>
           </div>
-        </motion.section>
+        </section>
       </main>
 
-      <Footer />
+       <footer
+        className="bg-card/20 border-t border-border/50"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid gap-8 md:grid-cols-4 text-center md:text-left">
+            <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 md:col-span-1">
+              <Link href="/" className="flex items-center gap-2">
+                <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
+              </Link>
+              <p className="text-muted-foreground">Your personal AI career coach.</p>
+            </div>
+            <div className="col-span-1 md:col-span-1">
+              <h4 className="font-semibold mb-2">Tools</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                {footerFeatures.slice(0, 5).map((f) => (
+                  <li key={f.title}>
+                    <Link href={f.href} className="hover:text-primary">
+                      {f.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="col-span-1 md:col-span-1">
+              <h4 className="font-semibold mb-2">Company</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <Link href="/about" className="hover:text-primary">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/verify-certificate" className="hover:text-primary">
+                    Verify Certificate
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-span-1 md:col-span-1">
+              <h4 className="font-semibold mb-2">Legal</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <Link href="#" className="hover:text-primary">
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-primary">
+                    Privacy Policy
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
+            <p>Designed by Sudhanshu Gaikwad</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
