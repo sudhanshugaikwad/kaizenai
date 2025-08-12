@@ -28,7 +28,8 @@ import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
 import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
-import { Logo } from '@/components/icons';
+import { motion } from 'framer-motion';
+import ScrollRevealText from './ScrollRevealText';
 
 
 const features = [
@@ -145,14 +146,36 @@ const howItWorksSteps = [
   },
 ];
 
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
+
 
 const HowItWorksSection = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        <section
+        <motion.section
           id="how-it-works"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
         >
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How it Works?</h2>
@@ -160,7 +183,7 @@ const HowItWorksSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="flex flex-col gap-4">
                 {howItWorksSteps.map((step, index) => (
-                    <div
+                    <motion.div
                         key={index}
                         onClick={() => setActiveStep(index)}
                         className={cn(
@@ -169,6 +192,7 @@ const HowItWorksSection = () => {
                             ? 'border-primary bg-primary/10 shadow-lg'
                             : 'border-transparent bg-muted/50 hover:bg-muted'
                         )}
+                        variants={itemVariants}
                     >
                         <div className="flex items-start gap-4">
                             <div className={cn(
@@ -182,10 +206,10 @@ const HowItWorksSection = () => {
                                 <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
-            <div className="relative h-[450px] w-full">
+            <motion.div className="relative h-[450px] w-full" variants={itemVariants}>
                 <Image
                     src={howItWorksSteps[activeStep].image}
                     alt={howItWorksSteps[activeStep].title}
@@ -194,9 +218,9 @@ const HowItWorksSection = () => {
                     height={450}
                     className="rounded-lg shadow-2xl object-cover w-full h-full"
                 />
-            </div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
     );
 };
 
@@ -238,19 +262,28 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section
+        <motion.section
           className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+          <motion.h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4"
+            variants={itemVariants}
+          >
             Supercharge Your Career with{' '}
             <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
               Kaizen Ai
             </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8">
+          </motion.h1>
+          <motion.p 
+            className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8"
+            variants={itemVariants}
+          >
             The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          </motion.p>
+          <motion.div className="flex flex-col sm:flex-row justify-center gap-4" variants={itemVariants}>
             <SignedIn>
               <Link href="/dashboard">
                 <Button size="lg" className="w-full sm:w-auto">
@@ -267,57 +300,74 @@ export default function Home() {
                 </Button>
               </Link>
             </SignedOut>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* Features Section */}
-        <section
+        <motion.section
           id="features"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          initial="hidden"
+          whileInView="visible"
+          variants={sectionVariants}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
+             <ScrollRevealText
+                className="text-3xl md:text-4xl font-bold tracking-tight"
+                text="Your Personal AI Career Toolkit"
+            />
             <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
           </div>
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
-              <Card key={feature.title} className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
-                  {feature.new && (
-                    <span className="absolute top-4 right-4 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#b692f4] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#b692f4]"></span>
-                    </span>
-                  )}
-                  <CardHeader className="flex flex-col items-center text-center">
-                    <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
-                    <CardTitle>{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </CardContent>
-                </Card>
+              <motion.div key={feature.title} variants={itemVariants}>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
+                      {feature.new && (
+                        <span className="absolute top-4 right-4 flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#b692f4] opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-[#b692f4]"></span>
+                        </span>
+                      )}
+                      <CardHeader className="flex flex-col items-center text-center">
+                        <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
+                        <CardTitle>{feature.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-center">
+                        <p className="text-muted-foreground">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section 
+        <motion.section 
             id="testimonials"
             className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            initial="hidden"
+            whileInView="visible"
+            variants={sectionVariants}
+            viewport={{ once: true, amount: 0.2 }}
         >
             <TestimonialsSection />
-        </section>
+        </motion.section>
 
         <HowItWorksSection />
 
         {/* CTA Section */}
-        <section
+        <motion.section
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          initial="hidden"
+          whileInView="visible"
+          variants={sectionVariants}
+          viewport={{ once: true, amount: 0.2 }}
         >
           <div className="bg-card border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
             <div className="relative z-10">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Ready to Find Your Dream Job?</h2>
+                <ScrollRevealText className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight" text="Ready to Find Your Dream Job?" />
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
                 Stop guessing and start winning career strategy. Your next opportunity is just a click away.
                 </p>
@@ -328,7 +378,7 @@ export default function Home() {
                 </Link>
             </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
        <footer
