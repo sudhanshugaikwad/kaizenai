@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PricingTable } from '@clerk/nextjs';
+import { PricingTable } from '@clerk/clerk-react';
 
 export default function BillingPage() {
 

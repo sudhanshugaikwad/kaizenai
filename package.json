@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.2.7",
     "@clerk/nextjs": "^5.2.2",
     "@genkit-ai/googleai": "^1.16.0",
     "@genkit-ai/next": "^1.16.0",
