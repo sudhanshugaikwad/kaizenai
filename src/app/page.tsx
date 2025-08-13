@@ -353,14 +353,21 @@ export default function Home() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-            <div className="border rounded-lg p-8 md:p-12 text-center bg-card/50">
-                <p className="font-script text-2xl md:text-3xl lg:text-4xl max-w-4xl mx-auto">
+            <div className="bg-card border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="relative z-10">
+                <ScrollRevealText className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight" text="Kaizen Ai" />
+                <p className=" font-script text-2xl max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
                 Kaizen Ai is your intelligent career coach, providing resume analysis, personalized learning paths, and career guidance to help students, job seekers, and professionals unlock new opportunities.
                 </p>
-                <Link href="/dashboard" passHref>
-                    <Button variant="outline" className="mt-6">Kaizen Ai <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                <Link href="/about">
+                <Button size="lg" variant="outline" >
+                Kaizen Ai <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
                 </Link>
             </div>
+          </div>
         </motion.section>
 
         <motion.section 
