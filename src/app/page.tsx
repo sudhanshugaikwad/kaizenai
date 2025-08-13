@@ -240,9 +240,7 @@ export default function Home() {
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
               <Link href="/" className="hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-              <SignedIn>
-                <Link href="/admin/dashboard" className="hover:text-primary transition-colors">Admin Login</Link>
-              </SignedIn>
+         
             </nav>
             <div className='flex items-center gap-2'>
                 <SignedIn>
