@@ -43,18 +43,21 @@ const features = [
     description: "Find your next role. Get job recommendations based on your resume.",
     href: "/dashboard/job-matcher",
     icon: Briefcase,
+    pro: true,
   },
    {
     title: "Interview Practice",
     description: "Ace your next interview with AI-powered mock interviews and real-time feedback.",
     href: "/dashboard/interview-practice",
     icon: BookOpenCheck,
+    
   },
   {
     title: "HR Contact Finder",
     description: "Find HR contacts by department or by uploading your resume.",
     href: "/dashboard/hr-contact-finder",
     icon: UserSearch,
+    pro: true,
   },
   {
     title: "Sticky Notes",

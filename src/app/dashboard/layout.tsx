@@ -48,7 +48,7 @@ const navItems = [
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
-  { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice' },
+  { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice', new: true },
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
   { href: '/dashboard/sticky-notes', icon: StickyNote, label: 'Sticky Notes' },
 ];
@@ -82,11 +82,14 @@ export default function DashboardLayout({
           <SidebarMenu>
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
-                  <SidebarMenuButton isActive={pathname.startsWith(item.href)} tooltip={item.label}>
+                <Link href={item.href} className="flex items-center justify-between w-full">
+                  <SidebarMenuButton isActive={pathname.startsWith(item.href)} tooltip={item.label} className="flex-grow">
                     <item.icon className="w-5 h-5" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
+                   {item.new && (
+                    <span className="new-feature-badge ml-2">New</span>
+                  )}
                 </Link>
               </SidebarMenuItem>
             ))}
