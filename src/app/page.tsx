@@ -22,7 +22,7 @@ import TestimonialsSection from './TestimonialsSection';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Image from "next/image";
 import logo from "./Kaizenai.png"
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
@@ -166,7 +166,7 @@ const itemVariants = {
 
 
 const HowItWorksSection = () => {
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = React.useState(0);
 
     return (
         <motion.section
@@ -240,6 +240,9 @@ export default function Home() {
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
               <Link href="/" className="hover:text-primary transition-colors">Home</Link>
               <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+              <SignedIn>
+                <Link href="/admin/dashboard" className="hover:text-primary transition-colors">Admin Login</Link>
+              </SignedIn>
             </nav>
             <div className='flex items-center gap-2'>
                 <SignedIn>
@@ -340,6 +343,24 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </motion.section>
+
+        <motion.section
+          id="promo-section"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+            <div className="border rounded-lg p-8 md:p-12 text-center bg-card/50">
+                <p className="font-script text-2xl md:text-3xl lg:text-4xl max-w-4xl mx-auto">
+                Kaizen Ai is your intelligent career coach, providing resume analysis, personalized learning paths, and career guidance to help students, job seekers, and professionals unlock new opportunities.
+                </p>
+                <Link href="/dashboard" passHref>
+                    <Button variant="outline" className="mt-6">Kaizen Ai <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                </Link>
+            </div>
         </motion.section>
 
         <motion.section 

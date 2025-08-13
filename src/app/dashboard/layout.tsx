@@ -43,10 +43,10 @@ import logo from "../Kaizenai.png"
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer', new: true },
-  { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher', new: true },
   { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice', new: true },
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder', new: true },
