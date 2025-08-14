@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { generateWebsite, type WebsiteBuilderOutput } from '@/ai/flows/website-builder';
+import { generateWebsite } from '@/ai/flows/website-builder';
+import type { WebsiteBuilderOutput } from '@/ai/flows/website-builder.types';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -128,16 +129,12 @@ export default function WebsiteBuilderPage() {
     
     let finalHtml = html;
     
-    if (finalHtml.includes('</head>')) {
+    if (css) {
         finalHtml = finalHtml.replace('</head>', `<style>${css}</style></head>`);
-    } else {
-        finalHtml = `<head><style>${css}</style></head>` + finalHtml;
     }
 
-    if (finalHtml.includes('</body>')) {
+    if (javascript) {
         finalHtml = finalHtml.replace('</body>', `<script>${javascript}<\/script></body>`);
-    } else {
-         finalHtml += `<script>${javascript}<\/script>`;
     }
     
     return finalHtml;
@@ -315,5 +312,3 @@ export default function WebsiteBuilderPage() {
     </motion.div>
   );
 }
-
-    
