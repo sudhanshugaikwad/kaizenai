@@ -5,27 +5,16 @@
  * @fileOverview AI-powered website builder.
  *
  * - generateWebsite - A function that generates a complete website from a prompt.
- * - WebsiteBuilderInput - The input type for the generateWebsite function.
- * - WebsiteBuilderOutput - The return type for the generateWebsite function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+    WebsiteBuilderInputSchema,
+    WebsiteBuilderOutputSchema,
+    type WebsiteBuilderInput,
+    type WebsiteBuilderOutput
+} from './website-builder.types';
 
-export const WebsiteBuilderInputSchema = z.object({
-  name: z.string().describe('The name of the website.'),
-  purpose: z.string().describe('The main purpose or goal of the website.'),
-  languages: z.string().describe('The programming languages or frameworks to be used (e.g., "HTML, CSS, JavaScript", "React").'),
-  prompt: z.string().describe('A detailed prompt describing the desired website content, layout, and style.'),
-});
-export type WebsiteBuilderInput = z.infer<typeof WebsiteBuilderInputSchema>;
-
-export const WebsiteBuilderOutputSchema = z.object({
-    html: z.string().describe('The complete HTML code for the website.'),
-    css: z.string().describe('The complete CSS code for styling the website.'),
-    javascript: z.string().optional().describe('The JavaScript code for any interactive functionality.'),
-});
-export type WebsiteBuilderOutput = z.infer<typeof WebsiteBuilderOutputSchema>;
 
 export async function generateWebsite(input: WebsiteBuilderInput): Promise<WebsiteBuilderOutput> {
   return generateWebsiteFlow(input);
