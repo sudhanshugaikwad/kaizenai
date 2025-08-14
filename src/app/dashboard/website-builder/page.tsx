@@ -49,7 +49,7 @@ export default function WebsiteBuilderPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      languages: '',
+      languages: 'HTML, CSS, JS, Tailwind, Bootstrap',
       prompt: '',
     },
   });
@@ -127,15 +127,9 @@ export default function WebsiteBuilderPage() {
     if (!generatedCode) return '';
     const { html, css, javascript } = generatedCode;
     
-    let finalHtml = html;
-    
-    if (css) {
-        finalHtml = finalHtml.replace('</head>', `<style>${css}</style></head>`);
-    }
-
-    if (javascript) {
-        finalHtml = finalHtml.replace('</body>', `<script>${javascript}<\/script></body>`);
-    }
+    const finalHtml = html
+      .replace('</head>', `<style>${css}</style></head>`)
+      .replace('</body>', `<script>${javascript}<\/script></body>`);
     
     return finalHtml;
   }
