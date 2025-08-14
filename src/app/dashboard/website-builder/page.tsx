@@ -37,7 +37,7 @@ const formSchema = z.object({
     prompt: z.string().min(20, "Prompt must be at least 20 characters."),
 });
 
-const languageOptions = ["HTML, CSS, JavaScript", "React (JSX), CSS", "Vue, CSS"];
+const languageOptions = ["HTML, CSS, JS, Tailwind, Bootstrap", "React (JSX), CSS", "Vue, CSS"];
 
 export default function WebsiteBuilderPage() {
   const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
@@ -108,10 +108,13 @@ export default function WebsiteBuilderPage() {
     const srcDoc = `
         <html>
             <head>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
                 <style>${css}</style>
             </head>
             <body>
                 ${html}
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 <script>${javascript}<\/script>
             </body>
         </html>
