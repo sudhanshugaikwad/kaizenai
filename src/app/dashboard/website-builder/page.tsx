@@ -105,21 +105,29 @@ export default function WebsiteBuilderPage() {
   const createPreviewSrc = () => {
     if (!generatedCode) return '';
     const { html, css, javascript } = generatedCode;
-    const srcDoc = `
-        <html>
-            <head>
-                <script src="https://cdn.tailwindcss.com"></script>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <style>${css}</style>
-            </head>
-            <body>
-                ${html}
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script>${javascript}<\/script>
-            </body>
-        </html>
-    `;
-    return srcDoc;
+    // The AI now generates the full HTML document, so we don't need to wrap it.
+    // We can inject the CSS and JS into the generated HTML.
+    // This is a simplified approach. A more robust solution might parse the HTML
+    // and inject scripts/styles into the head. For now, we'll replace placeholders.
+
+    let finalHtml = html;
+    // Inject CSS
+    if (finalHtml.includes('</head>')) {
+        finalHtml = finalHtml.replace('</head>', `<style>${css}</style></head>`);
+    } else {
+        // Fallback if no head tag
+        finalHtml = `<head><style>${css}</style></head>` + finalHtml;
+    }
+
+    // Inject JS
+    if (finalHtml.includes('</body>')) {
+        finalHtml = finalHtml.replace('</body>', `<script>${javascript}<\/script></body>`);
+    } else {
+         // Fallback if no body tag
+        finalHtml += `<script>${javascript}<\/script>`;
+    }
+    
+    return finalHtml;
   }
 
   const containerVariants = {
@@ -161,7 +169,7 @@ export default function WebsiteBuilderPage() {
                                 <Eye className="mr-2 h-4 w-4" /> Live Preview
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-7xl h-[80vh]">
+                        <DialogContent className="max-w-7xl h-[90vh]">
                            <DialogHeader>
                             <DialogTitle>Live Website Preview</DialogTitle>
                            </DialogHeader>
@@ -294,3 +302,5 @@ export default function WebsiteBuilderPage() {
     </motion.div>
   );
 }
+
+    
