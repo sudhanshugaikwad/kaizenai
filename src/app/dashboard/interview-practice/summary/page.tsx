@@ -28,12 +28,29 @@ export default function InterviewSummaryPage() {
     const [scorePercentage, setScorePercentage] = useState(0);
     const router = useRouter();
 
+    const saveToHistory = (resultsToSave: Results) => {
+        try {
+            const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+            const newHistoryItem = {
+                type: 'Interview Practice',
+                title: `Scored ${resultsToSave.score}/${resultsToSave.total} on Interview Practice`,
+                timestamp: new Date().toISOString(),
+                data: resultsToSave
+            };
+            history.unshift(newHistoryItem);
+            localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+        } catch (e) {
+            console.error("Could not save to history", e);
+        }
+    };
+
     useEffect(() => {
         const storedResults = sessionStorage.getItem('interviewResults');
         if (storedResults) {
             const parsedResults = JSON.parse(storedResults);
             setResults(parsedResults);
             setScorePercentage(Math.round((parsedResults.score / parsedResults.total) * 100));
+            saveToHistory(parsedResults);
         } else {
             router.push('/dashboard/interview-practice');
         }
@@ -120,3 +137,5 @@ export default function InterviewSummaryPage() {
         </motion.div>
     );
 }
+
+    

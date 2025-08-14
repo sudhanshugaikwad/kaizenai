@@ -53,6 +53,25 @@ export default function WebsiteBuilderPage() {
     },
   });
   
+  const saveToHistory = (values: z.infer<typeof formSchema>, output: WebsiteBuilderOutput) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'Website Generated',
+            title: `Created website: ${values.name}`,
+            timestamp: new Date().toISOString(),
+            data: {
+                input: values,
+                output: output,
+            }
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
   useEffect(() => {
     try {
         const savedCode = localStorage.getItem('kaizen-ai-website-builder-code');
@@ -81,6 +100,7 @@ export default function WebsiteBuilderPage() {
     try {
       const result = await generateWebsite(values);
       setGeneratedCode(result);
+      saveToHistory(values, result);
     } catch (error) {
       console.error('Failed to generate website:', error);
        toast({
@@ -105,26 +125,19 @@ export default function WebsiteBuilderPage() {
   const createPreviewSrc = () => {
     if (!generatedCode) return '';
     const { html, css, javascript } = generatedCode;
-    // The AI now generates the full HTML document, so we don't need to wrap it.
-    // We can inject the CSS and JS into the generated HTML.
-    // This is a simplified approach. A more robust solution might parse the HTML
-    // and inject scripts/styles into the head. For now, we'll replace placeholders.
-
+    
     let finalHtml = html;
-    // Inject CSS
+    
     if (finalHtml.includes('</head>')) {
         finalHtml = finalHtml.replace('</head>', `<style>${css}</style></head>`);
     } else {
-        // Fallback if no head tag
         finalHtml = `<head><style>${css}</style></head>` + finalHtml;
     }
 
-    // Inject JS
     if (finalHtml.includes('</body>')) {
         finalHtml = finalHtml.replace('</body>', `<script>${javascript}<\/script></body>`);
     } else {
-         // Fallback if no body tag
-        finalHtml += `<script>${javascript}<\/script>`;
+         finalHtml += `<script>${javascript}<\/script>`;
     }
     
     return finalHtml;

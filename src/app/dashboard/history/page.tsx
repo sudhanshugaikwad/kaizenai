@@ -23,6 +23,9 @@ import {
   Briefcase,
   Clock,
   Trash2,
+  BookOpenCheck,
+  UserSearch,
+  Globe,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -52,6 +55,9 @@ const iconMap: { [key: string]: React.ElementType } = {
   'Cover Letter Generated': PenSquare,
   'Kaizen Ai Chat': MessageSquare,
   'Job Matcher Run': Briefcase,
+  'HR Contact Search': UserSearch,
+  'Interview Practice': BookOpenCheck,
+  'Website Generated': Globe,
 };
 
 export default function HistoryPage() {
@@ -210,3 +216,5 @@ export default function HistoryPage() {
     </motion.div>
   );
 }
+
+    

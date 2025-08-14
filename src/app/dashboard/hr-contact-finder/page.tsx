@@ -82,6 +82,22 @@ export default function HrContactFinderPage() {
     });
   };
 
+  const saveToHistory = (output: HrContactOutput) => {
+    try {
+        const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
+        const newHistoryItem = {
+            type: 'HR Contact Search',
+            title: `Found ${output.hrContacts.length} contacts for department: ${form.getValues('department')}`,
+            timestamp: new Date().toISOString(),
+            data: output
+        };
+        history.unshift(newHistoryItem);
+        localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
+    } catch (e) {
+        console.error("Could not save to history", e);
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setResult(null);
@@ -94,6 +110,7 @@ export default function HrContactFinderPage() {
       }
       const hrResult = await findHrContacts({ department: values.department, resumeDataUri });
       setResult(hrResult);
+      saveToHistory(hrResult);
     } catch (error) {
       console.error('Failed to find HR contacts:', error);
       toast({
@@ -299,3 +316,5 @@ export default function HrContactFinderPage() {
     </motion.div>
   );
 }
+
+    
