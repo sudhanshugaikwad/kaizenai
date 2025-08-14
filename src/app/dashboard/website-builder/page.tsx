@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,7 +26,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Sparkles, Copy, Download, Plus, Globe } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Loader2, Sparkles, Copy, Download, Plus, Globe, Eye } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -56,6 +57,28 @@ export default function WebsiteBuilderPage() {
       prompt: '',
     },
   });
+  
+  useEffect(() => {
+    try {
+        const savedCode = localStorage.getItem('kaizen-ai-website-builder-code');
+        if (savedCode) {
+            setGeneratedCode(JSON.parse(savedCode));
+        }
+    } catch (e) {
+        console.error("Could not load code from localStorage", e);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (generatedCode) {
+        try {
+            localStorage.setItem('kaizen-ai-website-builder-code', JSON.stringify(generatedCode));
+        } catch(e) {
+            console.error("Could not save code to localStorage", e);
+        }
+    }
+  }, [generatedCode]);
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -83,6 +106,23 @@ export default function WebsiteBuilderPage() {
         description: `${language} code copied to clipboard.`,
     });
   };
+
+  const createPreviewSrc = () => {
+    if (!generatedCode) return '';
+    const { html, css, javascript } = generatedCode;
+    const srcDoc = `
+        <html>
+            <head>
+                <style>${css}</style>
+            </head>
+            <body>
+                ${html}
+                <script>${javascript}<\/script>
+            </body>
+        </html>
+    `;
+    return srcDoc;
+  }
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -115,9 +155,31 @@ export default function WebsiteBuilderPage() {
                 </h1>
                 <p className="text-muted-foreground">No-code / low-code AI-powered builder to create, customize, and deploy websites instantly.</p>
             </div>
-            <Button variant="outline">
-                <Plus className="mr-2 h-4 w-4" /> New
-            </Button>
+            <div className='flex items-center gap-2'>
+                {generatedCode && (
+                     <Dialog>
+                        <DialogTrigger asChild>
+                            <Button>
+                                <Eye className="mr-2 h-4 w-4" /> Live Preview
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-7xl h-[80vh]">
+                           <DialogHeader>
+                            <DialogTitle>Live Website Preview</DialogTitle>
+                           </DialogHeader>
+                           <iframe
+                                srcDoc={createPreviewSrc()}
+                                title="Website Preview"
+                                className="w-full h-full border rounded-md"
+                                sandbox="allow-scripts allow-same-origin"
+                           />
+                        </DialogContent>
+                    </Dialog>
+                )}
+                <Button variant="outline">
+                    <Plus className="mr-2 h-4 w-4" /> New
+                </Button>
+            </div>
         </motion.div>
 
         <motion.div variants={itemVariants}>
@@ -186,9 +248,12 @@ export default function WebsiteBuilderPage() {
                         <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.html, 'HTML')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <SyntaxHighlighter language="html" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
-                            {generatedCode.html}
-                        </SyntaxHighlighter>
+                       <Textarea
+                          value={generatedCode.html}
+                          onChange={(e) => setGeneratedCode(prev => prev ? {...prev, html: e.target.value} : null)}
+                          placeholder="Your HTML will be generated here..."
+                          className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                        />
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -199,9 +264,12 @@ export default function WebsiteBuilderPage() {
                         <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.css, 'CSS')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
-                         <SyntaxHighlighter language="css" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
-                            {generatedCode.css}
-                        </SyntaxHighlighter>
+                         <Textarea
+                            value={generatedCode.css}
+                            onChange={(e) => setGeneratedCode(prev => prev ? {...prev, css: e.target.value} : null)}
+                            placeholder="Your CSS will be generated here..."
+                            className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                            />
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -212,9 +280,12 @@ export default function WebsiteBuilderPage() {
                         <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.javascript, 'JavaScript')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <SyntaxHighlighter language="javascript" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
-                            {generatedCode.javascript || "// No JavaScript was generated for this website."}
-                        </SyntaxHighlighter>
+                        <Textarea
+                            value={generatedCode.javascript || ''}
+                            onChange={(e) => setGeneratedCode(prev => prev ? {...prev, javascript: e.target.value} : null)}
+                            placeholder="// No JavaScript was generated for this website."
+                             className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                        />
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -224,3 +295,5 @@ export default function WebsiteBuilderPage() {
     </motion.div>
   );
 }
+
+    
