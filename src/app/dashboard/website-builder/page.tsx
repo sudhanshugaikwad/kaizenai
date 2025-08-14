@@ -1,0 +1,226 @@
+
+'use client';
+
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { generateWebsite, type WebsiteBuilderOutput } from '@/ai/flows/website-builder';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2, Sparkles, Copy, Download, Plus, Globe } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import { motion } from 'framer-motion';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+
+
+const formSchema = z.object({
+    name: z.string().min(2, "Website name is required."),
+    purpose: z.string().min(10, "Please describe the purpose in more detail."),
+    languages: z.string({required_error: "Please select a language set."}),
+    prompt: z.string().min(20, "Prompt must be at least 20 characters."),
+});
+
+const languageOptions = ["HTML, CSS, JavaScript", "React (JSX), CSS", "Vue, CSS"];
+
+export default function WebsiteBuilderPage() {
+  const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      purpose: '',
+      languages: '',
+      prompt: '',
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setGeneratedCode(null);
+    try {
+      const result = await generateWebsite(values);
+      setGeneratedCode(result);
+    } catch (error) {
+      console.error('Failed to generate website:', error);
+       toast({
+        title: "Error",
+        description: "Failed to generate website. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const handleCopy = (code: string | undefined, language: string) => {
+    if (!code) return;
+    navigator.clipboard.writeText(code);
+    toast({
+        title: "Copied!",
+        description: `${language} code copied to clipboard.`,
+    });
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  return (
+    <motion.div 
+      className="space-y-8"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+        <motion.div variants={itemVariants} className="flex justify-between items-start">
+            <div>
+                <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+                    <Globe className="h-8 w-8" />
+                    Kaizen AI Website Builder
+                </h1>
+                <p className="text-muted-foreground">No-code / low-code AI-powered builder to create, customize, and deploy websites instantly.</p>
+            </div>
+            <Button variant="outline">
+                <Plus className="mr-2 h-4 w-4" /> New
+            </Button>
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+            <Card>
+                <CardContent className="p-6">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <FormField control={form.control} name="name" render={({ field }) => (
+                                <FormItem><FormLabel>Website Name</FormLabel><FormControl><Input placeholder="e.g., My Awesome Portfolio" {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
+                                <FormField control={form.control} name="purpose" render={({ field }) => (
+                                <FormItem><FormLabel>Purpose of Website</FormLabel><FormControl><Input placeholder="e.g., To showcase my projects" {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
+                                <FormField control={form.control} name="languages" render={({ field }) => (
+                                <FormItem><FormLabel>Select Languages</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a language set" />
+                                    </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                    {languageOptions.map(lang => (
+                                        <SelectItem key={lang} value={lang}>{lang}</SelectItem>
+                                    ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage /></FormItem>
+                                )} />
+                            </div>
+                            <FormField control={form.control} name="prompt" render={({ field }) => (
+                                <FormItem><FormLabel>Write a prompt for the website...</FormLabel><FormControl><Textarea placeholder="Describe the website you want to create. Include details about the layout, sections (e.g., hero, about, portfolio, contact), color scheme, and overall style." rows={5} {...field} /></FormControl><FormMessage /></FormItem>
+                            )} />
+                            
+                            <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
+                            {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Website</>}
+                            </Button>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+        </motion.div>
+
+        {isLoading && (
+            <motion.div className="flex flex-col items-center justify-center text-center pt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <Loader2 className="mr-2 h-12 w-12 animate-spin text-primary" />
+                <p className="mt-4 text-lg text-muted-foreground">Our AI is building your website...</p>
+                <p className="text-sm text-muted-foreground">This may take a few moments.</p>
+            </motion.div>
+        )}
+
+      {generatedCode && (
+        <motion.div className="space-y-4" variants={itemVariants}>
+          <Tabs defaultValue="html" className="w-full">
+            <TabsList>
+              <TabsTrigger value="html">HTML</TabsTrigger>
+              <TabsTrigger value="css">CSS</TabsTrigger>
+              <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="html">
+                <Card>
+                    <CardHeader className="flex flex-row justify-between items-center">
+                        <CardTitle>HTML Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.html, 'HTML')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <SyntaxHighlighter language="html" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
+                            {generatedCode.html}
+                        </SyntaxHighlighter>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+            <TabsContent value="css">
+                 <Card>
+                    <CardHeader className="flex flex-row justify-between items-center">
+                        <CardTitle>CSS Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.css, 'CSS')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                         <SyntaxHighlighter language="css" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
+                            {generatedCode.css}
+                        </SyntaxHighlighter>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+            <TabsContent value="javascript">
+                <Card>
+                    <CardHeader className="flex flex-row justify-between items-center">
+                        <CardTitle>JavaScript Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.javascript, 'JavaScript')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <SyntaxHighlighter language="javascript" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '0 0 0.5rem 0.5rem'}}>
+                            {generatedCode.javascript || "// No JavaScript was generated for this website."}
+                        </SyntaxHighlighter>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+}

@@ -20,6 +20,7 @@ import {
   StickyNote,
   UserSearch,
   Shield,
+  Globe,
 } from 'lucide-react';
 import { UserButton, useUser, Protect } from "@clerk/nextjs";
 
@@ -43,6 +44,7 @@ import logo from "../Kaizenai.png"
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder', new: true },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
