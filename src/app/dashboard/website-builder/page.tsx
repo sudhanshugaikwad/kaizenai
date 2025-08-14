@@ -27,16 +27,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Loader2, Sparkles, Copy, Download, Plus, Globe, Eye } from 'lucide-react';
+import { Loader2, Sparkles, Copy, Plus, Globe, Eye } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-
 
 const formSchema = z.object({
     name: z.string().min(2, "Website name is required."),
-    purpose: z.string().min(10, "Please describe the purpose in more detail."),
     languages: z.string({required_error: "Please select a language set."}),
     prompt: z.string().min(20, "Prompt must be at least 20 characters."),
 });
@@ -52,7 +48,6 @@ export default function WebsiteBuilderPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      purpose: '',
       languages: '',
       prompt: '',
     },
@@ -176,7 +171,11 @@ export default function WebsiteBuilderPage() {
                         </DialogContent>
                     </Dialog>
                 )}
-                <Button variant="outline">
+                <Button variant="outline" onClick={() => {
+                    form.reset();
+                    setGeneratedCode(null);
+                    localStorage.removeItem('kaizen-ai-website-builder-code');
+                }}>
                     <Plus className="mr-2 h-4 w-4" /> New
                 </Button>
             </div>
@@ -187,12 +186,9 @@ export default function WebsiteBuilderPage() {
                 <CardContent className="p-6">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <FormField control={form.control} name="name" render={({ field }) => (
                                 <FormItem><FormLabel>Website Name</FormLabel><FormControl><Input placeholder="e.g., My Awesome Portfolio" {...field} /></FormControl><FormMessage /></FormItem>
-                                )} />
-                                <FormField control={form.control} name="purpose" render={({ field }) => (
-                                <FormItem><FormLabel>Purpose of Website</FormLabel><FormControl><Input placeholder="e.g., To showcase my projects" {...field} /></FormControl><FormMessage /></FormItem>
                                 )} />
                                 <FormField control={form.control} name="languages" render={({ field }) => (
                                 <FormItem><FormLabel>Select Languages</FormLabel>
@@ -242,49 +238,49 @@ export default function WebsiteBuilderPage() {
             </TabsList>
             
             <TabsContent value="html">
-                <Card>
+                <Card className="bg-[#1e1e1e]">
                     <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle>HTML Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.html, 'HTML')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                        <CardTitle className="text-gray-300">HTML Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.html, 'HTML')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
                        <Textarea
                           value={generatedCode.html}
                           onChange={(e) => setGeneratedCode(prev => prev ? {...prev, html: e.target.value} : null)}
                           placeholder="Your HTML will be generated here..."
-                          className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                          className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
                         />
                     </CardContent>
                 </Card>
             </TabsContent>
             <TabsContent value="css">
-                 <Card>
+                 <Card className="bg-[#1e1e1e]">
                     <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle>CSS Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.css, 'CSS')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                        <CardTitle className="text-gray-300">CSS Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.css, 'CSS')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
                          <Textarea
                             value={generatedCode.css}
                             onChange={(e) => setGeneratedCode(prev => prev ? {...prev, css: e.target.value} : null)}
                             placeholder="Your CSS will be generated here..."
-                            className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                            className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
                             />
                     </CardContent>
                 </Card>
             </TabsContent>
             <TabsContent value="javascript">
-                <Card>
+                <Card className="bg-[#1e1e1e]">
                     <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle>JavaScript Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.javascript, 'JavaScript')}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
+                        <CardTitle className="text-gray-300">JavaScript Code</CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.javascript, 'JavaScript')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                     </CardHeader>
                     <CardContent className="p-0">
                         <Textarea
                             value={generatedCode.javascript || ''}
                             onChange={(e) => setGeneratedCode(prev => prev ? {...prev, javascript: e.target.value} : null)}
                             placeholder="// No JavaScript was generated for this website."
-                             className="h-[40vh] min-h-[200px] resize-none font-mono rounded-t-none border-t-0"
+                             className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
                         />
                     </CardContent>
                 </Card>
@@ -295,5 +291,3 @@ export default function WebsiteBuilderPage() {
     </motion.div>
   );
 }
-
-    

@@ -28,7 +28,6 @@ const prompt = ai.definePrompt({
 
   **Website Details:**
   - **Name:** {{{name}}}
-  - **Purpose:** {{{purpose}}}
   - **Technologies:** {{{languages}}}
   - **Prompt:** {{{prompt}}}
 

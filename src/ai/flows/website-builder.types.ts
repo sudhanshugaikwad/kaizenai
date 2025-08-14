@@ -6,7 +6,6 @@ import {z} from 'genkit';
 
 export const WebsiteBuilderInputSchema = z.object({
   name: z.string().describe('The name of the website.'),
-  purpose: z.string().describe('The main purpose or goal of the website.'),
   languages: z.string().describe('The programming languages or frameworks to be used (e.g., "HTML, CSS, JavaScript", "React").'),
   prompt: z.string().describe('A detailed prompt describing the desired website content, layout, and style.'),
 });
