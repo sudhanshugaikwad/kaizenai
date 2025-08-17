@@ -87,26 +87,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-@layer components {
-  .new-feature-dot {
-    @apply h-2 w-2 rounded-full bg-primary;
-    box-shadow: 0 0 0 0 hsl(var(--primary) / 1);
-    animation: new-feature-pulse 2s infinite;
-  }
-
-  @keyframes new-feature-pulse {
-    0% {
-      transform: scale(0.95);
-      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7);
-    }
-    70% {
-      transform: scale(1);
-      box-shadow: 0 0 0 5px hsl(var(--primary) / 0);
-    }
-    100% {
-      transform: scale(0.95);
-      box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
-    }
-  }
-}

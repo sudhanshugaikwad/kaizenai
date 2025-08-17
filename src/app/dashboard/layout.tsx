@@ -72,6 +72,34 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const { user } = useUser();
 
+  const renderMenuItem = (item: typeof navItems[0]) => {
+    const button = (
+      <SidebarMenuButton
+        isActive={pathname.startsWith(item.href)}
+        tooltip={!item.new ? item.label : undefined}
+        className="flex-grow"
+      >
+        <item.icon className="w-5 h-5" />
+        <span>{item.label}</span>
+      </SidebarMenuButton>
+    );
+
+    if (item.new) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {button}
+          </TooltipTrigger>
+          <TooltipContent side="right" align="center">
+            New
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return button;
+  };
+
   return (
     <SidebarProvider>
       <Sidebar variant='inset' side='left'>
@@ -86,20 +114,7 @@ export default function DashboardLayout({
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href} className="flex items-center justify-between w-full">
-                  <SidebarMenuButton isActive={pathname.startsWith(item.href)} tooltip={item.label} className="flex-grow">
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                   {item.new && (
-                     <Tooltip>
-                        <TooltipTrigger asChild>
-                           <div className="new-feature-dot ml-2" />
-                        </TooltipTrigger>
-                        <TooltipContent side="right" align="center">
-                          New
-                        </TooltipContent>
-                      </Tooltip>
-                  )}
+                  {renderMenuItem(item)}
                 </Link>
               </SidebarMenuItem>
             ))}
