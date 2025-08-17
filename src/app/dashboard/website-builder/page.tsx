@@ -2,11 +2,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { WebsiteBuilderOutput } from '@/ai/flows/website-builder.types';
+import { generateWebsite } from '@/ai/flows/website-builder';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { generateWebsite } from '@/ai/flows/website-builder';
-import type { WebsiteBuilderOutput } from '@/ai/flows/website-builder.types';
+import Editor from '@monaco-editor/react';
+
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -26,11 +28,11 @@ import {
   } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Loader2, Sparkles, Copy, Plus, Globe, Eye } from 'lucide-react';
+import { Loader2, Sparkles, Plus, Globe, Eye, File, FileCode, FileJson, FileText } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
     name: z.string().min(2, "Website name is required."),
@@ -38,18 +40,22 @@ const formSchema = z.object({
     prompt: z.string().min(20, "Prompt must be at least 20 characters."),
 });
 
-const languageOptions = ["HTML, CSS, JS, Bootstrap", "React (JSX)", "Vue, CSS"];
+const languageOptions = ["HTML, CSS, JS, Tailwind, Bootstrap"];
+
+type EditorFile = 'html' | 'css' | 'javascript';
 
 export default function WebsiteBuilderPage() {
   const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeFile, setActiveFile] = useState<EditorFile>('html');
   const { toast } = useToast();
+  const { theme } = useTheme();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      languages: 'HTML, CSS, JS, Bootstrap',
+      languages: languageOptions[0],
       prompt: '',
     },
   });
@@ -114,56 +120,66 @@ export default function WebsiteBuilderPage() {
     }
   }
 
-  const handleCopy = (code: string | undefined, language: string) => {
-    if (!code) return;
-    navigator.clipboard.writeText(code);
-    toast({
-        title: "Copied!",
-        description: `${language} code copied to clipboard.`,
-    });
-  };
+  const handleCodeChange = (value: string | undefined) => {
+    if (!generatedCode || value === undefined) return;
+    setGeneratedCode(prev => prev ? { ...prev, [activeFile]: value } : null);
+  }
 
   const createPreviewSrc = () => {
     if (!generatedCode) return '';
     const { html, css, javascript } = generatedCode;
-    
-    const finalHtml = html
-      .replace('</head>', `<style>${css}</style></head>`)
-      .replace('</body>', `<script>${javascript}<\/script></body>`);
-    
-    return finalHtml;
+    const srcDoc = `
+      <html>
+        <head>
+          <style>${css}</style>
+        </head>
+        <body>
+          ${html}
+          <script>${javascript}</script>
+        </body>
+      </html>
+    `;
+    // The AI is instructed to generate a full HTML document including CDN links,
+    // so we can just use that directly.
+    return generatedCode.html.replace(
+        '</head>',
+        `<style>${generatedCode.css}</style></head>`
+      ).replace(
+        '</body>',
+        `<script>${generatedCode.javascript}</script></body>`
+      );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+  const fileIcons: Record<EditorFile, React.ReactNode> = {
+    html: <FileCode className="h-4 w-4 text-orange-500" />,
+    css: <FileJson className="h-4 w-4 text-blue-500" />,
+    javascript: <FileText className="h-4 w-4 text-yellow-500" />
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  const fileNames: Record<EditorFile, string> = {
+    html: 'index.html',
+    css: 'style.css',
+    javascript: 'script.js'
   };
+
+  const getActiveCode = () => {
+    if (!generatedCode) return '';
+    return generatedCode[activeFile] || '';
+  }
 
   return (
     <motion.div 
       className="space-y-8"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
     >
-        <motion.div variants={itemVariants} className="flex justify-between items-start">
+        <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} className="flex justify-between items-start">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                     <Globe className="h-8 w-8" />
                     Kaizen AI Website Builder
                 </h1>
-                <p className="text-muted-foreground">No-code / low-code AI-powered builder to create, customize, and deploy websites instantly.</p>
+                <p className="text-muted-foreground">AI-powered builder to create websites with a VS Code-like editor.</p>
             </div>
             <div className='flex items-center gap-2'>
                 {generatedCode && (
@@ -180,7 +196,7 @@ export default function WebsiteBuilderPage() {
                            <iframe
                                 srcDoc={createPreviewSrc()}
                                 title="Website Preview"
-                                className="w-full h-full border rounded-md"
+                                className="w-full h-full border rounded-md bg-white"
                                 sandbox="allow-scripts allow-same-origin"
                            />
                         </DialogContent>
@@ -196,7 +212,7 @@ export default function WebsiteBuilderPage() {
             </div>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
+        <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1, transition:{delay: 0.1}}}>
             <Card>
                 <CardContent className="p-6">
                     <Form {...form}>
@@ -206,7 +222,7 @@ export default function WebsiteBuilderPage() {
                                 <FormItem><FormLabel>Website Name</FormLabel><FormControl><Input placeholder="e.g., My Awesome Portfolio" {...field} /></FormControl><FormMessage /></FormItem>
                                 )} />
                                 <FormField control={form.control} name="languages" render={({ field }) => (
-                                <FormItem><FormLabel>Select Languages</FormLabel>
+                                <FormItem><FormLabel>Select Technologies</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                     <SelectTrigger>
@@ -223,7 +239,7 @@ export default function WebsiteBuilderPage() {
                                 )} />
                             </div>
                             <FormField control={form.control} name="prompt" render={({ field }) => (
-                                <FormItem><FormLabel>Write a prompt for the website...</FormLabel><FormControl><Textarea placeholder="Describe the website you want to create. Include details about the layout, sections (e.g., hero, about, portfolio, contact), color scheme, and overall style." rows={5} {...field} /></FormControl><FormMessage /></FormItem>
+                                <FormItem><FormLabel>Describe the website you want...</FormLabel><FormControl><Textarea placeholder="e.g., A modern portfolio for a photographer with a dark theme, a gallery section with a grid layout, and a contact form." rows={4} {...field} /></FormControl><FormMessage /></FormItem>
                             )} />
                             
                             <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
@@ -235,76 +251,60 @@ export default function WebsiteBuilderPage() {
             </Card>
         </motion.div>
 
-        {isLoading && (
-            <motion.div className="flex flex-col items-center justify-center text-center pt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Loader2 className="mr-2 h-12 w-12 animate-spin text-primary" />
-                <p className="mt-4 text-lg text-muted-foreground">Our AI is building your website...</p>
-                <p className="text-sm text-muted-foreground">This may take a few moments.</p>
+        {(isLoading || generatedCode) && (
+            <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1, transition:{delay: 0.2}}}>
+                <Card className="min-h-[60vh] flex flex-col">
+                    <CardHeader>
+                        <CardTitle>VS Code Editor</CardTitle>
+                        <CardDescription>Your generated code will appear here. You can edit it live.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex flex-col md:flex-row gap-0 overflow-hidden p-0">
+                       {isLoading ? (
+                            <div className="flex flex-col items-center justify-center w-full h-full text-center p-6">
+                                <Loader2 className="mr-2 h-12 w-12 animate-spin text-primary" />
+                                <p className="mt-4 text-lg text-muted-foreground">Our AI is building your website...</p>
+                                <p className="text-sm text-muted-foreground">This may take a few moments.</p>
+                            </div>
+                       ) : (
+                            <>
+                            {/* File Explorer */}
+                            <div className="w-full md:w-48 bg-muted/50 p-2 border-b md:border-b-0 md:border-r">
+                                <h3 className="text-sm font-semibold mb-2 px-2">EXPLORER</h3>
+                                <ul className="space-y-1">
+                                    {(['html', 'css', 'javascript'] as EditorFile[]).map(file => (
+                                        <li key={file}>
+                                            <button 
+                                                onClick={() => setActiveFile(file)}
+                                                className={`w-full flex items-center gap-2 p-2 text-sm rounded-md text-left ${activeFile === file ? 'bg-primary/10 text-primary' : 'hover:bg-accent'}`}
+                                            >
+                                                {fileIcons[file]}
+                                                <span>{fileNames[file]}</span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            
+                            {/* Editor */}
+                            <div className="flex-grow relative">
+                                <Editor
+                                    height="50vh"
+                                    language={activeFile === 'javascript' ? 'javascript' : activeFile}
+                                    value={getActiveCode()}
+                                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                                    onChange={handleCodeChange}
+                                    options={{ minimap: { enabled: false }, fontSize: 14, wordWrap: 'on' }}
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 h-6 bg-muted/80 px-4 text-xs flex items-center border-t">
+                                    <span>{fileNames[activeFile]}</span>
+                                </div>
+                            </div>
+                            </>
+                       )}
+                    </CardContent>
+                </Card>
             </motion.div>
         )}
-
-      {generatedCode && (
-        <motion.div className="space-y-4" variants={itemVariants}>
-          <Tabs defaultValue="html" className="w-full">
-            <TabsList>
-              <TabsTrigger value="html">HTML</TabsTrigger>
-              <TabsTrigger value="css">CSS</TabsTrigger>
-              <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="html">
-                <Card className="bg-[#1e1e1e]">
-                    <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle className="text-gray-300">HTML Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.html, 'HTML')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                       <Textarea
-                          value={generatedCode.html}
-                          onChange={(e) => setGeneratedCode(prev => prev ? {...prev, html: e.target.value} : null)}
-                          placeholder="Your HTML will be generated here..."
-                          className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
-                        />
-                    </CardContent>
-                </Card>
-            </TabsContent>
-            <TabsContent value="css">
-                 <Card className="bg-[#1e1e1e]">
-                    <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle className="text-gray-300">CSS Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.css, 'CSS')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                         <Textarea
-                            value={generatedCode.css}
-                            onChange={(e) => setGeneratedCode(prev => prev ? {...prev, css: e.target.value} : null)}
-                            placeholder="Your CSS will be generated here..."
-                            className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
-                            />
-                    </CardContent>
-                </Card>
-            </TabsContent>
-            <TabsContent value="javascript">
-                <Card className="bg-[#1e1e1e]">
-                    <CardHeader className="flex flex-row justify-between items-center">
-                        <CardTitle className="text-gray-300">JavaScript Code</CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => handleCopy(generatedCode.javascript, 'JavaScript')} className="text-gray-300 hover:bg-gray-700 hover:text-white"><Copy className="mr-2 h-4 w-4" /> Copy</Button>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        <Textarea
-                            value={generatedCode.javascript || ''}
-                            onChange={(e) => setGeneratedCode(prev => prev ? {...prev, javascript: e.target.value} : null)}
-                            placeholder="// No JavaScript was generated for this website."
-                             className="h-[40vh] min-h-[200px] resize-none font-mono bg-[#1e1e1e] text-gray-300 border-t border-gray-700 rounded-t-none focus-visible:ring-offset-[#1e1e1e] focus-visible:ring-primary"
-                        />
-                    </CardContent>
-                </Card>
-            </TabsContent>
-          </Tabs>
-        </motion.div>
-      )}
     </motion.div>
   );
 }
-
-    
