@@ -38,7 +38,7 @@ const formSchema = z.object({
     prompt: z.string().min(20, "Prompt must be at least 20 characters."),
 });
 
-const languageOptions = ["HTML, CSS, JS, Tailwind, Bootstrap", "React (JSX), CSS", "Vue, CSS"];
+const languageOptions = ["HTML, CSS, JS, Bootstrap", "React (JSX)", "Vue, CSS"];
 
 export default function WebsiteBuilderPage() {
   const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
@@ -49,7 +49,7 @@ export default function WebsiteBuilderPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      languages: 'HTML, CSS, JS, Tailwind, Bootstrap',
+      languages: 'HTML, CSS, JS, Bootstrap',
       prompt: '',
     },
   });
