@@ -46,7 +46,7 @@ const prompt = ai.definePrompt({
   name: 'hrContactPrompt',
   input: {schema: HrContactInputSchema},
   output: {schema: HrContactOutputSchema},
-  prompt: `You are an expert recruitment consultant with deep knowledge of the Indian job market. Your task is to find detailed contact information for HR professionals.
+  prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups.
 
   **Search Criteria:**
   - **Department:** {{{department}}}
@@ -58,16 +58,16 @@ const prompt = ai.definePrompt({
   **Instructions:**
   1.  If a resume is provided, first determine the user's likely **Job Role**.
   2.  Find 5-10 HR contacts who recruit for the specified department and/or the user's job role.
-  3.  Focus on companies in major Indian metropolitan areas.
+  3.  Your search should be **worldwide**, covering a diverse range of companies from large corporations to innovative startups.
   4.  For each contact, provide as much of the following information as possible:
       - Company Name
-      - Department (e.g., "Tech Recruitment", "Campus Hiring")
+      - Department (e.g., "Tech Recruitment", "Talent Acquisition")
       - HR Full Name
       - HR Job Title
       - A valid professional Email Address
       - Contact Number (if publicly available)
       - A link to their LinkedIn profile.
-      - A link to their Naukri.com or other relevant job portal profile.
+      - A link to their profile on relevant international job boards (e.g., Indeed, Glassdoor).
 
   **IMPORTANT**: If the resume is invalid or cannot be read, proceed with the search based only on the department name and return an empty string for the 'userRole'. If no contacts can be found, return an empty array for 'hrContacts'. Do not throw an error.
   `,
