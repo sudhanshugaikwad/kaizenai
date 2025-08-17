@@ -22,7 +22,7 @@ import {
   Shield,
   Globe,
 } from 'lucide-react';
-import { UserButton, useUser, Protect } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 import {
   SidebarProvider,
@@ -41,6 +41,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
 import logo from "../Kaizenai.png"
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -90,7 +91,14 @@ export default function DashboardLayout({
                     <span>{item.label}</span>
                   </SidebarMenuButton>
                    {item.new && (
-                    <span className="new-feature-badge ml-2">New</span>
+                     <Tooltip>
+                        <TooltipTrigger asChild>
+                           <div className="new-feature-dot ml-2" />
+                        </TooltipTrigger>
+                        <TooltipContent side="right" align="center">
+                          New
+                        </TooltipContent>
+                      </Tooltip>
                   )}
                 </Link>
               </SidebarMenuItem>
@@ -134,7 +142,6 @@ export default function DashboardLayout({
             </div>
           <div className="flex items-center gap-4">
              <span className='hidden sm:inline text-sm font-medium text-muted-foreground'>Welcome, {user?.firstName ?? 'User'}!</span>
-             <UserButton afterSignOutUrl='/' />
           </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
