@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -58,6 +58,12 @@ const features = [
     href: "/dashboard/hr-contact-finder",
     icon: UserSearch,
     pro: true,
+  },
+  {
+    title: "Events & Hackathons",
+    description: "Discover events, hackathons, and challenges from top platforms.",
+    href: "/dashboard/events-hackathons",
+    icon: CalendarCheck,
   },
   {
     title: "Sticky Notes",

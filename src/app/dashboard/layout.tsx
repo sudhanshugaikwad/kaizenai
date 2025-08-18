@@ -22,6 +22,7 @@ import {
   Shield,
   Globe,
   Home,
+  CalendarCheck,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -54,6 +55,7 @@ const navItems = [
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
   { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice' },
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
+  { href: '/dashboard/events-hackathons', icon: CalendarCheck, label: 'Events & Hackathons' },
   { href: '/dashboard/sticky-notes', icon: StickyNote, label: 'Sticky Notes' },
 ];
 
