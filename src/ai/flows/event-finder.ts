@@ -33,7 +33,7 @@ const EventFinderOutputSchema = z.object({
       type: z.string().describe('The type of event (e.g., "Hackathon", "Webinar", "Competition").'),
       date: z.string().describe('The date or date range of the event (e.g., "18/08/2025" or "Aug 18-20, 2025").'),
       location: z.string().describe('The location of the event (e.g., "Online", "City Name").'),
-      applyLink: z.string().url().describe('The direct URL to the event registration or application page.'),
+      applyLink: z.string().url().describe('The direct, original URL to the event registration or application page.'),
     })
   ).describe('A list of 20 to 30 relevant events, hackathons, or challenges based on the search criteria.'),
 });
@@ -56,7 +56,7 @@ const prompt = ai.definePrompt({
     Resume: {{media url=resumeDataUri}}
   {{/if}}
   {{#if eventType}}- **Event Type:** {{{eventType}}} {{/if}}
-  {{#if location}}- **Location/Mode:** {{{location}}} {{/if}}
+  {{#if location}}- **Location/Mode:** {{{location}}}. If a city name is provided, find events in that city. {{/if}}
   {{#if cost}}- **Cost:** {{{cost}}} {{/if}}
   {{#if searchTerm}}- **Search Term:** {{{searchTerm}}} {{/if}}
 
@@ -71,7 +71,7 @@ const prompt = ai.definePrompt({
       - Type (e.g., "Hackathon", "Webinar")
       - Date(s) (e.g., "18/08/2025" or "Aug 18-20, 2025")
       - Location ("Online" or city)
-      - A direct URL to apply or register.
+      - A direct, original URL to apply or register. Ensure the link is not a redirect and leads to the main event page.
 
   **IMPORTANT**: If no events are found matching the criteria, return an empty array for 'events'. Do not throw an error.
   `,

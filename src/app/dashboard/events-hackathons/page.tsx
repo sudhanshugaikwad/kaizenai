@@ -33,6 +33,7 @@ import { motion } from 'framer-motion';
 const formSchema = z.object({
   eventType: z.string().optional(),
   location: z.string().optional(),
+  city: z.string().optional(),
   cost: z.string().optional(),
   searchTerm: z.string().optional(),
   resume: z.any().optional(),
@@ -101,7 +102,14 @@ export default function EventsHackathonsPage() {
       if (file) {
         resumeDataUri = await fileToDataUri(file);
       }
-      const eventResult = await findEvents({ ...values, resumeDataUri });
+      
+      const locationQuery = values.location === 'Offline' && values.city ? values.city : values.location;
+
+      const eventResult = await findEvents({ 
+          ...values,
+          location: locationQuery,
+          resumeDataUri 
+        });
       setResult(eventResult);
       if (eventResult.events.length > 0) {
         saveToHistory(eventResult);
@@ -139,6 +147,7 @@ export default function EventsHackathonsPage() {
     }
   };
 
+  const locationValue = form.watch('location');
 
   return (
     <motion.div 
@@ -160,7 +169,7 @@ export default function EventsHackathonsPage() {
             <CardContent>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <FormField control={form.control} name="eventType" render={({ field }) => (
                             <FormItem>
                             <FormLabel>Event Type</FormLabel>
@@ -171,12 +180,21 @@ export default function EventsHackathonsPage() {
                         )} />
                         <FormField control={form.control} name="location" render={({ field }) => (
                              <FormItem>
-                             <FormLabel>Location</FormLabel>
-                             <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Any Location" /></SelectTrigger></FormControl>
+                             <FormLabel>Mode</FormLabel>
+                             <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Any Mode" /></SelectTrigger></FormControl>
                                 <SelectContent>{locations.map(loc => <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}</SelectContent>
                              </Select><FormMessage />
                              </FormItem>
                         )} />
+                         {locationValue === 'Offline' && (
+                             <FormField control={form.control} name="city" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>City</FormLabel>
+                                    <FormControl><Input placeholder="Enter city name" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                         )}
                          <FormField control={form.control} name="cost" render={({ field }) => (
                             <FormItem>
                             <FormLabel>Cost</FormLabel>
@@ -187,7 +205,7 @@ export default function EventsHackathonsPage() {
                         )} />
                          <FormField control={form.control} name="searchTerm" render={({ field }) => (
                             <FormItem>
-                            <FormLabel>Search</FormLabel>
+                            <FormLabel>Search by Keyword</FormLabel>
                             <FormControl><Input placeholder="e.g., 'React hackathon'" {...field} /></FormControl>
                             <FormMessage />
                             </FormItem>
