@@ -21,6 +21,7 @@ import {
   UserSearch,
   Shield,
   Globe,
+  Home,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -156,6 +157,12 @@ export default function DashboardLayout({
               </Link>
             </div>
           <div className="flex items-center gap-4">
+            <Link href="/">
+                <Button variant="outline">
+                    <Home className="mr-2 h-4 w-4" />
+                    Home
+                </Button>
+            </Link>
              <span className='hidden sm:inline text-sm font-medium text-muted-foreground'>Welcome, {user?.firstName ?? 'User'}!</span>
           </div>
         </header>
