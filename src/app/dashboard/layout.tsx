@@ -144,6 +144,7 @@ export default function DashboardLayout({
                     Home
                 </Button>
             </Link>
+             <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
             <UserButton />
           </div>
         </header>
