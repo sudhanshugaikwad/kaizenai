@@ -76,7 +76,7 @@ export default function HrContactFinderPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
 
-  const contactsPerPage = 5;
+  const contactsPerPage = 30;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -336,5 +336,3 @@ export default function HrContactFinderPage() {
     </motion.div>
   );
 }
-
-    

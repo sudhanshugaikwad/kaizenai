@@ -34,7 +34,7 @@ const HrContactOutputSchema = z.object({
       naukriUrl: z.string().optional().describe('A URL to the HR professional\'s profile on Naukri.com or other relevant job boards.'),
       xingUrl: z.string().optional().describe('A URL to the HR professional\'s profile on Xing.'),
     })
-  ).describe('A list of 5-10 HR contacts based on the search criteria. Prioritize contacts in major Indian cities.'),
+  ).describe('A list of up to 30 HR contacts based on the search criteria. Prioritize contacts in major international cities and from a mix of startups and large corporations.'),
 });
 export type HrContactOutput = z.infer<typeof HrContactOutputSchema>;
 
@@ -47,7 +47,7 @@ const prompt = ai.definePrompt({
   name: 'hrContactPrompt',
   input: {schema: HrContactInputSchema},
   output: {schema: HrContactOutputSchema},
-  prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups and large global corporations.
+  prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups and large global corporations. You pull HR details from trusted platforms like LinkedIn, Naukri, Xing, and many others.
 
   **Search Criteria:**
   - **Department:** {{{department}}}
@@ -58,8 +58,8 @@ const prompt = ai.definePrompt({
 
   **Instructions:**
   1.  If a resume is provided, first determine the user's likely **Job Role**.
-  2.  Find 5-10 HR contacts who recruit for the specified department and/or the user's job role.
-  3.  Your search should be **worldwide**, covering a diverse range of companies from large corporations to innovative startups.
+  2.  Find up to **30 original HR contacts** who recruit for the specified department and/or the user's job role.
+  3.  Your search should be **worldwide**, covering a diverse range of companies from large global corporations to innovative startups.
   4.  For each contact, provide as much of the following information as possible:
       - Company Name
       - Department (e.g., "Tech Recruitment", "Talent Acquisition")
@@ -85,5 +85,3 @@ const hrContactFinderFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    
