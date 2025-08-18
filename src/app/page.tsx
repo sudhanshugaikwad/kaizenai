@@ -432,10 +432,10 @@ export default function Home() {
               <Link href="/" className="flex items-center gap-2">
                 <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
               </Link>
-              <p className="text-muted-foreground">Your personal AI career coach.</p>
+              <p className="text-muted-foreground">Kaizen AI Your intelligent career coach, guiding students, job seekers, and professionals to unlock new opportunities.</p>
             </div>
             <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Tools</h4>
+              <h4 className="font-semibold mb-2">Kaizen Ai Tools</h4>
               <ul className="space-y-2 text-muted-foreground">
                 {footerFeatures.map((f) => (
                   <li key={f.title}>

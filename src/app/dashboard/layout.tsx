@@ -124,7 +124,13 @@ export default function DashboardLayout({
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-            <ThemeToggle />
+            <div className='flex justify-between items-center'>
+               <ThemeToggle />
+               <div className='text-xs text-muted-foreground hidden group-data-[state=expanded]:block'>
+                 <p>&copy; {new Date().getFullYear()} Kaizen AI</p>
+                 <p>By Sudhanshu Gaikwad</p>
+               </div>
+            </div>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -147,7 +153,7 @@ export default function DashboardLayout({
                 </Button>
             </Link>
              <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
-            <UserButton />
+            <UserButton afterSignOutUrl="/" />
           </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
