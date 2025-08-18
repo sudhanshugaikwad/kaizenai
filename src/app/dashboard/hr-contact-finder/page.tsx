@@ -129,7 +129,9 @@ export default function HrContactFinderPage() {
       }
       const hrResult = await findHrContacts({ department: values.department, resumeDataUri });
       setResult(hrResult);
-      saveToHistory(hrResult);
+      if (hrResult.hrContacts.length > 0) {
+        saveToHistory(hrResult);
+      }
     } catch (error) {
       console.error('Failed to find HR contacts:', error);
       toast({

@@ -47,7 +47,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
@@ -56,6 +55,7 @@ const navItems = [
   { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice' },
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
   { href: '/dashboard/events-hackathons', icon: CalendarCheck, label: 'Events & Hackathons' },
+  { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder' },
   { href: '/dashboard/sticky-notes', icon: StickyNote, label: 'Sticky Notes' },
 ];
 

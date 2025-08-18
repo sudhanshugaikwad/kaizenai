@@ -26,6 +26,7 @@ import {
   BookOpenCheck,
   UserSearch,
   Globe,
+  CalendarCheck,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -58,6 +59,7 @@ const iconMap: { [key: string]: React.ElementType } = {
   'HR Contact Search': UserSearch,
   'Interview Practice': BookOpenCheck,
   'Website Generated': Globe,
+  'Event Search': CalendarCheck,
 };
 
 export default function HistoryPage() {
@@ -216,5 +218,3 @@ export default function HistoryPage() {
     </motion.div>
   );
 }
-
-    
