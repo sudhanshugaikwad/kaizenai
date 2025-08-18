@@ -46,14 +46,14 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder', new: true },
+  { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
-  { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer', new: true },
-  { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher', new: true },
-  { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice', new: true },
-  { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder', new: true },
+  { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
+  { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
+  { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice' },
+  { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
   { href: '/dashboard/sticky-notes', icon: StickyNote, label: 'Sticky Notes' },
 ];
 
@@ -77,26 +77,13 @@ export default function DashboardLayout({
     const button = (
       <SidebarMenuButton
         isActive={pathname.startsWith(item.href)}
-        tooltip={!item.new ? item.label : undefined}
+        tooltip={item.label}
         className="flex-grow"
       >
         <item.icon className="w-5 h-5" />
         <span>{item.label}</span>
       </SidebarMenuButton>
     );
-
-    if (item.new) {
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            {button}
-          </TooltipTrigger>
-          <TooltipContent side="right" align="center">
-            New
-          </TooltipContent>
-        </Tooltip>
-      );
-    }
 
     return button;
   };
@@ -135,13 +122,7 @@ export default function DashboardLayout({
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center justify-between">
-             <div className="flex items-center gap-2">
-                <UserButton />
-                <span className="text-sm font-medium truncate">{user?.firstName ?? 'User'}</span>
-             </div>
             <ThemeToggle />
-          </div>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -163,7 +144,7 @@ export default function DashboardLayout({
                     Home
                 </Button>
             </Link>
-             <span className='hidden sm:inline text-sm font-medium text-muted-foreground'>Welcome, {user?.firstName ?? 'User'}!</span>
+            <UserButton />
           </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
