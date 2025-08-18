@@ -110,7 +110,7 @@ export default function RoadmapGeneratorPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-roadmap');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         sessionStorage.removeItem('kaizen-ai-reuse-roadmap');

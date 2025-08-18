@@ -61,7 +61,7 @@ export default function InterviewPracticeSetupPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-interview-practice');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         sessionStorage.removeItem('kaizen-ai-reuse-interview-practice');

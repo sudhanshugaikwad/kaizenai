@@ -68,7 +68,7 @@ export default function WebsiteBuilderPage() {
    useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-website-builder');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         sessionStorage.removeItem('kaizen-ai-reuse-website-builder');
@@ -100,7 +100,7 @@ export default function WebsiteBuilderPage() {
   useEffect(() => {
     try {
         const savedCode = localStorage.getItem('kaizen-ai-website-builder-code');
-        if (savedCode) {
+        if (savedCode && savedCode !== 'undefined') {
             setGeneratedCode(JSON.parse(savedCode));
         }
     } catch (e) {

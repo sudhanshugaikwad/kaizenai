@@ -49,7 +49,7 @@ export default function CoverLetterWriterPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-cover-letter');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         sessionStorage.removeItem('kaizen-ai-reuse-cover-letter');

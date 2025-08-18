@@ -61,7 +61,7 @@ export default function EventsHackathonsPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-event-finder');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         // Note: We can't reuse the file, but we can reuse the filters

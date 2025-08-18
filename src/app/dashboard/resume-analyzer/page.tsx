@@ -24,7 +24,7 @@ export default function ResumeAnalyzerPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-resume-analyzer');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         setJobDescription(parsedData.jobDescription || '');
         toast({ title: "Reusing previous job description.", description: "Please re-upload your resume." });

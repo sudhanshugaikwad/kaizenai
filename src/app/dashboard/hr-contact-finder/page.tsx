@@ -62,7 +62,7 @@ const departments = [
   "DevOps HR",
   "Blockchain HR",
   "Game Development HR",
-  "AR/VR HR",
+  "AR/VR HR"
 ];
 
 type HrContact = HrContactOutput['hrContacts'][0];
@@ -86,7 +86,7 @@ export default function HrContactFinderPage() {
   useEffect(() => {
     try {
       const reuseData = sessionStorage.getItem('kaizen-ai-reuse-hr-contact');
-      if (reuseData) {
+      if (reuseData && reuseData !== 'undefined') {
         const parsedData = JSON.parse(reuseData);
         form.reset(parsedData);
         // Note: We can't reuse the file, but we can reuse the department
