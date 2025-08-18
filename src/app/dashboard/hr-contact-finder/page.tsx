@@ -36,14 +36,33 @@ const formSchema = z.object({
   resume: z.any().optional(),
 });
 
-const departments = [
-    "IT HR",
-    "Data Science HR",
-    "Non-Tech HR",
-    "Marketing HR",
-    "Sales HR",
-    "Finance HR",
-    "University Relations"
+const departments = [ 
+  "IT HR",
+  "Data Science HR",
+  "Non-Tech HR",
+  "Marketing HR",
+  "Sales HR",
+  "Finance HR",
+  "Customer Support HR",
+  "Research & Development HR",
+  "Digital Marketing HR",
+  "SEO/SEM HR",
+  "Content Strategy HR",
+  "Social Media HR",
+  "Product Management HR",
+  "Business Intelligence HR",
+  "Data Analysis HR",
+  "AI & Machine Learning HR",
+  "Cybersecurity HR",
+  "UI/UX Designer HR",
+  "Frontend Developer HR",
+  "Backend Developer HR",
+  "Full Stack Developer HR",
+  "Mobile App Developer HR",
+  "DevOps HR",
+  "Blockchain HR",
+  "Game Development HR",
+  "AR/VR HR",
 ];
 
 type HrContact = HrContactOutput['hrContacts'][0];
@@ -294,6 +313,7 @@ export default function HrContactFinderPage() {
                     <DialogFooter className="sm:justify-start gap-2">
                         {selectedContact?.linkedInUrl && <Button asChild variant="outline"><Link href={selectedContact.linkedInUrl} target="_blank"><Linkedin className="w-4 h-4 mr-2"/> LinkedIn</Link></Button>}
                         {selectedContact?.naukriUrl && <Button asChild variant="outline"><Link href={selectedContact.naukriUrl} target="_blank"><ExternalLink className="w-4 h-4 mr-2"/> Naukri</Link></Button>}
+                        {selectedContact?.xingUrl && <Button asChild variant="outline"><Link href={selectedContact.xingUrl} target="_blank"><ExternalLink className="w-4 h-4 mr-2"/> Xing</Link></Button>}
                         <DialogClose asChild><Button type="button" variant="secondary">Close</Button></DialogClose>
                     </DialogFooter>
                 </DialogContent>

@@ -32,6 +32,7 @@ const HrContactOutputSchema = z.object({
       contactNumber: z.string().optional().describe('The contact phone number of the HR professional, if available.'),
       linkedInUrl: z.string().optional().describe('A URL to the HR professional\'s LinkedIn profile.'),
       naukriUrl: z.string().optional().describe('A URL to the HR professional\'s profile on Naukri.com or other relevant job boards.'),
+      xingUrl: z.string().optional().describe('A URL to the HR professional\'s profile on Xing.'),
     })
   ).describe('A list of 5-10 HR contacts based on the search criteria. Prioritize contacts in major Indian cities.'),
 });
@@ -46,7 +47,7 @@ const prompt = ai.definePrompt({
   name: 'hrContactPrompt',
   input: {schema: HrContactInputSchema},
   output: {schema: HrContactOutputSchema},
-  prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups.
+  prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups and large global corporations.
 
   **Search Criteria:**
   - **Department:** {{{department}}}
@@ -67,7 +68,7 @@ const prompt = ai.definePrompt({
       - A valid professional Email Address
       - Contact Number (if publicly available)
       - A link to their LinkedIn profile.
-      - A link to their profile on relevant international job boards (e.g., Indeed, Glassdoor).
+      - A link to their profile on relevant international job boards (e.g., Naukri, Xing, Indeed, Glassdoor).
 
   **IMPORTANT**: If the resume is invalid or cannot be read, proceed with the search based only on the department name and return an empty string for the 'userRole'. If no contacts can be found, return an empty array for 'hrContacts'. Do not throw an error.
   `,
@@ -84,3 +85,5 @@ const hrContactFinderFlow = ai.defineFlow(
     return output!;
   }
 );
+
+    
