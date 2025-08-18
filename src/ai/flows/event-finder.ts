@@ -12,7 +12,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const EventFinderInputSchema = z.object({
+const EventFinderInputSchema = z.object({
   resumeDataUri: z.string().optional().describe(
       "An optional resume file, as a data URI, to identify the user's role and find relevant events. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
   ),
@@ -23,7 +23,7 @@ export const EventFinderInputSchema = z.object({
 });
 export type EventFinderInput = z.infer<typeof EventFinderInputSchema>;
 
-export const EventFinderOutputSchema = z.object({
+const EventFinderOutputSchema = z.object({
   userRole: z.string().optional().describe("The user's most likely job role based on the resume analysis. If no resume is provided, this can be empty."),
   events: z.array(
     z.object({
