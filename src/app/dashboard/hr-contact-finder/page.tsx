@@ -80,7 +80,9 @@ export default function HrContactFinderPage() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      department: '',
+    },
   });
   
   useEffect(() => {
@@ -356,3 +358,5 @@ export default function HrContactFinderPage() {
     </motion.div>
   );
 }
+
+    

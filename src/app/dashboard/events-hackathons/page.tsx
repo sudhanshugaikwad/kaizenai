@@ -55,7 +55,13 @@ export default function EventsHackathonsPage() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      eventType: '',
+      location: '',
+      city: '',
+      cost: '',
+      searchTerm: '',
+    },
   });
 
   useEffect(() => {
@@ -345,3 +351,5 @@ export default function EventsHackathonsPage() {
     </motion.div>
   );
 }
+
+    

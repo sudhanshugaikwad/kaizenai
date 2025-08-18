@@ -53,6 +53,8 @@ export default function InterviewPracticeSetupPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       role: '',
+      roundType: 'Beginner',
+      language: '',
     },
   });
 
@@ -253,3 +255,5 @@ export default function InterviewPracticeSetupPage() {
     </motion.div>
   );
 }
+
+    
