@@ -8,6 +8,7 @@ import {
   type ImperativePanelGroupHandle,
   type ImperativePanelHandle,
   PanelResizeHandle,
+  type PanelResizeHandleProps,
 } from "react-resizable-panels"
 
 import { cn } from "@/lib/utils"
@@ -33,7 +34,7 @@ const ResizablePanel = Panel
 
 const ResizableHandle = React.forwardRef<
   ImperativePanelHandle,
-  React.ComponentProps<typeof PanelResizeHandle> & {
+  PanelResizeHandleProps & {
     withHandle?: boolean
     className?: string
   }
