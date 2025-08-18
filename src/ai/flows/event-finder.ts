@@ -48,7 +48,7 @@ const prompt = ai.definePrompt({
   name: 'eventFinderPrompt',
   input: {schema: EventFinderInputSchema},
   output: {schema: EventFinderOutputSchema},
-  prompt: `You are an expert at finding professional development events, challenges, and hackathons for students and professionals. Your task is to find relevant opportunities from top platforms like Hack2Skill, MLH (Major League Hacking), HackerEarth, and GeeksforGeeks Contests.
+  prompt: `You are an expert at finding professional development events, webinars, challenges, and hackathons for students and professionals. Your task is to find relevant opportunities from top platforms like Hack2Skill, MLH (Major League Hacking), HackerEarth, and GeeksforGeeks Contests.
 
   **Search Criteria:**
   {{#if resumeDataUri}}
@@ -56,13 +56,13 @@ const prompt = ai.definePrompt({
     Resume: {{media url=resumeDataUri}}
   {{/if}}
   {{#if eventType}}- **Event Type:** {{{eventType}}} {{/if}}
-  {{#if location}}- **Location/Mode:** {{{location}}}. If a city name is provided, find events in that city. {{/if}}
+  {{#if location}}- **Location/Mode:** {{{location}}}. If a city name is provided, you must find events in that specific city. {{/if}}
   {{#if cost}}- **Cost:** {{{cost}}} {{/if}}
   {{#if searchTerm}}- **Search Term:** {{{searchTerm}}} {{/if}}
 
   **Instructions:**
-  1.  If a resume is provided, first determine the user's likely **Job Role**.
-  2.  Find **20 to 30 relevant events** that match the provided criteria.
+  1.  If a resume is provided, first determine the user's likely **Job Role** to find the most relevant events.
+  2.  Find **20 to 30 relevant events** that match the provided criteria. Your results should include a mix of hackathons, webinars, competitions, and other professional events.
   3.  Prioritize events that are recent or upcoming.
   4.  For each event, provide the following details:
       - Title
@@ -71,7 +71,7 @@ const prompt = ai.definePrompt({
       - Type (e.g., "Hackathon", "Webinar")
       - Date(s) (e.g., "18/08/2025" or "Aug 18-20, 2025")
       - Location ("Online" or city)
-      - A direct, original URL to apply or register. Ensure the link is not a redirect and leads to the main event page.
+      - A direct, **original URL** to apply or register. Ensure the link is not a redirect and leads to the main event page.
 
   **IMPORTANT**: If no events are found matching the criteria, return an empty array for 'events'. Do not throw an error.
   `,
