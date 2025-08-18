@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -24,6 +23,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -32,7 +32,7 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import Editor from '@monaco-editor/react';
-import { Loader2, Sparkles, Plus, Globe, FileCode, FileCss, FileJson, Copy, Code } from 'lucide-react';
+import { Loader2, Sparkles, Plus, Globe, FileCode, FileText, FileJson, Copy, Code } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -138,17 +138,21 @@ export default function WebsiteBuilderPage() {
     if (!generatedCode) return '';
     const { html, css, javascript } = generatedCode;
     
-    return `
+    const srcDoc = `
       <html>
         <head>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
           <style>${css}</style>
         </head>
         <body>
           ${html}
-          <script>${javascript}<\/script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+          <script>${javascript || ''}<\/script>
         </body>
       </html>
     `;
+    return srcDoc;
   }
 
   const activeCode = generatedCode?.[activeFile];
@@ -164,7 +168,7 @@ export default function WebsiteBuilderPage() {
 
   const fileIcons = {
     html: <FileCode className="h-4 w-4" />,
-    css: <FileCss className="h-4 w-4" />,
+    css: <FileText className="h-4 w-4" />,
     javascript: <FileJson className="h-4 w-4" />,
   }
 
