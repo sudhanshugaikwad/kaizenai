@@ -30,6 +30,7 @@ import GetInstantFeedback from "./assets/GetInstantFeedback.png"
 import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
+import { BackToTop } from '@/components/ui/back-to-top';
 
 
 const features = [
@@ -63,7 +64,7 @@ const features = [
     title: 'AI Job Matcher',
     description: 'Upload your resume and let our AI find the best, most recent job openings for you in India.',
     href: '/dashboard/job-matcher',
-    new: true,
+  
   },
 
   {
@@ -71,21 +72,21 @@ const features = [
     title: 'Interview Practice',
     description: 'Ace your interviews with AI-powered mock sessions and real-time feedback.',
     href: '/dashboard/interview-practice',
-    new: true,
+
   },
   {
     icon: <UserSearch className="h-8 w-8 text-primary" />,
     title: 'HR Contact Finder',
     description: 'Find HR contacts by department or by analyzing your resume for the best fit.',
     href: '/dashboard/hr-contact-finder',
-    new: true,
+  
   },
   {
     icon: <StickyNote className="h-8 w-8 text-primary" />,
     title: 'Sticky Notes',
     description: 'Organize your daily tasks and stay productive with AI-powered suggestions.',
     href: '/dashboard/sticky-notes',
-    new: true,
+ 
   },
   {
     icon: <Zap className="h-8 w-8 text-primary" />,
@@ -116,6 +117,26 @@ const footerFeatures = [
       title: 'Kaizen Ai Chat',
       href: '/dashboard/kaizen-ai-chat',
     },
+    {
+        title: 'Interview Practice',
+        href: '/dashboard/interview-practice',
+    },
+    {
+        title: 'HR Contact Finder',
+        href: '/dashboard/hr-contact-finder',
+    },
+    {
+        title: 'Events & Hackathons',
+        href: '/dashboard/events-hackathons',
+    },
+    {
+        title: 'Sticky Notes',
+        href: '/dashboard/sticky-notes',
+    },
+    {
+        title: 'Website Builder',
+        href: '/dashboard/website-builder',
+    }
   ];
 
 
@@ -324,12 +345,7 @@ export default function Home() {
             {features.map((feature, index) => (
               <motion.div key={feature.title} variants={itemVariants}>
                   <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
-                      {feature.new && (
-                        <span className="absolute top-4 right-4 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#b692f4] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-[#b692f4]"></span>
-                        </span>
-                      )}
+                    
                       <CardHeader className="flex flex-col items-center text-center">
                         <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
                         <CardTitle>{feature.title}</CardTitle>
@@ -421,7 +437,7 @@ export default function Home() {
             <div className="col-span-1 md:col-span-1">
               <h4 className="font-semibold mb-2">Tools</h4>
               <ul className="space-y-2 text-muted-foreground">
-                {footerFeatures.slice(0, 5).map((f) => (
+                {footerFeatures.map((f) => (
                   <li key={f.title}>
                     <Link href={f.href} className="hover:text-primary">
                       {f.title}
@@ -467,6 +483,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <BackToTop />
     </div>
   );
 }
