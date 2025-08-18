@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -27,6 +28,7 @@ import {
   UserSearch,
   Globe,
   CalendarCheck,
+  RefreshCw,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -62,10 +64,22 @@ const iconMap: { [key: string]: React.ElementType } = {
   'Event Search': CalendarCheck,
 };
 
+const reuseActionMap: { [key: string]: { url: string; storageKey: string, dataKey?: string } } = {
+    'Roadmap Generated': { url: '/dashboard/roadmap-generator', storageKey: 'kaizen-ai-reuse-roadmap', dataKey: 'input' },
+    'Resume Analysis': { url: '/dashboard/resume-analyzer', storageKey: 'kaizen-ai-reuse-resume-analyzer' },
+    'Cover Letter Generated': { url: '/dashboard/cover-letter-writer', storageKey: 'kaizen-ai-reuse-cover-letter' },
+    'HR Contact Search': { url: '/dashboard/hr-contact-finder', storageKey: 'kaizen-ai-reuse-hr-contact', dataKey: 'input' },
+    'Event Search': { url: '/dashboard/events-hackathons', storageKey: 'kaizen-ai-reuse-event-finder', dataKey: 'input' },
+    'Interview Practice': { url: '/dashboard/interview-practice', storageKey: 'kaizen-ai-reuse-interview-practice' },
+    'Website Generated': { url: '/dashboard/website-builder', storageKey: 'kaizen-ai-reuse-website-builder', dataKey: 'input' },
+};
+
+
 export default function HistoryPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -101,6 +115,23 @@ export default function HistoryPage() {
       });
     }
   };
+
+  const handleReuse = (item: HistoryItem) => {
+    const action = reuseActionMap[item.type];
+    if (action) {
+      try {
+        const dataToStore = action.dataKey ? item.data[action.dataKey] : item.data;
+        sessionStorage.setItem(action.storageKey, JSON.stringify(dataToStore));
+        router.push(action.url);
+      } catch (e) {
+        console.error("Could not save reuse data", e);
+        toast({ title: "Error", description: "Could not reuse this item.", variant: "destructive" });
+      }
+    } else {
+        toast({ title: "Not reusable", description: "This type of history item cannot be reused.", variant: "destructive" });
+    }
+  };
+
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -183,6 +214,7 @@ export default function HistoryPage() {
             <Accordion type="single" collapsible className="w-full">
               {history.map((item, index) => {
                 const Icon = iconMap[item.type] || Clock;
+                const isReusable = !!reuseActionMap[item.type];
                 return (
                   <AccordionItem
                     value={`item-${index}`}
@@ -190,17 +222,32 @@ export default function HistoryPage() {
                     className="border-b"
                   >
                     <AccordionTrigger className="px-6 py-4 hover:bg-muted/50">
-                      <div className="flex items-center gap-4">
-                        <Icon className="h-6 w-6 text-primary" />
-                        <div className="text-left">
-                          <p className="font-semibold">{item.type}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {item.title}
-                          </p>
-                          <p className="text-xs text-muted-foreground/80 mt-1">
-                            {new Date(item.timestamp).toLocaleString()}
-                          </p>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-4">
+                            <Icon className="h-6 w-6 text-primary" />
+                            <div className="text-left">
+                            <p className="font-semibold">{item.type}</p>
+                            <p className="text-sm text-muted-foreground">
+                                {item.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground/80 mt-1">
+                                {new Date(item.timestamp).toLocaleString()}
+                            </p>
+                            </div>
                         </div>
+                        {isReusable && (
+                            <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="mr-4"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleReuse(item);
+                                }}
+                            >
+                                <RefreshCw className="mr-2 h-4 w-4"/> Reuse
+                            </Button>
+                        )}
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-6 pb-6 bg-muted/20">

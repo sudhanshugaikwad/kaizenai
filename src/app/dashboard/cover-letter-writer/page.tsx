@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -45,6 +45,20 @@ export default function CoverLetterWriterPage() {
       experience: '',
     },
   });
+
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-cover-letter');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        sessionStorage.removeItem('kaizen-ai-reuse-cover-letter');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
+
 
   const saveToHistory = (values: z.infer<typeof formSchema>, generatedCoverLetter: string) => {
     try {

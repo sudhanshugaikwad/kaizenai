@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { analyzeResume, type AnalyzeResumeOutput } from '@/ai/flows/resume-analyzer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -20,6 +20,21 @@ export default function ResumeAnalyzerPage() {
   const [fileName, setFileName] = useState<string>('');
   const [jobDescription, setJobDescription] = useState('');
   const { toast } = useToast();
+
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-resume-analyzer');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        setJobDescription(parsedData.jobDescription || '');
+        toast({ title: "Reusing previous job description.", description: "Please re-upload your resume." });
+        sessionStorage.removeItem('kaizen-ai-reuse-resume-analyzer');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [toast]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];

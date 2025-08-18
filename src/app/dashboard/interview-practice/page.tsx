@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -57,6 +57,20 @@ export default function InterviewPracticeSetupPage() {
   });
 
   const roundType = form.watch('roundType');
+
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-interview-practice');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        sessionStorage.removeItem('kaizen-ai-reuse-interview-practice');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
+
 
   const fileToDataUri = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -58,6 +58,21 @@ export default function EventsHackathonsPage() {
     defaultValues: {},
   });
 
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-event-finder');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        // Note: We can't reuse the file, but we can reuse the filters
+        sessionStorage.removeItem('kaizen-ai-reuse-event-finder');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
+
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -76,14 +91,14 @@ export default function EventsHackathonsPage() {
     });
   };
 
-  const saveToHistory = (output: EventFinderOutput) => {
+  const saveToHistory = (input: z.infer<typeof formSchema>, output: EventFinderOutput) => {
     try {
         const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
         const newHistoryItem = {
             type: 'Event Search',
             title: `Found ${output.events.length} events`,
             timestamp: new Date().toISOString(),
-            data: output
+            data: { input, output }
         };
         history.unshift(newHistoryItem);
         localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));
@@ -112,7 +127,7 @@ export default function EventsHackathonsPage() {
         });
       setResult(eventResult);
       if (eventResult.events.length > 0) {
-        saveToHistory(eventResult);
+        saveToHistory(values, eventResult);
       }
     } catch (error) {
       console.error('Failed to find events:', error);

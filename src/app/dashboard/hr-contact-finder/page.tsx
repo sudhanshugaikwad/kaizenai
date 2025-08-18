@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -82,6 +82,21 @@ export default function HrContactFinderPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
+  
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-hr-contact');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        // Note: We can't reuse the file, but we can reuse the department
+        sessionStorage.removeItem('kaizen-ai-reuse-hr-contact');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -108,7 +123,10 @@ export default function HrContactFinderPage() {
             type: 'HR Contact Search',
             title: `Found ${output.hrContacts.length} contacts for department: ${form.getValues('department')}`,
             timestamp: new Date().toISOString(),
-            data: output
+            data: {
+                input: { department: form.getValues('department') },
+                output
+            }
         };
         history.unshift(newHistoryItem);
         localStorage.setItem('kaizen-ai-history', JSON.stringify(history.slice(0, 50)));

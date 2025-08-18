@@ -64,6 +64,19 @@ export default function WebsiteBuilderPage() {
       prompt: '',
     },
   });
+
+   useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-website-builder');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        sessionStorage.removeItem('kaizen-ai-reuse-website-builder');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
   
   const saveToHistory = (values: z.infer<typeof formSchema>, output: WebsiteBuilderOutput) => {
     try {

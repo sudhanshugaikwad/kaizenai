@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -106,6 +106,19 @@ export default function RoadmapGeneratorPage() {
       careerGoal: '',
     },
   });
+
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-roadmap');
+      if (reuseData) {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        sessionStorage.removeItem('kaizen-ai-reuse-roadmap');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
 
   const { nodes, edges } = useMemo(() => {
     if (!roadmap) return { nodes: [], edges: [] };
