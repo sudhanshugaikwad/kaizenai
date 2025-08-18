@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Search, UserCheck, Briefcase, ExternalLink, Calendar, MapPin, Ticket } from 'lucide-react';
+import { Loader2, FileUp, Search, UserCheck, Briefcase, ExternalLink, Calendar, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
@@ -47,7 +47,10 @@ export default function EventsHackathonsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
+
+  const eventsPerPage = 9;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -91,6 +94,7 @@ export default function EventsHackathonsPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setResult(null);
+    setCurrentPage(1);
 
     try {
       let resumeDataUri: string | undefined = undefined;
@@ -99,7 +103,9 @@ export default function EventsHackathonsPage() {
       }
       const eventResult = await findEvents({ ...values, resumeDataUri });
       setResult(eventResult);
-      saveToHistory(eventResult);
+      if (eventResult.events.length > 0) {
+        saveToHistory(eventResult);
+      }
     } catch (error) {
       console.error('Failed to find events:', error);
       toast({
@@ -121,6 +127,18 @@ export default function EventsHackathonsPage() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
+
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = result?.events.slice(indexOfFirstEvent, indexOfLastEvent) || [];
+  const totalPages = result ? Math.ceil(result.events.length / eventsPerPage) : 0;
+
+  const paginate = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+    }
+  };
+
 
   return (
     <motion.div 
@@ -207,7 +225,7 @@ export default function EventsHackathonsPage() {
         </motion.div>
       )}
 
-      {result && (
+      {result && result.events.length > 0 && !isLoading && (
         <motion.div className="space-y-6" variants={containerVariants}>
             {result.userRole &&
                 <motion.div variants={itemVariants}>
@@ -226,7 +244,7 @@ export default function EventsHackathonsPage() {
             <motion.h2 className="text-2xl font-bold tracking-tight" variants={itemVariants}>Found {result.events.length} Events</motion.h2>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {result.events.map((event, index) => (
+                {currentEvents.map((event, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <Card className="flex flex-col h-full">
                             <CardHeader>
@@ -238,7 +256,8 @@ export default function EventsHackathonsPage() {
                                    <Briefcase className="w-4 h-4" /> {event.platform}
                                 </CardDescription>
                             </CardHeader>
-                            <CardContent className="flex-grow space-y-2">
+                            <CardContent className="flex-grow space-y-3">
+                                <p className="text-sm text-muted-foreground line-clamp-3">{event.description}</p>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                     <Calendar className="w-4 h-4" />
                                     <span>{event.date}</span>
@@ -259,6 +278,23 @@ export default function EventsHackathonsPage() {
                     </motion.div>
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <motion.div className="flex justify-center items-center gap-4" variants={itemVariants}>
+                    <Button variant="outline" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                        <ChevronLeft className="w-4 h-4 mr-2" />
+                        Previous
+                    </Button>
+                    <span className="text-sm font-medium">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <Button variant="outline" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+                        Next
+                        <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                </motion.div>
+            )}
+
         </motion.div>
       )}
 

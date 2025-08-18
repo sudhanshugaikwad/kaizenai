@@ -28,13 +28,14 @@ const EventFinderOutputSchema = z.object({
   events: z.array(
     z.object({
       title: z.string().describe('The title of the event.'),
+      description: z.string().describe('A short, compelling description of the event.'),
       platform: z.string().describe('The platform hosting the event (e.g., "Hack2Skill", "MLH", "HackerEarth", "GeeksforGeeks Contests").'),
       type: z.string().describe('The type of event (e.g., "Hackathon", "Webinar", "Competition").'),
-      date: z.string().describe('The date or date range of the event.'),
+      date: z.string().describe('The date or date range of the event (e.g., "18/08/2025" or "Aug 18-20, 2025").'),
       location: z.string().describe('The location of the event (e.g., "Online", "City Name").'),
       applyLink: z.string().url().describe('The direct URL to the event registration or application page.'),
     })
-  ).describe('A list of up to 20 relevant events, hackathons, or challenges based on the search criteria.'),
+  ).describe('A list of 20 to 30 relevant events, hackathons, or challenges based on the search criteria.'),
 });
 export type EventFinderOutput = z.infer<typeof EventFinderOutputSchema>;
 
@@ -61,13 +62,14 @@ const prompt = ai.definePrompt({
 
   **Instructions:**
   1.  If a resume is provided, first determine the user's likely **Job Role**.
-  2.  Find up to **20 relevant events** that match the provided criteria.
+  2.  Find **20 to 30 relevant events** that match the provided criteria.
   3.  Prioritize events that are recent or upcoming.
   4.  For each event, provide the following details:
       - Title
+      - A short, compelling description.
       - Platform (e.g., "Hack2Skill", "MLH")
       - Type (e.g., "Hackathon", "Webinar")
-      - Date(s)
+      - Date(s) (e.g., "18/08/2025" or "Aug 18-20, 2025")
       - Location ("Online" or city)
       - A direct URL to apply or register.
 
