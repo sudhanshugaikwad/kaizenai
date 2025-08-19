@@ -274,12 +274,7 @@ export default function Home() {
                 </SignedIn>
                 <SignedOut>
                     <div className="flex items-center gap-2">
-                        <Link href="/sign-in">
-                            <Button variant="outline">
-                            Login <LogIn className="ml-2 h-4 w-4" />
-                            </Button>
-                        </Link>
-                        <Link href="https://github.com/sudhanshugaikwad/kaizenai" target="_blank" rel="noopener noreferrer">
+                    <Link href="https://github.com/sudhanshugaikwad/kaizenai" target="_blank" rel="noopener noreferrer">
                             <Button variant="outline" className="gap-2">
                                 <Github className="h-5 w-5" />
                                 GitHub
@@ -288,6 +283,12 @@ export default function Home() {
                                 <span>130k</span>
                             </Button>
                         </Link>
+                        <Link href="/sign-in">
+                            <Button variant="outline">
+                            Login <LogIn className="ml-2 h-4 w-4" />
+                            </Button>
+                        </Link>
+                        
                     </div>
                 </SignedOut>
                 <ThemeToggle />

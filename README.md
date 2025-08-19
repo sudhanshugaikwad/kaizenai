@@ -1,47 +1,66 @@
-# Kaizen AI
 
-**Author:** Sudhanshu Gaikwad
+<div align="center">
+  <a href="https://kaizen-ai.vercel.app/">
+    <img src="https://github.com/sudhanshugaikwad/kaizenai/assets/81013454/3133f9e9-b847-4632-94a2-e0839c4d7b30" alt="Kaizen-AI" />
+  </a>
+</div>
 
-## About Kaizen AI
+<div align="center">
 
-**Kaizen AI** is a comprehensive, AI-powered career coaching platform designed to empower students, job seekers, and professionals. By leveraging cutting-edge generative AI, Kaizen AI provides a suite of intelligent tools that streamline the job search process, offer personalized guidance, and help users confidently navigate their career paths.
+# Kaizen AI - Your Intelligent Career Coach
 
-Our mission is to eliminate the friction in career growth by providing accessible, smart, and actionable tools that help users land their dream jobs.
+**Kaizen AI** is your intelligent career companion, providing resume analysis, personalized learning paths, and career guidance to help students, job seekers, and professionals unlock new opportunities.
 
-## Key Features
+</div>
 
--   **AI Roadmap Generator:** Get a personalized, step-by-step career plan with timelines, resources, and project ideas tailored to your goals.
--   **AI Resume Analyzer:** Receive an instant, in-depth analysis of your resume with an overall score, improvement suggestions, and ATS keyword matching.
--   **AI Cover Letter Writer:** Generate compelling, professional cover letters customized for any job application in seconds.
--   **AI Job Matcher:** Upload your resume and let our AI find the most relevant job and internship openings in India.
--   **Kaizen AI Chat:** Get 24/7 career advice from our AI coach on any topic, from interview preparation to salary negotiation.
--   **Interview Practice:** Ace your next interview with AI-powered mock interviews, personalized questions, and real-time feedback.
--   **HR Contact Finder:** Discover relevant HR contacts by department or by analyzing your resume.
--   **Sticky Notes:** A simple and effective tool to organize your daily tasks and boost your productivity.
+---
 
-## Tech Stack
+### Resources
 
--   **Framework:** Next.js (with App Router)
--   **Language:** TypeScript
--   **Authentication:** Clerk
--   **AI/Generative AI:** Google's Gemini models via Genkit
--   **Styling:** Tailwind CSS
--   **UI Components:** ShadCN
--   **Database/Storage:** Browser `localStorage` for user-generated content like tasks and feedback.
+- **Website**: Visit the official website at [kaizen-ai.vercel.app](https://kaizen-ai.vercel.app/).
+- **Discord**: Join our community on [Discord](https://discord.com/invite/fM4sSj22).
 
-## Getting Started
+---
 
-To get started with the application:
+### Quick Start
 
-1.  **Sign Up:** Create a free account to access the dashboard.
-2.  **Explore the Tools:** Navigate through the sidebar to access the various AI-powered features.
-3.  **Generate Content:** Use the tools to create roadmaps, analyze your resume, and generate cover letters. Your activity will be saved in the "History" tab.
+To get started with Kaizen AI, follow these steps:
 
-### Admin Panel Access
+1.  **Create an Account**: [Sign up for free](https://kaizen-ai.vercel.app/sign-up) to get instant access.
+2.  **Explore the Dashboard**: Navigate through the tools in the sidebar to get started.
+3.  **Use AI Tools**: Leverage our specialized AI to generate personalized career assets.
+4.  **Get Instant Feedback**: Receive actionable insights and content to improve your job applications.
+5.  **Land Your Dream Job**: Apply with confidence using your newly optimized resume and cover letter.
 
-To access the admin panel, you must first assign an "admin" role to your user account via the Clerk dashboard.
+---
 
-1.  Go to your **Clerk Dashboard** -> **Users**.
-2.  Select your user and navigate to the **Metadata** section.
-3.  In **Public Metadata**, add a new entry with `role` as the key and `admin` as the value.
-4.  Log back into the application. The "Admin Panel" link will now be visible in the sidebar.
+### Key Capabilities
+
+-   **AI Roadmap Generator**: Get a personalized, step-by-step career plan with timelines, resources, and project ideas.
+-   **AI Resume Analyzer**: Receive an in-depth analysis of your resume with an overall score and improvement suggestions.
+-   **AI Cover Letter Writer**: Generate compelling, professional cover letters customized for any job application.
+-   **AI Job Matcher**: Upload your resume and let our AI find the most relevant job and internship openings.
+-   **Kaizen AI Chat**: Get 24/7 career advice from our AI coach on any topic.
+-   **Interview Practice**: Ace your next interview with AI-powered mock interviews and real-time feedback.
+-   **HR Contact Finder**: Discover relevant HR contacts by department or by analyzing your resume.
+-   **Sticky Notes**: Organize your daily tasks and boost your productivity.
+
+---
+
+### Contributing
+
+We welcome contributions to Kaizen AI! If you'd like to contribute, please follow these steps:
+
+1.  **Fork the repository**.
+2.  **Create a new branch** for your feature or bug fix.
+3.  **Make your changes** and commit them with a clear message.
+4.  **Push your branch** to your fork.
+5.  **Submit a pull request** to the main repository.
+
+---
+
+### What does Kaizen AI mean?
+
+"Kaizen" is a Japanese term meaning "change for the better" or "continuous improvement." It is a philosophy that encourages making small, ongoing positive changes that can lead to significant improvements over time.
+
+At Kaizen AI, we apply this philosophy to your career. Our tools are designed to help you make incremental but powerful improvements to your professional life, from refining your resume to charting your career path. With Kaizen AI, you can continuously grow, adapt, and achieve your goals.
