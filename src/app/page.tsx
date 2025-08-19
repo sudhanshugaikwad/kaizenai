@@ -33,6 +33,7 @@ import LandYourDreamJob from "./assets/LandYourDreamJob.png"
 import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
+import LatestArticlesSection from './LatestArticlesSection';
 
 
 const features = [
@@ -397,6 +398,19 @@ export default function Home() {
             </div>
           </div>
         </motion.section>
+        
+        <HowItWorksSection />
+        
+        <motion.section 
+            id="articles"
+            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            initial="hidden"
+            whileInView="visible"
+            variants={sectionVariants}
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <LatestArticlesSection />
+        </motion.section>
 
         <motion.section 
             id="testimonials"
@@ -408,8 +422,6 @@ export default function Home() {
         >
             <TestimonialsSection />
         </motion.section>
-
-        <HowItWorksSection />
 
         {/* CTA Section */}
         <motion.section
