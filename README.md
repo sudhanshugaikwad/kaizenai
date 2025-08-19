@@ -1,7 +1,7 @@
 
 <div align="center">
   <a href="https://kaizen-ai.vercel.app/">
-    <img src="https://github.com/sudhanshugaikwad/kaizenai/assets/81013454/3133f9e9-b847-4632-94a2-e0839c4d7b30" alt="Kaizen-AI" />
+    <img src="https://github.com/sudhanshugaikwad/kaizenai/blob/main/KaizenAiCoverimg.png" alt="Kaizen-AI" />
   </a>
 </div>
 
