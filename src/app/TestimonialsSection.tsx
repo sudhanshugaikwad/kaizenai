@@ -55,8 +55,15 @@ const defaultTestimonials: Feedback[] = [
 
 export default function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<Feedback[]>(defaultTestimonials);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isMounted) return;
+
         try {
             const storedFeedback = localStorage.getItem('kaizen-ai-feedback');
             if (storedFeedback) {
@@ -72,7 +79,12 @@ export default function TestimonialsSection() {
         } catch (e) {
             console.error("Could not load feedback from localStorage", e);
         }
-    }, []);
+    }, [isMounted]);
+
+  if (!isMounted) {
+      // Render a placeholder or nothing on the server and initial client render
+      return null;
+  }
 
   return (
     <div className="text-center">
