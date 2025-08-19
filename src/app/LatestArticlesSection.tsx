@@ -28,7 +28,7 @@ type Article = {
   tag_list: string[];
 };
 
-const AI_TAGS = ['ai', 'machinelearning', 'artificialintelligence', 'genai', 'llm'];
+const RELEVANT_TAGS = ['ai', 'machinelearning', 'artificialintelligence', 'genai', 'llm', 'react', 'javascript', 'reactjs'];
 
 export default function LatestArticlesSection() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -42,10 +42,10 @@ export default function LatestArticlesSection() {
                     throw new Error('Failed to fetch articles');
                 }
                 const data: Article[] = await response.json();
-                const aiArticles = data.filter(article => 
-                    article.tag_list.some(tag => AI_TAGS.includes(tag.toLowerCase()))
+                const relevantArticles = data.filter(article => 
+                    article.tag_list.some(tag => RELEVANT_TAGS.includes(tag.toLowerCase()))
                 );
-                setArticles(aiArticles);
+                setArticles(relevantArticles);
             } catch (error) {
                 console.error(error);
             } finally {
