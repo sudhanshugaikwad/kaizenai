@@ -1,4 +1,3 @@
-
 'use client';
 
 import { UserProfile } from '@clerk/nextjs';
@@ -23,13 +22,18 @@ const UserProfilePage = () => {
       <div className="flex justify-center">
         <UserProfile
           path="/dashboard/profile"
+          routing="path"
           appearance={{
             elements: {
               card: 'shadow-none',
               rootBox: 'w-full',
             },
           }}
-        />
+        >
+          <UserProfile.Page label="Billing" url="billing" labelIcon={<span>💳</span>}>
+            {/* Custom billing page content can go here */}
+          </UserProfile.Page>
+        </UserProfile>
       </div>
     </motion.div>
   );

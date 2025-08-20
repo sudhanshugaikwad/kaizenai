@@ -61,7 +61,7 @@ const navItems = [
 
 const accountItems = [
     { href: '/dashboard/profile', icon: User, label: 'Profile' },
-    { href: '/dashboard/billing', icon: CreditCard, label: 'Billing' },
+    { href: '/dashboard/profile/billing', icon: CreditCard, label: 'Billing' },
     { href: '/dashboard/history', icon: History, label: 'History' },
     { href: '/dashboard/feedback', icon: Star, label: 'Manage Feedback' },
     { href: '/dashboard/certification', icon: Award, label: 'Generate Certification' },
