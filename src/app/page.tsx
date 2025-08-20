@@ -33,7 +33,7 @@ import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
-import TestimonialsSection from './TestimonialsSection';
+import PricingSection from './PricingSection';
 
 
 const features = [
@@ -413,6 +413,17 @@ export default function Home() {
             viewport={{ once: true, amount: 0.2 }}
         >
             <LatestArticlesSection />
+        </motion.section>
+
+        <motion.section 
+            id="pricing"
+            className="py-16"
+            initial="hidden"
+            whileInView="visible"
+            variants={sectionVariants}
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <PricingSection />
         </motion.section>
 
         {/* CTA Section */}
