@@ -10,6 +10,8 @@ import DeveloperTeamSection from "./DeveloperTeamSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from 'framer-motion';
+import TestimonialsSection from "../TestimonialsSection";
+
 export default function AboutPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -106,6 +108,11 @@ export default function AboutPage() {
               </Link>
             </div>
           </div>
+        </motion.div>
+
+        {/* Testimonials Section */}
+        <motion.div variants={itemVariants}>
+          <TestimonialsSection />
         </motion.div>
 
         {/* Services Section */}

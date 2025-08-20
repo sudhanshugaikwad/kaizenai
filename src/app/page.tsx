@@ -20,7 +20,6 @@ import {
   Star
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
-import TestimonialsSection from './TestimonialsSection';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Image from "next/image";
 import logo from "./Kaizenai.png"
@@ -34,6 +33,7 @@ import { motion } from 'framer-motion';
 import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
+import TestimonialsSection from './TestimonialsSection';
 
 
 const features = [
@@ -413,17 +413,6 @@ export default function Home() {
             viewport={{ once: true, amount: 0.2 }}
         >
             <LatestArticlesSection />
-        </motion.section>
-
-        <motion.section 
-            id="testimonials"
-            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-            initial="hidden"
-            whileInView="visible"
-            variants={sectionVariants}
-            viewport={{ once: true, amount: 0.2 }}
-        >
-            <TestimonialsSection />
         </motion.section>
 
         {/* CTA Section */}
