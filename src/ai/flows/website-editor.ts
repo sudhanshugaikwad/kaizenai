@@ -14,7 +14,7 @@ import {
 } from './website-builder.types';
 import { z } from 'genkit';
 
-export const WebsiteEditorInputSchema = z.object({
+const WebsiteEditorInputSchema = z.object({
   html: z.string().describe('The current HTML code of the website.'),
   css: z.string().describe('The current CSS code of the website.'),
   javascript: z.string().optional().describe('The current JavaScript code of the website.'),
