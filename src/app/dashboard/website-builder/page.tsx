@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { generateWebsite } from '@/ai/flows/website-builder';
+import { generateWebsitePrompt } from '@/ai/flows/website-prompt-generator';
 import type { WebsiteBuilderOutput } from '@/ai/flows/website-builder.types';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +33,7 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import Editor from '@monaco-editor/react';
-import { Loader2, Sparkles, Plus, Globe, FileCode, FileText, FileJson, Copy, Code } from 'lucide-react';
+import { Loader2, Sparkles, Plus, Globe, FileCode, FileText, FileJson, Copy, Code, Wand2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -52,6 +53,7 @@ type FileType = 'html' | 'css' | 'javascript';
 export default function WebsiteBuilderPage() {
   const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPromptLoading, setIsPromptLoading] = useState(false);
   const [activeFile, setActiveFile] = useState<FileType>('html');
   const { toast } = useToast();
   const { theme } = useTheme();
@@ -135,6 +137,25 @@ export default function WebsiteBuilderPage() {
       })
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  const handleAiPrompt = async () => {
+    const websiteName = form.getValues('name');
+    if (!websiteName.trim()) {
+        form.setError('name', { type: 'manual', message: 'Please enter a website name first.' });
+        return;
+    }
+    setIsPromptLoading(true);
+    try {
+        const result = await generateWebsitePrompt({ websiteName });
+        form.setValue('prompt', result.prompt);
+        toast({ title: "Prompt Generated!", description: "The AI has created a prompt for you." });
+    } catch (error) {
+        console.error('Failed to generate prompt:', error);
+        toast({ title: "Error", description: "Failed to generate AI prompt. Please try again.", variant: "destructive" });
+    } finally {
+        setIsPromptLoading(false);
     }
   }
 
@@ -246,7 +267,15 @@ export default function WebsiteBuilderPage() {
                                     )} />
                                 </div>
                                 <FormField control={form.control} name="prompt" render={({ field }) => (
-                                    <FormItem><FormLabel>Write a prompt for the website...</FormLabel><FormControl><Textarea placeholder="Describe the website you want to create. Include details about the layout, sections (e.g., hero, about, portfolio, contact), color scheme, and overall style." rows={5} {...field} /></FormControl><FormMessage /></FormItem>
+                                    <FormItem>
+                                        <div className="flex justify-between items-center">
+                                            <FormLabel>Write a prompt for the website...</FormLabel>
+                                            <Button type="button" variant="outline" size="sm" onClick={handleAiPrompt} disabled={isPromptLoading}>
+                                                {isPromptLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Wand2 className="mr-2 h-4 w-4" />}
+                                                AI Generate Prompt
+                                            </Button>
+                                        </div>
+                                    <FormControl><Textarea placeholder="Describe the website you want to create. Include details about the layout, sections (e.g., hero, about, portfolio, contact), color scheme, and overall style." rows={5} {...field} /></FormControl><FormMessage /></FormItem>
                                 )} />
                                 
                                 <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
@@ -327,5 +356,3 @@ export default function WebsiteBuilderPage() {
     </motion.div>
   );
 }
-
-    
