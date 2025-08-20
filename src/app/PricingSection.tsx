@@ -64,7 +64,7 @@ const plans = [
         buttonVariant: 'default',
         highlight: true,
         badge: 'Most Popular',
-        href: '/dashboard/billing',
+        href: '/dashboard/profile/billing',
     },
     {
         name: 'Premium Plan',
@@ -88,7 +88,7 @@ const plans = [
         buttonText: 'Get Started Premium',
         buttonVariant: 'outline',
         highlight: false,
-        href: '/dashboard/billing',
+        href: '/dashboard/profile/billing',
     },
 ];
 

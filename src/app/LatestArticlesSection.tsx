@@ -17,6 +17,7 @@ type Article = {
   url: string;
   cover_image: string | null;
   published_at: string;
+  tag_list: string[];
 };
 
 const RELEVANT_TAGS = ['ai', 'machinelearning', 'artificialintelligence', 'genai', 'llm', 'react', 'javascript', 'reactjs'];
