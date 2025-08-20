@@ -115,14 +115,16 @@ export default function AboutPage() {
             <DeveloperTeamSection />
         </motion.div>
 
-        {/* Testimonials Section */}
-        <motion.div variants={itemVariants}>
-          <TestimonialsSection />
-        </motion.div>
+   
 
         {/* Services Section */}
         <motion.div variants={itemVariants}>
             <ServicesSection />
+        </motion.div>
+
+             {/* Testimonials Section */}
+             <motion.div variants={itemVariants}>
+          <TestimonialsSection />
         </motion.div>
         
         {/* Footer */}

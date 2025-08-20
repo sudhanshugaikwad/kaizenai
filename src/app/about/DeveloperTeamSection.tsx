@@ -38,7 +38,7 @@ export default function DeveloperTeamSection() {
                 <h3 className="text-3xl font-bold text-center mb-8">Meet the Team</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {teamMembers.map((member, index) => (
-                        <Card key={index} className="w-full max-w-sm text-center mx-auto">
+                        <Card key={index} className="w-full max-w-sm text-center mx-auto hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1">
                             <CardContent className="p-6">
                                 <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-primary">
                                     <AvatarImage src={member.avatar} alt={member.name} />
