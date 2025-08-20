@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { generateWebsite } from '@/ai/flows/website-builder';
 import { generateWebsitePrompt } from '@/ai/flows/website-prompt-generator';
+import { editWebsite } from '@/ai/flows/website-editor';
 import type { WebsiteBuilderOutput } from '@/ai/flows/website-builder.types';
 import { Button } from '@/components/ui/button';
 import {
@@ -53,8 +54,10 @@ type FileType = 'html' | 'css' | 'javascript';
 export default function WebsiteBuilderPage() {
   const [generatedCode, setGeneratedCode] = useState<WebsiteBuilderOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isPromptLoading, setIsPromptLoading] = useState(false);
   const [activeFile, setActiveFile] = useState<FileType>('html');
+  const [changeRequest, setChangeRequest] = useState('');
   const { toast } = useToast();
   const { theme } = useTheme();
 
@@ -80,12 +83,12 @@ export default function WebsiteBuilderPage() {
     }
   }, [form]);
   
-  const saveToHistory = (values: z.infer<typeof formSchema>, output: WebsiteBuilderOutput) => {
+  const saveToHistory = (values: z.infer<typeof formSchema>, output: WebsiteBuilderOutput, type: 'Website Generated' | 'Website Edited' = 'Website Generated') => {
     try {
         const history = JSON.parse(localStorage.getItem('kaizen-ai-history') || '[]');
         const newHistoryItem = {
-            type: 'Website Generated',
-            title: `Created website: ${values.name}`,
+            type: type,
+            title: type === 'Website Generated' ? `Created website: ${values.name}` : `Edited website: ${values.name}`,
             timestamp: new Date().toISOString(),
             data: {
                 input: values,
@@ -139,6 +142,40 @@ export default function WebsiteBuilderPage() {
       setIsLoading(false);
     }
   }
+
+   const handleChangeWebsite = async () => {
+    if (!changeRequest.trim() || !generatedCode) {
+      toast({
+        title: "Change description is empty",
+        description: "Please describe the changes you want to make.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsEditing(true);
+    try {
+      const result = await editWebsite({
+        html: generatedCode.html,
+        css: generatedCode.css,
+        javascript: generatedCode.javascript,
+        prompt: changeRequest,
+      });
+      setGeneratedCode(result);
+      toast({ title: "Website Updated!", description: "Your changes have been applied." });
+      setChangeRequest('');
+    } catch (error) {
+      console.error('Failed to edit website:', error);
+      toast({
+        title: "Error",
+        description: "Failed to apply changes. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
 
   const handleAiPrompt = async () => {
     const websiteName = form.getValues('name');
@@ -288,10 +325,10 @@ export default function WebsiteBuilderPage() {
             </motion.div>
         )}
 
-        {isLoading && (
+        {(isLoading || isEditing) && (
             <motion.div className="flex flex-col items-center justify-center text-center pt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <Loader2 className="mr-2 h-12 w-12 animate-spin text-primary" />
-                <p className="mt-4 text-lg text-muted-foreground">Our AI is building your website...</p>
+                <p className="mt-4 text-lg text-muted-foreground">{isLoading ? 'Our AI is building your website...' : 'Applying your changes...'}</p>
                 <p className="text-sm text-muted-foreground">This may take a few moments.</p>
             </motion.div>
         )}
@@ -308,7 +345,7 @@ export default function WebsiteBuilderPage() {
                             <div className='flex-grow flex'>
                                 <div className="w-48 border-r p-2 space-y-1">
                                     <p className="text-xs font-semibold uppercase text-muted-foreground px-2">Files</p>
-                                    {(Object.keys(generatedCode) as FileType[]).map(fileType => (
+                                    {(Object.keys(generatedCode).filter(key => key !== 'prompt') as FileType[]).map(fileType => (
                                         <button
                                             key={fileType}
                                             onClick={() => setActiveFile(fileType)}
@@ -330,10 +367,21 @@ export default function WebsiteBuilderPage() {
                                     />
                                 </div>
                             </div>
-                            <div className="border-t p-2 text-xs text-muted-foreground flex items-center gap-2">
-                                <Code className="h-4 w-4" />
-                                <span>{activeFile === 'javascript' ? 'script.js' : `index.${activeFile}`}</span>
+                           <div className="border-t p-2 bg-background/80 backdrop-blur-sm">
+                            <div className="flex items-center gap-2">
+                                <Input 
+                                    placeholder="Describe the changes you want to make?" 
+                                    className="flex-grow"
+                                    value={changeRequest}
+                                    onChange={(e) => setChangeRequest(e.target.value)}
+                                    disabled={isEditing}
+                                />
+                                <Button onClick={handleChangeWebsite} disabled={isEditing}>
+                                    {isEditing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                                    Change Website
+                                </Button>
                             </div>
+                           </div>
                         </div>
                     </ResizablePanel>
                     <ResizableHandle withHandle />
