@@ -39,6 +39,7 @@ const plans = [
         buttonText: 'Get Started Free',
         buttonVariant: 'outline',
         highlight: false,
+        href: '/dashboard',
     },
     {
         name: 'Pro Plan',
@@ -62,7 +63,8 @@ const plans = [
         buttonText: 'Get Started Pro',
         buttonVariant: 'default',
         highlight: true,
-        badge: 'Best for students & job seekers'
+        badge: 'Most Popular',
+        href: '/dashboard/billing',
     },
     {
         name: 'Premium Plan',
@@ -86,6 +88,7 @@ const plans = [
         buttonText: 'Get Started Premium',
         buttonVariant: 'outline',
         highlight: false,
+        href: '/dashboard/billing',
     },
 ];
 
@@ -147,7 +150,7 @@ export default function PricingSection() {
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
-                            <Link href="/sign-up" className="w-full">
+                            <Link href={plan.href} className="w-full">
                                 <Button className="w-full" variant={plan.buttonVariant as any}>
                                     {plan.buttonText}
                                 </Button>
