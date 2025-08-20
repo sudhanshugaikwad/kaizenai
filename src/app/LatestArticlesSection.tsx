@@ -20,8 +20,6 @@ type Article = {
   tags: string[];
 };
 
-const RELEVANT_TAGS = ['ai', 'machinelearning', 'artificialintelligence', 'genai', 'llm', 'react', 'javascript', 'reactjs'];
-
 export default function LatestArticlesSection() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -34,10 +32,7 @@ export default function LatestArticlesSection() {
                     throw new Error('Failed to fetch articles');
                 }
                 const data: Article[] = await response.json();
-                const relevantArticles = data.filter(article => 
-                    article.tags.some(tag => RELEVANT_TAGS.includes(tag.toLowerCase()))
-                );
-                setArticles(relevantArticles.slice(0, 6)); // Show latest 6
+                setArticles(data.slice(0, 6)); // Show latest 6 articles directly
             } catch (error) {
                 console.error(error);
             } finally {
@@ -73,7 +68,7 @@ export default function LatestArticlesSection() {
   }
 
   if (articles.length === 0) {
-    return null; // Don't render the section if there are no relevant articles
+    return null; // Don't render the section if there are no articles
   }
 
   return (
