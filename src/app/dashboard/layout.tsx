@@ -43,7 +43,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
 import logo from "../Kaizenai.png"
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -76,34 +76,32 @@ export default function DashboardLayout({
   const { user } = useUser();
 
   const renderMenuItem = (item: typeof navItems[0]) => {
-    const button = (
+    return (
       <SidebarMenuButton
-        isActive={pathname.startsWith(item.href)}
+        isActive={pathname === item.href}
         tooltip={item.label}
-        className="flex-grow"
+        className="w-full justify-start"
       >
-        <item.icon className="w-5 h-5" />
-        <span>{item.label}</span>
+        <item.icon className="w-5 h-5 shrink-0" />
+        <span className="truncate">{item.label}</span>
       </SidebarMenuButton>
     );
-
-    return button;
   };
 
   return (
     <SidebarProvider>
-      <Sidebar variant='inset' side='left'>
+      <Sidebar side='left' collapsible="icon">
         <SidebarHeader>
-          <Link href="/dashboard" className="flex items-center gap-2">
-          <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
-        
+          <Link href="/dashboard" className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
+            <Image src={logo} alt="Kaizen Ai" width={150} height={100} className="hidden group-data-[state=expanded]:block"/>
+             <Image src={logo} alt="Kaizen Ai" width={40} height={40} className="block group-data-[state=expanded]:hidden"/>
           </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {navItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <Link href={item.href} className="flex items-center justify-between w-full">
+              <SidebarMenuItem key={item.href} className="w-full">
+                <Link href={item.href} className="w-full">
                   {renderMenuItem(item)}
                 </Link>
               </SidebarMenuItem>
@@ -112,27 +110,24 @@ export default function DashboardLayout({
               <div className="my-2 border-t border-sidebar-border" />
             </SidebarMenuItem>
              {accountItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
-                  <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
+              <SidebarMenuItem key={item.href} className="w-full">
+                <Link href={item.href} className="w-full">
+                  {renderMenuItem(item)}
                 </Link>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-            <div className='flex justify-between items-center'>
-               <ThemeToggle />
-               <div className='text-xs text-muted-foreground hidden group-data-[state=expanded]:block'>
+            <div className='flex justify-between items-center group-data-[collapsible=icon]:justify-center'>
+               <div className='text-xs text-muted-foreground group-data-[collapsible=icon]:hidden'>
                  <p>&copy; {new Date().getFullYear()} Kaizen AI</p>
                  <p>By Sudhanshu Gaikwad</p>
                </div>
+               <ThemeToggle />
             </div>
         </SidebarFooter>
-      </Sidebar>
+      </Sidebar>>
       <SidebarInset>
          <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
             <div className='flex items-center gap-2'>
