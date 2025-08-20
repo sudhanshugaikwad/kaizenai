@@ -17,7 +17,9 @@ import {
   UserSearch,
   StickyNote,
   Github,
-  Star
+  Star,
+  Globe,
+  CalendarCheck,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -38,63 +40,69 @@ import PricingSection from './PricingSection';
 
 const features = [
   {
-    icon: <MessageSquare className="h-8 w-8 text-primary" />,
+    icon: <MessageSquare className="h-6 w-6 text-primary" />,
     title: 'Kaizen Ai Chat',
-    description: 'Get instant career advice from an AI coach. Ask about interviews, skills, and career paths.',
+    description: 'Get instant career advice from our AI coach.',
     href: '/dashboard/kaizen-ai-chat',
   },
   {
-    icon: <FileText className="h-8 w-8 text-primary" />,
+    icon: <FileText className="h-6 w-6 text-primary" />,
     title: 'AI Resume Analyzer',
-    description: 'Optimize your resume with AI-powered feedback, ATS keyword analysis, and improvement suggestions.',
+    description: 'Optimize your resume with AI-powered feedback.',
     href: '/dashboard/resume-analyzer',
   },
   {
-    icon: <PenSquare className="h-8 w-8 text-primary" />,
+    icon: <PenSquare className="h-6 w-6 text-primary" />,
     title: 'AI Cover Letter Writer',
-    description: 'Generate compelling and personalized cover letters tailored to any job description in seconds.',
+    description: 'Generate compelling cover letters in seconds.',
     href: '/dashboard/cover-letter-writer',
   },
   {
-    icon: <Rocket className="h-8 w-8 text-primary" />,
+    icon: <Rocket className="h-6 w-6 text-primary" />,
     title: 'AI Roadmap Generator',
-    description: 'Chart your path to success. Get a personalized career roadmap with timelines, resources, and project ideas.',
+    description: 'Get a personalized career plan with resources.',
     href: '/dashboard/roadmap-generator',
-
   },
   {
-    icon: <Briefcase className="h-8 w-8 text-primary" />,
+    icon: <Briefcase className="h-6 w-6 text-primary" />,
     title: 'AI Job Matcher',
-    description: 'Upload your resume and let our AI find the best, most recent job openings for you in India.',
+    description: 'Let our AI find the best job openings for you.',
     href: '/dashboard/job-matcher',
-  
   },
-
   {
-    icon: <BookOpenCheck className="h-8 w-8 text-primary" />,
+    icon: <BookOpenCheck className="h-6 w-6 text-primary" />,
     title: 'Interview Practice',
-    description: 'Ace your interviews with AI-powered mock sessions and real-time feedback.',
+    description: 'Ace interviews with AI-powered mock sessions.',
     href: '/dashboard/interview-practice',
-
   },
   {
-    icon: <UserSearch className="h-8 w-8 text-primary" />,
+    icon: <UserSearch className="h-6 w-6 text-primary" />,
     title: 'HR Contact Finder',
-    description: 'Find HR contacts by department or by analyzing your resume for the best fit.',
+    description: 'Discover HR contacts by department or resume.',
     href: '/dashboard/hr-contact-finder',
-  
   },
   {
-    icon: <StickyNote className="h-8 w-8 text-primary" />,
+    icon: <CalendarCheck className="h-6 w-6 text-primary" />,
+    title: 'Events & Hackathons',
+    description: 'Find relevant events, hackathons, and challenges.',
+    href: '/dashboard/events-hackathons',
+  },
+  {
+    icon: <Globe className="h-6 w-6 text-primary" />,
+    title: 'Website Builder',
+    description: 'Create and deploy simple websites using AI.',
+    href: '/dashboard/website-builder',
+  },
+  {
+    icon: <StickyNote className="h-6 w-6 text-primary" />,
     title: 'Sticky Notes',
-    description: 'Organize your daily tasks and stay productive with AI-powered suggestions.',
+    description: 'Organize your daily tasks and boost productivity.',
     href: '/dashboard/sticky-notes',
- 
   },
   {
-    icon: <Zap className="h-8 w-8 text-primary" />,
+    icon: <Zap className="h-6 w-6 text-primary" />,
     title: 'Powerful AI Core',
-    description: 'Powered by advanced generative AI to provide you with the most accurate and relevant career tools.',
+    description: 'Powered by advanced generative AI for best results.',
     href: '/dashboard',
   },
 ];
@@ -359,19 +367,22 @@ export default function Home() {
             />
             <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
           </div>
-          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, index) => (
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {features.map((feature) => (
               <motion.div key={feature.title} variants={itemVariants}>
-                  <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full relative">
-                    
-                      <CardHeader className="flex flex-col items-center text-center">
-                        <div className="p-3 rounded-full bg-primary/10 mb-4 border border-primary/20">{feature.icon}</div>
-                        <CardTitle>{feature.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="text-center">
-                        <p className="text-muted-foreground">{feature.description}</p>
-                      </CardContent>
-                    </Card>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full">
+                    <CardContent className="p-4">
+                        <div className="flex items-center gap-4">
+                            <div className="p-2.5 rounded-md bg-primary/10 border border-primary/20">
+                                {feature.icon}
+                            </div>
+                            <div>
+                                <p className="font-semibold text-foreground">{feature.title}</p>
+                                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                            </div>
+                        </div>
+                    </CardContent>
+                  </Card>
               </motion.div>
             ))}
           </div>
