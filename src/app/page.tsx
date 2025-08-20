@@ -263,8 +263,11 @@ export default function Home() {
         <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
               <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+              <div className="h-4 w-px bg-border" />
               <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-         
+              <div className="h-4 w-px bg-border" />
+             
+
             </nav>
             <div className='flex items-center gap-2'>
                 <SignedIn>
@@ -276,11 +279,11 @@ export default function Home() {
                 <SignedOut>
                     <div className="flex items-center gap-2">
                     <Link href="https://github.com/sudhanshugaikwad/kaizenai" target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" className="gap-2">
-                                <Github className="h-5 w-5" />
+                            <Button variant="outline" className="gap-1">
+                                <Github className="h-4 w-4" />
                                 GitHub
                                 <div className="h-4 w-px bg-border" />
-                                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                                <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
                                 <span>130k</span>
                             </Button>
                         </Link>
