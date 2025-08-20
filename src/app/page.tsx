@@ -396,20 +396,25 @@ export default function Home() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-            <div className="bg-card border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <div className="relative z-10">
-                <ScrollRevealText className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight" text="Kaizen Ai" />
-                <p className=" font-script text-2xl max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">
-                Kaizen Ai is your intelligent career coach, providing resume analysis, personalized learning paths, and career guidance to help students, job seekers, and professionals unlock new opportunities.
-                </p>
-                <Link href="/about">
-                <Button size="lg" variant="outline" >
-                Kaizen Ai <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                </Link>
-            </div>
+            <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
+                <div 
+                    className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-blue-500/20 opacity-30 blur-3xl"
+                    style={{
+                        WebkitMaskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)',
+                        maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)'
+                    }}
+                />
+                <div className="relative z-10 flex flex-col items-center">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Kaizen Ai</h2>
+                    <p className="max-w-2xl text-lg mt-4 text-muted-foreground mb-8">
+                        Your intelligent career coach, providing resume analysis, personalized learning paths, and career guidance.
+                    </p>
+                    <Link href="/about">
+                        <Button size="lg" variant="default" >
+                            Learn More About Kaizen Ai <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </Link>
+                </div>
           </div>
         </motion.section>
         
