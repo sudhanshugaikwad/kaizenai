@@ -43,7 +43,6 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
 import logo from "../Kaizenai.png"
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -127,7 +126,7 @@ export default function DashboardLayout({
                <ThemeToggle />
             </div>
         </SidebarFooter>
-      </Sidebar>>
+      </Sidebar>
       <SidebarInset>
          <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
             <div className='flex items-center gap-2'>
