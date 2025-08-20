@@ -81,7 +81,7 @@ export default function DeveloperTeamSection() {
                                             </div>
                                              <DialogTrigger asChild>
                                                 <Button variant="link" className="text-sm text-primary hover:underline">
-                                                    See more details
+                                                    See more
                                                 </Button>
                                              </DialogTrigger>
                                         </div>
@@ -102,8 +102,20 @@ export default function DeveloperTeamSection() {
                                         </div>
                                     </div>
                                 </DialogHeader>
-                                <div className="py-4">
+                                <div className="py-4 space-y-4">
                                     <p className="text-muted-foreground">{member.fullDescription}</p>
+                                    <div className="flex gap-2">
+                                        <Link href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="outline" size="icon">
+                                                <Linkedin className="w-5 h-5" />
+                                            </Button>
+                                        </Link>
+                                        <Link href={member.github} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="outline" size="icon">
+                                                <Github className="w-5 h-5" />
+                                            </Button>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <DialogFooter>
                                     <DialogClose asChild>
