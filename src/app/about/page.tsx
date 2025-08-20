@@ -110,6 +110,11 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
+        {/* Developer Team */}
+        <motion.div variants={itemVariants}>
+            <DeveloperTeamSection />
+        </motion.div>
+
         {/* Testimonials Section */}
         <motion.div variants={itemVariants}>
           <TestimonialsSection />
@@ -120,11 +125,6 @@ export default function AboutPage() {
             <ServicesSection />
         </motion.div>
         
-        {/* Developer Team */}
-        <motion.div variants={itemVariants}>
-            <DeveloperTeamSection />
-        </motion.div>
-
         {/* Footer */}
         <motion.footer variants={itemVariants} className="text-center text-sm text-gray-400 mt-12 border-t pt-6">
           {year && (
