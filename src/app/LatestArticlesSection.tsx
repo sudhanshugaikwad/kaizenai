@@ -37,7 +37,7 @@ export default function LatestArticlesSection() {
                 const relevantArticles = data.filter(article => 
                     article.tag_list.some(tag => RELEVANT_TAGS.includes(tag.toLowerCase()))
                 );
-                setArticles(relevantArticles.slice(0, 6)); // Show latest 6
+                setArticles(relevantArticles); // Show all relevant articles
             } catch (error) {
                 console.error(error);
             } finally {

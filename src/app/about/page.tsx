@@ -63,7 +63,7 @@ export default function AboutPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center p-6 border rounded-xl bg-card shadow-sm">
           {/* Image Section */}
           <div className="flex justify-center items-center">
-          <Image src={logo} alt="Kaizen Ai"/>
+          <Image src={logo}  alt="Kaizen Ai"/>
           </div>
 
           {/* Text Section */}
