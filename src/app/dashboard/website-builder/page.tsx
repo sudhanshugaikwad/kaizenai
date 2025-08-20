@@ -34,11 +34,13 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import Editor from '@monaco-editor/react';
-import { Loader2, Sparkles, Plus, Globe, FileCode, FileText, FileJson, Copy, Code, Wand2 } from 'lucide-react';
+import { Loader2, Sparkles, Plus, Globe, FileCode, FileText, FileJson, Copy, Code, Wand2, Eye } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 
 const formSchema = z.object({
@@ -49,6 +51,7 @@ const formSchema = z.object({
 
 const languageOptions = ["HTML, CSS, JS, Bootstrap", "React (JSX)", "Vue, CSS"];
 type FileType = 'html' | 'css' | 'javascript';
+type ViewMode = 'code' | 'preview';
 
 
 export default function WebsiteBuilderPage() {
@@ -58,6 +61,7 @@ export default function WebsiteBuilderPage() {
   const [isPromptLoading, setIsPromptLoading] = useState(false);
   const [activeFile, setActiveFile] = useState<FileType>('html');
   const [changeRequest, setChangeRequest] = useState('');
+  const [viewMode, setViewMode] = useState<ViewMode>('preview');
   const { toast } = useToast();
   const { theme } = useTheme();
 
@@ -267,13 +271,27 @@ export default function WebsiteBuilderPage() {
                 </h1>
                 <p className="text-muted-foreground">No-code / low-code AI-powered builder to create, customize, and deploy websites instantly.</p>
             </div>
-            <Button variant="outline" onClick={() => {
-                form.reset();
-                setGeneratedCode(null);
-                localStorage.removeItem('kaizen-ai-website-builder-code');
-            }}>
-                <Plus className="mr-2 h-4 w-4" /> New Project
-            </Button>
+            <div className="flex items-center gap-4">
+                 {generatedCode && (
+                    <div className="flex items-center space-x-2">
+                        <Label htmlFor="view-mode-toggle" className="flex items-center gap-2"><Code className="h-4 w-4" /> Code</Label>
+                        <Switch
+                            id="view-mode-toggle"
+                            checked={viewMode === 'preview'}
+                            onCheckedChange={(checked) => setViewMode(checked ? 'preview' : 'code')}
+                        />
+                        <Label htmlFor="view-mode-toggle" className="flex items-center gap-2"><Eye className="h-4 w-4" /> Preview</Label>
+                    </div>
+                 )}
+                 <Button variant="outline" onClick={() => {
+                    form.reset();
+                    setGeneratedCode(null);
+                    localStorage.removeItem('kaizen-ai-website-builder-code');
+                    setViewMode('preview');
+                }}>
+                    <Plus className="mr-2 h-4 w-4" /> New Project
+                </Button>
+            </div>
         </motion.div>
 
         {!generatedCode && !isLoading && (
@@ -335,26 +353,26 @@ export default function WebsiteBuilderPage() {
       
         {generatedCode && (
              <motion.div variants={itemVariants} className="border rounded-lg overflow-hidden h-[75vh]">
-                <ResizablePanelGroup direction="horizontal">
-                    <ResizablePanel defaultSize={50} minSize={30}>
-                        <div className="flex flex-col h-full bg-background">
-                            <div className="p-2 border-b flex items-center justify-between">
-                                <span className="text-sm font-semibold">Code Editor</span>
-                                <Button variant="ghost" size="sm" onClick={() => handleCopy(activeCode)}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
-                            </div>
-                            <div className='flex-grow flex'>
-                                <div className="w-48 border-r p-2 space-y-1">
-                                    <p className="text-xs font-semibold uppercase text-muted-foreground px-2">Files</p>
-                                    {(Object.keys(generatedCode).filter(key => key !== 'prompt') as FileType[]).map(fileType => (
-                                        <button
-                                            key={fileType}
-                                            onClick={() => setActiveFile(fileType)}
-                                            className={cn("w-full text-left text-sm px-2 py-1.5 rounded-md flex items-center gap-2", activeFile === fileType ? 'bg-muted' : 'hover:bg-muted/50')}
-                                        >
-                                            {fileIcons[fileType]}
-                                            {fileType === 'javascript' ? 'script.js' : `index.${fileType}`}
-                                        </button>
-                                    ))}
+                {viewMode === 'code' ? (
+                     <ResizablePanelGroup direction="horizontal">
+                        <ResizablePanel defaultSize={65} minSize={30}>
+                            <div className="flex flex-col h-full bg-background">
+                                <div className="p-2 border-b flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        {(Object.keys(generatedCode).filter(key => key !== 'prompt') as FileType[]).map(fileType => (
+                                            <Button
+                                                key={fileType}
+                                                variant={activeFile === fileType ? 'secondary' : 'ghost'}
+                                                size="sm"
+                                                onClick={() => setActiveFile(fileType)}
+                                                className="flex items-center gap-2"
+                                            >
+                                                {fileIcons[fileType]}
+                                                {fileType === 'javascript' ? 'script.js' : `index.${fileType}`}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                    <Button variant="ghost" size="sm" onClick={() => handleCopy(activeCode)}><Copy className="mr-2 h-4 w-4" /> Copy</Button>
                                 </div>
                                 <div className="flex-1">
                                     <Editor
@@ -367,10 +385,14 @@ export default function WebsiteBuilderPage() {
                                     />
                                 </div>
                             </div>
-                           <div className="border-t p-2 bg-background/80 backdrop-blur-sm">
-                            <div className="flex items-center gap-2">
-                                <Input 
-                                    placeholder="Describe the changes you want to make?" 
+                        </ResizablePanel>
+                        <ResizableHandle withHandle />
+                        <ResizablePanel defaultSize={35} minSize={25}>
+                            <div className="flex flex-col h-full bg-background p-4 space-y-4">
+                                <Label htmlFor="change-request">Describe the changes you want to make?</Label>
+                                <Textarea 
+                                    id="change-request"
+                                    placeholder="e.g., Change the background color to dark blue. Make all the buttons rounded." 
                                     className="flex-grow"
                                     value={changeRequest}
                                     onChange={(e) => setChangeRequest(e.target.value)}
@@ -381,26 +403,20 @@ export default function WebsiteBuilderPage() {
                                     Change Website
                                 </Button>
                             </div>
-                           </div>
-                        </div>
-                    </ResizablePanel>
-                    <ResizableHandle withHandle />
-                    <ResizablePanel defaultSize={50} minSize={30}>
-                        <div className="flex flex-col h-full bg-background">
-                            <div className="p-2 border-b">
-                                <span className="text-sm font-semibold">Live Preview</span>
-                            </div>
-                            <iframe
-                                srcDoc={createPreviewSrc()}
-                                title="Website Preview"
-                                className="w-full h-full border-0"
-                                sandbox="allow-scripts allow-same-origin"
-                            />
-                        </div>
-                    </ResizablePanel>
-                </ResizablePanelGroup>
+                        </ResizablePanel>
+                    </ResizablePanelGroup>
+                ) : (
+                    <iframe
+                        srcDoc={createPreviewSrc()}
+                        title="Website Preview"
+                        className="w-full h-full border-0"
+                        sandbox="allow-scripts allow-same-origin"
+                    />
+                )}
              </motion.div>
         )}
     </motion.div>
   );
 }
+
+    
