@@ -1,7 +1,7 @@
 
 'use client';
 
-// import { PricingTable } from '@clerk/clerk-react';
+import { PricingTable } from '@clerk/clerk-react';
 
 export default function BillingPage() {
 
@@ -11,7 +11,7 @@ export default function BillingPage() {
       <p className="text-muted-foreground mb-8">
         Choose the plan that’s right for your team. You can upgrade or downgrade anytime.
       </p>
-      {/* <PricingTable /> */}
+      <PricingTable />
     </div>
   );
 }
