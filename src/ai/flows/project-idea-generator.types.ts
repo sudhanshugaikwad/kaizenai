@@ -1,3 +1,4 @@
+
 /**
  * @fileOverview Type definitions for the project idea generator AI flow.
  */
@@ -7,6 +8,7 @@ export const ProjectIdeaInputSchema = z.object({
   frontendLanguages: z.array(z.string()).describe('A list of selected frontend programming languages or frameworks.'),
   backendLanguages: z.array(z.string()).describe('A list of selected backend programming languages or frameworks.'),
   experienceLevel: z.enum(['Student/Fresher', '1-2 years experience']).describe('The user\'s experience level.'),
+  userProjectIdea: z.string().optional().describe("The user's own project idea to be validated and planned."),
 });
 export type ProjectIdeaInput = z.infer<typeof ProjectIdeaInputSchema>;
 
@@ -16,7 +18,7 @@ const RoadmapStepSchema = z.object({
     resources: z.array(z.object({
         name: z.string().describe('The name of the resource.'),
         url: z.string().url().describe('The URL for the resource.'),
-    })).optional().describe('A list of helpful resources for this step.'),
+    })).describe('A list of helpful resources for this step.'),
 });
 
 const ProjectTreeSchema = z.object({

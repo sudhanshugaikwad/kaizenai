@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -23,10 +23,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Lightbulb, Copy, Download, Rocket, Settings, Code, Milestone } from 'lucide-react';
+import { Loader2, Lightbulb, Copy, Download, Rocket, Settings, Code, Milestone, ExternalLink } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import ReactFlow, {
@@ -51,6 +52,7 @@ const formSchema = z.object({
     experienceLevel: z.string({
         required_error: "Please select your experience level.",
     }),
+    userProjectIdea: z.string().optional(),
 });
 
 const frontendLangs = ["HTML", "CSS", "JavaScript", "TypeScript", "React.js", "Next.js", "Vue.js", "Angular", "Svelte", "Tailwind CSS", "Bootstrap", "Material UI"];
@@ -112,6 +114,7 @@ export default function ProjectIdeaGeneratorPage() {
     defaultValues: {
       frontendLanguages: [],
       backendLanguages: [],
+      userProjectIdea: '',
     },
   });
 
@@ -237,6 +240,17 @@ Roadmap:
                     </FormItem>
                 )} />
 
+                <FormField control={form.control} name="userProjectIdea" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Enter your Project Idea (Optional)</FormLabel>
+                        <FormControl>
+                            <Input placeholder="e.g., A social media app for pet owners" {...field} />
+                        </FormControl>
+                        <FormDescription>If you have an idea, our AI will validate it and generate a roadmap. Otherwise, we'll suggest one for you.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
                 <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
                     {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating Idea...</> : <><Lightbulb className="mr-2 h-4 w-4" />Generate Project Idea</>}
                 </Button>
@@ -284,9 +298,43 @@ Roadmap:
                 </Card>
             </motion.div>
 
-            <motion.div variants={itemVariants}>
+             <motion.div variants={itemVariants}>
                 <Card>
                     <CardHeader><CardTitle>Project Roadmap</CardTitle></CardHeader>
+                    <CardContent>
+                        <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
+                            {Object.values(project.projectTree).map((step, index) => (
+                                <AccordionItem value={`item-${index}`} key={index}>
+                                <AccordionTrigger className="text-lg font-semibold">{step.title}</AccordionTrigger>
+                                <AccordionContent className="space-y-4">
+                                    <ul className="list-disc pl-5 space-y-2">
+                                        {step.details.map((detail, i) => <li key={i}>{detail}</li>)}
+                                    </ul>
+                                    {step.resources && step.resources.length > 0 && (
+                                        <div>
+                                            <h4 className="font-semibold">Resources:</h4>
+                                            <ul className="list-none pl-5 space-y-1">
+                                                {step.resources.map((resource, i) => (
+                                                    <li key={i}>
+                                                        <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-2">
+                                                            {resource.name} <ExternalLink className="h-4 w-4" />
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
+             </motion.div>
+
+            <motion.div variants={itemVariants}>
+                <Card>
+                    <CardHeader><CardTitle>Interactive Project Tree</CardTitle></CardHeader>
                     <CardContent style={{ height: 800 }}>
                         <ReactFlow nodes={nodes} edges={edges} fitView>
                             <Controls />
@@ -300,5 +348,3 @@ Roadmap:
     </motion.div>
   );
 }
-
-    
