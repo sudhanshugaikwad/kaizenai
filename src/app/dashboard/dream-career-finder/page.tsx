@@ -44,6 +44,7 @@ type Answers = {
 };
 
 export default function DreamCareerFinderPage() {
+  const [quizStarted, setQuizStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [result, setResult] = useState<DreamCareerFinderOutput | null>(null);
@@ -55,7 +56,7 @@ export default function DreamCareerFinderPage() {
   };
 
   const nextStep = () => {
-    if (step < quizQuestions.length) {
+    if (step < quizQuestions.length -1) {
       if (!answers[quizQuestions[step].key]) {
         toast({
           title: "Please select an option",
@@ -78,6 +79,7 @@ export default function DreamCareerFinderPage() {
         return;
       }
     setIsLoading(true);
+    setResult(null);
     try {
       const careerResult = await suggestDreamCareer(answers as any);
       setResult(careerResult);
@@ -94,6 +96,7 @@ export default function DreamCareerFinderPage() {
   };
 
   const resetQuiz = () => {
+    setQuizStarted(false);
     setStep(0);
     setAnswers({});
     setResult(null);
@@ -141,7 +144,7 @@ export default function DreamCareerFinderPage() {
       );
     }
 
-    if (step < quizQuestions.length) {
+    if (quizStarted && step < quizQuestions.length) {
       const currentQuestion = quizQuestions[step];
       return (
          <AnimatePresence mode="wait">
@@ -187,18 +190,7 @@ export default function DreamCareerFinderPage() {
       );
     }
 
-    return (
-      <div className="text-center">
-        <Bot className="h-16 w-16 mx-auto text-primary" />
-        <h1 className="mt-4 text-2xl font-bold tracking-tight">Find Your Dream Career</h1>
-        <p className="mt-2 text-muted-foreground">
-            Hi! I’m your AI Career Coach. Answer a few simple questions and I’ll help you discover the career path that best matches your skills, personality, and goals. This tool works for everyone — whether you’re a student, job seeker, or professional.
-        </p>
-        <Button onClick={() => setStep(0)} className="mt-6">
-            Start the Quiz <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
-    );
+    return null;
   };
 
   return (
@@ -208,14 +200,14 @@ export default function DreamCareerFinderPage() {
         className="max-w-4xl mx-auto"
     >
       <Card className="min-h-[500px] flex items-center justify-center p-4">
-        {step === 0 && !result ? (
+        {!quizStarted ? (
            <div className="text-center">
                 <Bot className="h-16 w-16 mx-auto text-primary" />
                 <h1 className="mt-4 text-2xl font-bold tracking-tight">Find Your Dream Career</h1>
                 <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
                     Hi! I’m your AI Career Coach. Answer a few simple questions and I’ll help you discover the career path that best matches your skills, personality, and goals. This tool works for everyone — whether you’re a student, job seeker, or professional.
                 </p>
-                <Button onClick={() => setStep(1)} className="mt-6">
+                <Button onClick={() => setQuizStarted(true)} className="mt-6">
                     Start the Quiz <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </div>
