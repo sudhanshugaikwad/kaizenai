@@ -7,6 +7,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {
     ProjectIdeaInputSchema,
     ProjectIdeaOutputSchema,
@@ -20,6 +21,7 @@ export async function generateProjectIdea(input: ProjectIdeaInput): Promise<Proj
 
 const prompt = ai.definePrompt({
   name: 'projectIdeaPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: ProjectIdeaInputSchema},
   output: {schema: ProjectIdeaOutputSchema},
   prompt: `You are Kaizen AI, an intelligent project idea mentor. Your role is to generate practical and feasible project ideas for users based on their selected programming languages, frameworks, and experience level.
