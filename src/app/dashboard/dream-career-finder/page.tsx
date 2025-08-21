@@ -57,6 +57,8 @@ export default function DreamCareerFinderPage() {
   };
 
   const questions = answers.userCategory === 'Student' ? studentQuestions : professionalQuestions;
+  
+  const isLastQuestion = step === questions.length;
 
   const nextStep = () => {
     const currentQuestionKey = questions[step - 1]?.key;
@@ -111,8 +113,6 @@ export default function DreamCareerFinderPage() {
     setAnswers({});
     setResult(null);
   };
-  
-  const isLastQuestion = step === questions.length;
 
   const renderIntro = () => (
     <div className="text-center">
@@ -229,10 +229,10 @@ export default function DreamCareerFinderPage() {
             </CardHeader>
             <CardContent className="space-y-8 pt-6">
                 <div className="border rounded-lg p-6 space-y-4">
-                    <div className="text-center">
+                    <CardContent className="text-center">
                         <p className="text-2xl font-bold">{result.careerIcon} {result.careerTitle}</p>
                         <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">{result.whyThisFits}</p>
-                    </div>
+                    </CardContent>
 
                     <ChartContainer
                         config={chartConfig}
@@ -355,5 +355,3 @@ export default function DreamCareerFinderPage() {
     </motion.div>
   );
 }
-
-    
