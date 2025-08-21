@@ -121,7 +121,7 @@ export default function DashboardLayout({
             <div className='flex justify-between items-center group-data-[collapsible=icon]:justify-center'>
                <div className='text-xs text-muted-foreground group-data-[collapsible=icon]:hidden'>
                  <p>&copy; {new Date().getFullYear()} Kaizen AI</p>
-                 <p>By Sudhanshu Gaikwad</p>
+                 <p>Designed By Sudhanshu Gaikwad</p>
                </div>
                <ThemeToggle />
             </div>

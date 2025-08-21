@@ -267,7 +267,7 @@ export default function WebsiteBuilderPage() {
             <div>
                 <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                     <Globe className="h-8 w-8" />
-                    Kaizen Ai Website Builder
+                    Kaizen Ai Website Workspace
                 </h1>
                 <p className="text-muted-foreground">No-code / low-code AI-powered builder to create, customize, and deploy websites instantly.</p>
             </div>

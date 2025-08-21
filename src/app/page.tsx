@@ -268,14 +268,14 @@ export default function Home() {
         <Link href="/" className="flex items-center gap-2">
             <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
         </Link>
-        <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-              <div className="h-4 w-px bg-border" />
-              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-              <div className="h-4 w-px bg-border" />
-             
-
+        <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
+              <Link href="/">
+                <Button variant="ghost" size="sm">Home</Button>
+              </Link>
+              <Link href="/about">
+                <Button variant="ghost" size="sm">About</Button>
+              </Link>
             </nav>
             <div className='flex items-center gap-2'>
                 <SignedIn>
@@ -287,16 +287,16 @@ export default function Home() {
                 <SignedOut>
                     <div className="flex items-center gap-2">
                     <Link href="https://github.com/sudhanshugaikwad/kaizenai" target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" className="gap-1">
+                            <Button variant="outline" size="sm" className="gap-1">
                                 <Github className="h-4 w-4" />
                                 GitHub
-                                <div className="h-4 w-px bg-border" />
+                                <div className="h-4 w-px bg-border mx-1" />
                                 <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
                                 <span>130k</span>
                             </Button>
                         </Link>
                         <Link href="/sign-in">
-                            <Button variant="outline">
+                            <Button variant="outline" size="sm">
                             Login <LogIn className="ml-2 h-4 w-4" />
                             </Button>
                         </Link>
