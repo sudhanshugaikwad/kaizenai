@@ -212,14 +212,13 @@ export default function DreamCareerFinderPage() {
                 <CardTitle className="text-3xl">Your Career Recommendation</CardTitle>
                 <CardDescription>Based on your answers, here is a recommended path for you.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div className="flex flex-col items-center text-center">
                         <div className="text-6xl mb-4">{result.careerIcon}</div>
                         <h3 className="text-2xl font-bold">{result.careerTitle}</h3>
                         <p className="text-muted-foreground mt-2 max-w-sm">{result.whyThisFits}</p>
                     </div>
-                    <div>
                     <ChartContainer
                         config={chartConfig}
                         className="mx-auto aspect-square h-[300px]"
@@ -258,9 +257,8 @@ export default function DreamCareerFinderPage() {
                         </Pie>
                         </PieChart>
                     </ChartContainer>
-                    </div>
                 </div>
-
+                
                 <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
                     {result.recommendedCourses && result.recommendedCourses.length > 0 && (
                         <AccordionItem value="item-1">
@@ -349,5 +347,3 @@ export default function DreamCareerFinderPage() {
     </motion.div>
   );
 }
-
-    
