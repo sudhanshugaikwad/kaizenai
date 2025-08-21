@@ -23,6 +23,7 @@ import {
   Globe,
   Home,
   CalendarCheck,
+  Sparkles,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -47,6 +48,7 @@ import logo from "../Kaizenai.png"
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
+  { href: '/dashboard/dream-career-finder', icon: Sparkles, label: 'Dream Career Finder' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
