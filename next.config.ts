@@ -43,6 +43,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+   webpack: (config, { isServer }) => {
+    // Exclude 'async_hooks' from the client-side bundle
+    if (!isServer) {
+      config.externals.push('async_hooks');
+    }
+
+    return config;
+  },
 };
 
 export default nextConfig;
