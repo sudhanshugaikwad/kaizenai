@@ -44,9 +44,12 @@ const nextConfig: NextConfig = {
     ],
   },
    webpack: (config, { isServer }) => {
-    // Exclude 'async_hooks' from the client-side bundle
+    // Exclude 'async_hooks' from the client-side bundle and provide a fallback.
     if (!isServer) {
-      config.externals.push('async_hooks');
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        async_hooks: false,
+      };
     }
 
     return config;
