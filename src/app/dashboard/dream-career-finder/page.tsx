@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Loader2, ArrowRight, Check, Bot, Repeat, Sparkles, BookOpen, Briefcase, User } from 'lucide-react';
+import { Loader2, ArrowRight, Check, Bot, Repeat, Sparkles, BookOpen, Briefcase, User, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { suggestDreamCareer, type DreamCareerFinderOutput, type DreamCareerFinderInput } from '@/ai/flows/dream-career-finder';
 import { useToast } from '@/hooks/use-toast';
@@ -60,6 +60,12 @@ export default function DreamCareerFinderPage() {
     }
   };
   
+  const previousStep = () => {
+    if (step > 1) {
+        setStep(prev => prev - 1);
+    }
+  };
+
   const handleSubmit = async () => {
     const currentQuestionKey = questions[step - 1]?.key;
     if (!answers[currentQuestionKey as keyof typeof answers]) {
@@ -159,10 +165,16 @@ export default function DreamCareerFinderPage() {
                             ))}
                         </RadioGroup>
                     )}
-                <Button onClick={isLastQuestion ? handleSubmit : nextStep} className="mt-4">
-                    {isLastQuestion ? 'Find My Career' : 'Next Question'}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="mt-6 flex justify-between w-full">
+                    <Button variant="outline" onClick={previousStep} disabled={step <= 1}>
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Previous
+                    </Button>
+                    <Button onClick={isLastQuestion ? handleSubmit : nextStep}>
+                        {isLastQuestion ? 'Find My Career' : 'Next Question'}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </div>
                 </CardContent>
             </motion.div>
         </AnimatePresence>
