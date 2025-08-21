@@ -27,13 +27,21 @@ import Link from 'next/link';
 
 type UserCategory = 'Student' | 'Job Seeker' | 'Professional' | 'Other';
 
-const studentQuestions = [
+type Question = {
+    key: string;
+    question: string;
+    options?: string[];
+    type?: 'text';
+};
+
+
+const studentQuestions: Question[] = [
   { key: 'educationLevel', question: "What is your current level of education?", options: ["High School (10th)", "High School (12th)", "Bachelors Degree", "Masters Degree", "Doctorate (PhD)"] },
   { key: 'interests', question: "Which subjects or fields excite you the most?", options: ['Technology', 'Arts & Humanities', 'Business & Management', 'Science & Research', 'Social Service & Education', 'Finance & Commerce'] },
   { key: 'strengths', question: "What do you enjoy the most?", options: ['Problem Solving', 'Creativity & Design', 'Analyzing Data', 'Helping People', 'Building Things', 'Leadership'] },
 ];
 
-const professionalQuestions = [
+const professionalQuestions: Question[] = [
   { key: 'currentRole', question: "What is your current or most recent job title?", type: 'text' },
   { key: 'yearsOfExperience', question: "How many years of professional experience do you have?", options: ["0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years"] },
   { key: 'motivation', question: "What are you looking for in your next role?", options: ['Career Growth', 'Higher Salary', 'Better Work-Life Balance', 'A new Challenge', 'Making an Impact'] },
@@ -58,7 +66,7 @@ export default function DreamCareerFinderPage() {
 
   const questions = answers.userCategory === 'Student' ? studentQuestions : professionalQuestions;
   
-  const isLastQuestion = step === questions.length;
+  const isLastQuestion = step === questions.length +1;
 
   const nextStep = () => {
     const currentQuestionKey = questions[step - 1]?.key;
@@ -183,8 +191,8 @@ export default function DreamCareerFinderPage() {
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Previous
                     </Button>
-                    <Button onClick={isLastQuestion ? handleSubmit : nextStep}>
-                        {isLastQuestion ? 'Find My Career' : 'Next Question'}
+                    <Button onClick={step === questions.length ? handleSubmit : nextStep}>
+                        {step === questions.length ? 'Find My Career' : 'Next Question'}
                         <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </div>
