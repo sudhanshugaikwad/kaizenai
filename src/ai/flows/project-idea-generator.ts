@@ -39,7 +39,7 @@ const prompt = ai.definePrompt({
   **Instructions:**
   1.  **Analyze User Input:**
       - If the user provides a 'userProjectIdea', first validate its feasibility based on their selected tech stack and experience level. If it's feasible, generate the project roadmap for THAT idea. If it seems too complex, suggest a simplified version but still generate a roadmap for the simplified idea. The project title and description should be based on the user's idea.
-      - If the user does NOT provide an idea, generate a new, clear, and practical project idea for them based on their tech stack.
+      - If the user does NOT provide an idea, generate a new, clear, and practical project idea for them based on their tech stack. The generated title should be creative and reflect the project's purpose.
 
   2.  **Estimate Duration Dynamically:** Provide two time estimates for the project: one for a "Beginner/Student" and one for a "Professional Developer". The beginner timeline should be longer.
 

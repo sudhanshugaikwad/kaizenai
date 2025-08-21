@@ -56,6 +56,7 @@ export default function DreamCareerFinderPage() {
   const { toast } = useToast();
 
   const handleCategorySelect = (category: UserCategory) => {
+    // Reset answers when category changes to avoid inconsistent data
     setAnswers({ userCategory: category });
     setStep(1);
   };
@@ -86,6 +87,9 @@ export default function DreamCareerFinderPage() {
   const previousStep = () => {
     if (step > 1) {
         setStep(prev => prev - 1);
+    } else if (step === 1) {
+        setStep(0);
+        setAnswers({});
     }
   };
 
@@ -187,7 +191,7 @@ export default function DreamCareerFinderPage() {
                         </RadioGroup>
                     )}
                 <div className="mt-6 flex justify-between w-full">
-                    <Button variant="outline" onClick={previousStep} disabled={step <= 1}>
+                    <Button variant="outline" onClick={previousStep}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Previous
                     </Button>
@@ -236,7 +240,7 @@ export default function DreamCareerFinderPage() {
                 </div>
             </CardHeader>
             <CardContent className="space-y-8 pt-6">
-                <div className="border rounded-lg p-6 space-y-4">
+                <Card className="border rounded-lg p-6 space-y-4">
                     <CardContent className="text-center">
                         <p className="text-2xl font-bold">{result.careerIcon} {result.careerTitle}</p>
                         <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">{result.whyThisFits}</p>
@@ -280,7 +284,7 @@ export default function DreamCareerFinderPage() {
                         </Pie>
                         </PieChart>
                     </ChartContainer>
-                </div>
+                </Card>
                 
                 <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
                     {result.recommendedCourses && result.recommendedCourses.length > 0 && (

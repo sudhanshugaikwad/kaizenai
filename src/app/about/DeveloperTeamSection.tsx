@@ -52,7 +52,7 @@ export default function DeveloperTeamSection() {
         <section className="py-12">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h3 className="text-3xl font-bold text-center mb-8">Meet the Team</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {teamMembers.map((member, index) => (
                          <Dialog key={index}>
                             <Card className="w-full hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1">

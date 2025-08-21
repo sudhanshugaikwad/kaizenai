@@ -29,6 +29,7 @@ import {
   Globe,
   CalendarCheck,
   RefreshCw,
+  Lightbulb,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -62,6 +63,7 @@ const iconMap: { [key: string]: React.ElementType } = {
   'Interview Practice': BookOpenCheck,
   'Website Generated': Globe,
   'Event Search': CalendarCheck,
+  'Project Idea Generated': Lightbulb,
 };
 
 const reuseActionMap: { [key: string]: { url: string; storageKey: string, dataKey?: string } } = {
@@ -72,6 +74,7 @@ const reuseActionMap: { [key: string]: { url: string; storageKey: string, dataKe
     'Event Search': { url: '/dashboard/events-hackathons', storageKey: 'kaizen-ai-reuse-event-finder', dataKey: 'input' },
     'Interview Practice': { url: '/dashboard/interview-practice', storageKey: 'kaizen-ai-reuse-interview-practice' },
     'Website Generated': { url: '/dashboard/website-builder', storageKey: 'kaizen-ai-reuse-website-builder', dataKey: 'input' },
+    'Project Idea Generated': { url: '/dashboard/project-idea-generator', storageKey: 'kaizen-ai-reuse-project-idea', dataKey: 'input' },
 };
 
 

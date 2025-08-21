@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { generateProjectIdea } from '@/ai/flows/project-idea-generator';
@@ -82,6 +82,7 @@ const getTreeLayout = (projectTree: ProjectIdeaOutput['projectTree']) => {
             position: { x, y },
             data: { label },
             style: { width: 350, background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' },
+            type: 'default'
         });
         if (parent) {
             initialEdges.push({ id: `e-${parent}-${id}`, source: parent, target: id, type: 'smoothstep', animated: true });
@@ -89,7 +90,7 @@ const getTreeLayout = (projectTree: ProjectIdeaOutput['projectTree']) => {
     };
     
     const rootId = 'project-root';
-    createNode(rootId, <div className="p-2 font-bold text-lg">Project Roadmap</div>, 0, yPos);
+    createNode(rootId, <div className="p-2 font-bold text-lg text-center">Project Roadmap</div>, 0, yPos);
     yPos += ySpacing;
 
     Object.entries(projectTree).forEach(([key, value], index) => {
@@ -129,9 +130,22 @@ export default function ProjectIdeaGeneratorPage() {
   });
 
   const { nodes, edges } = useMemo(() => {
-    if (!project) return { nodes: [], edges: [] };
+    if (!project?.projectTree) return { nodes: [], edges: [] };
     return getTreeLayout(project.projectTree);
   }, [project]);
+
+  useEffect(() => {
+    try {
+      const reuseData = sessionStorage.getItem('kaizen-ai-reuse-project-idea');
+      if (reuseData && reuseData !== 'undefined') {
+        const parsedData = JSON.parse(reuseData);
+        form.reset(parsedData);
+        sessionStorage.removeItem('kaizen-ai-reuse-project-idea');
+      }
+    } catch(e) {
+      console.error("Could not reuse data", e);
+    }
+  }, [form]);
 
   async function onSubmit(values: ProjectIdeaInput) {
     setIsLoading(true);
@@ -290,8 +304,8 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            ref={projectContentRef}
         >
+          <div ref={projectContentRef} className="space-y-6 bg-background p-4 rounded-lg">
             <motion.div variants={itemVariants}>
                 <Card className="p-6">
                     <div className="flex justify-between items-start">
@@ -332,7 +346,7 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
                                             <h4 className="font-semibold">Resources:</h4>
                                             <ul className="list-none pl-5 space-y-1">
                                                 {step.resources.map((resource, i) => (
-                                                    <li key={i}>
+                                                    <li key={i} key={i}>
                                                         <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-2">
                                                             {resource.name} <ExternalLink className="h-4 w-4" />
                                                         </a>
@@ -360,6 +374,7 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
                     </CardContent>
                 </Card>
             </motion.div>
+          </div>
         </motion.div>
       )}
     </motion.div>

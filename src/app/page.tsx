@@ -36,6 +36,7 @@ import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
+import TestimonialsSection from './TestimonialsSection';
 
 
 const features = [
@@ -419,6 +420,17 @@ export default function Home() {
         </motion.section>
         
         <HowItWorksSection />
+
+        <motion.section 
+            id="testimonials"
+            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            initial="hidden"
+            whileInView="visible"
+            variants={sectionVariants}
+            viewport={{ once: true, amount: 0.2 }}
+        >
+            <TestimonialsSection />
+        </motion.section>
         
         <motion.section 
             id="articles"

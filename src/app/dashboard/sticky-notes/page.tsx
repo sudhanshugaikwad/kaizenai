@@ -275,7 +275,7 @@ export default function StickyNotesPage() {
                 </Dialog>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-2 border rounded-md flex items-center gap-2 text-muted-foreground bg-muted/50">
+              <div className="p-1 border rounded-md flex items-center gap-1 text-muted-foreground bg-muted/50">
                 <Button variant="ghost" size="icon" onClick={() => applyFormat('bold')}><Bold className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => applyFormat('italic')}><Italic className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => applyFormat('underline')}><Underline className="h-4 w-4" /></Button>
