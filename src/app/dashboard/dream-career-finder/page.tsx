@@ -7,10 +7,22 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Loader2, ArrowRight, Check, Bot, Repeat, Sparkles, BookOpen, Briefcase, User, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowRight, Check, Bot, Repeat, Sparkles, BookOpen, Briefcase, User, ArrowLeft, Lightbulb, GraduationCap, Target, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { suggestDreamCareer, type DreamCareerFinderOutput, type DreamCareerFinderInput } from '@/ai/flows/dream-career-finder';
 import { useToast } from '@/hooks/use-toast';
+import { Pie, PieChart, Cell } from "recharts"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+  } from "@/components/ui/accordion"
 
 type UserCategory = 'Student' | 'Job Seeker' | 'Professional' | 'Other';
 
@@ -55,7 +67,7 @@ export default function DreamCareerFinderPage() {
         });
         return;
       }
-    if (step < questions.length + 1) {
+    if (step < questions.length) {
       setStep(prev => prev + 1);
     }
   };
@@ -181,65 +193,134 @@ export default function DreamCareerFinderPage() {
     )
   }
 
-  const renderResult = () => (
-    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-        <CardHeader className="text-center">
-        <CardTitle className="text-3xl">Your Career Recommendation</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center text-center space-y-6">
-            <div className="text-6xl">{result?.careerIcon}</div>
-            <h3 className="text-2xl font-bold">{result?.careerTitle}</h3>
-            <p className="text-muted-foreground max-w-md">{result?.whyThisFits}</p>
+  const renderResult = () => {
+    if (!result) return null;
+    
+    const chartData = [
+        ...result.suggestedPaths.map(path => ({ name: path, value: 20, fill: "hsl(var(--chart-2))" })),
+        { name: result.careerTitle, value: 40, fill: "hsl(var(--primary))" }
+    ];
 
-            {result?.recommendedCourses && result.recommendedCourses.length > 0 && (
-                 <div className="w-full max-w-md text-left space-y-3">
-                    <h4 className="font-semibold text-lg">Recommended Courses/Degrees:</h4>
-                    <ul className="list-none space-y-2">
-                        {result.recommendedCourses.map((course, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                            <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                            <span>{course}</span>
-                        </li>
-                        ))}
-                    </ul>
+    const chartConfig = chartData.reduce((acc, item) => {
+        acc[item.name] = { label: item.name, color: item.fill };
+        return acc;
+    }, {} as any);
+
+    return (
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
+            <CardHeader className="text-center">
+                <CardTitle className="text-3xl">Your Career Recommendation</CardTitle>
+                <CardDescription>Based on your answers, here is a recommended path for you.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div className="flex flex-col items-center text-center">
+                        <div className="text-6xl mb-4">{result.careerIcon}</div>
+                        <h3 className="text-2xl font-bold">{result.careerTitle}</h3>
+                        <p className="text-muted-foreground mt-2 max-w-sm">{result.whyThisFits}</p>
+                    </div>
+                    <div>
+                    <ChartContainer
+                        config={chartConfig}
+                        className="mx-auto aspect-square h-[300px]"
+                    >
+                        <PieChart>
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                        />
+                        <Pie
+                            data={chartData}
+                            dataKey="value"
+                            nameKey="name"
+                            innerRadius={60}
+                            labelLine={false}
+                            label={({ payload, ...props }) => {
+                                return (
+                                  <text
+                                    cx={props.cx}
+                                    cy={props.cy}
+                                    x={props.x}
+                                    y={props.y}
+                                    textAnchor={props.textAnchor}
+                                    dominantBaseline={props.dominantBaseline}
+                                    fill="hsla(var(--foreground), 0.8)"
+                                    className="text-sm"
+                                  >
+                                    {payload.name}
+                                  </text>
+                                )
+                              }}
+                        >
+                             {chartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                        </Pie>
+                        </PieChart>
+                    </ChartContainer>
+                    </div>
                 </div>
-            )}
 
-            <div className="w-full max-w-md text-left space-y-3">
-              <h4 className="font-semibold text-lg">Suggested Career Paths:</h4>
-              <ul className="list-none space-y-2">
-                {result?.suggestedPaths.map((path, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                    <span>{path}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="w-full max-w-md text-left space-y-3">
-              <h4 className="font-semibold text-lg">Actionable Next Steps:</h4>
-              <ul className="list-none space-y-2">
-                {result?.nextSteps.map((nextStep, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                    <span>{nextStep}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="w-full max-w-md text-left space-y-3 p-4 bg-muted/50 rounded-lg">
-              <h4 className="font-semibold text-lg">Career Insight:</h4>
-              <p className="text-muted-foreground">{result?.careerInsights}</p>
-            </div>
+                <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+                    {result.recommendedCourses && result.recommendedCourses.length > 0 && (
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger className="text-lg font-semibold"><GraduationCap className="mr-2 h-5 w-5"/>Recommended Courses/Degrees</AccordionTrigger>
+                            <AccordionContent>
+                                <ul className="list-none space-y-2 pl-4">
+                                {result.recommendedCourses.map((course, index) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>{course}</span>
+                                    </li>
+                                    ))}
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                    )}
+                    <AccordionItem value="item-2">
+                        <AccordionTrigger className="text-lg font-semibold"><Briefcase className="mr-2 h-5 w-5"/>Suggested Career Paths</AccordionTrigger>
+                        <AccordionContent>
+                            <ul className="list-none space-y-2 pl-4">
+                                {result.suggestedPaths.map((path, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                    <span>{path}</span>
+                                </li>
+                                ))}
+                            </ul>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-3">
+                        <AccordionTrigger className="text-lg font-semibold"><Target className="mr-2 h-5 w-5"/>Actionable Next Steps</AccordionTrigger>
+                        <AccordionContent>
+                            <ul className="list-none space-y-2 pl-4">
+                                {result.nextSteps.map((nextStep, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                    <span>{nextStep}</span>
+                                </li>
+                                ))}
+                            </ul>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-4">
+                        <AccordionTrigger className="text-lg font-semibold"><Lightbulb className="mr-2 h-5 w-5"/>Career Insight</AccordionTrigger>
+                        <AccordionContent>
+                            <p className="pl-4 text-muted-foreground">{result.careerInsights}</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
 
-            <Button onClick={resetQuiz} className="mt-6">
-                <Repeat className="mr-2 h-4 w-4" /> Start Over
-            </Button>
-        </CardContent>
-    </motion.div>
-  );
+
+                <div className="text-center mt-8">
+                    <Button onClick={resetQuiz}>
+                        <Repeat className="mr-2 h-4 w-4" /> Start Over
+                    </Button>
+                </div>
+            </CardContent>
+        </motion.div>
+    );
+  };
 
   const renderLoading = () => (
     <div className="text-center">
@@ -268,3 +349,5 @@ export default function DreamCareerFinderPage() {
     </motion.div>
   );
 }
+
+    
