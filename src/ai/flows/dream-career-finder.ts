@@ -16,6 +16,8 @@ import {
     type DreamCareerFinderOutput,
 } from './dream-career-finder.types';
 
+export { type DreamCareerFinderInput, type DreamCareerFinderOutput };
+
 
 export async function suggestDreamCareer(input: DreamCareerFinderInput): Promise<DreamCareerFinderOutput> {
   return dreamCareerFinderFlow(input);
