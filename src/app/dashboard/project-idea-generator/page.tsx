@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo, useCallback, useRef } from 'react';
@@ -52,8 +53,8 @@ const formSchema = z.object({
     }),
 });
 
-const frontendLangs = ["React", "Next.js", "Vue.js", "Angular", "Svelte", "HTML/CSS/JS"];
-const backendLangs = ["Node.js (Express)", "Python (Django)", "Java (Spring)", "PHP (Laravel)", "Ruby on Rails", "Go"];
+const frontendLangs = ["HTML", "CSS", "JavaScript", "TypeScript", "React.js", "Next.js", "Vue.js", "Angular", "Svelte", "Tailwind CSS", "Bootstrap", "Material UI"];
+const backendLangs = ["Node.js", "Express.js", "NestJS", "Python", "Django", "Flask", "FastAPI", "Java", "Spring Boot", "PHP", "Laravel", "Ruby on Rails", "C#", "ASP.NET Core", "Go", "Gin", "Rust", "Kotlin", "MySQL", "PostgreSQL", "MongoDB", "Firebase"];
 const experienceLevels = ["Student/Fresher", "1-2 years experience"];
 
 
@@ -191,14 +192,14 @@ Roadmap:
                     <FormField control={form.control} name="frontendLanguages" render={() => (
                         <FormItem>
                             <div className="mb-4"><FormLabel>Frontend Languages</FormLabel></div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
                             {frontendLangs.map((item) => (
                                 <FormField key={item} control={form.control} name="frontendLanguages" render={({ field }) => (
                                     <FormItem key={item} className="flex flex-row items-start space-x-3 space-y-0">
                                     <FormControl><Checkbox checked={field.value?.includes(item)} onCheckedChange={(checked) => {
                                         return checked ? field.onChange([...field.value, item]) : field.onChange(field.value?.filter((value) => value !== item))
                                     }} /></FormControl>
-                                    <FormLabel className="font-normal">{item}</FormLabel>
+                                    <FormLabel className="font-normal text-sm">{item}</FormLabel>
                                     </FormItem>
                                 )} />
                             ))}
@@ -209,14 +210,14 @@ Roadmap:
                     <FormField control={form.control} name="backendLanguages" render={() => (
                         <FormItem>
                             <div className="mb-4"><FormLabel>Backend Languages</FormLabel></div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
                             {backendLangs.map((item) => (
                                 <FormField key={item} control={form.control} name="backendLanguages" render={({ field }) => (
                                     <FormItem key={item} className="flex flex-row items-start space-x-3 space-y-0">
                                     <FormControl><Checkbox checked={field.value?.includes(item)} onCheckedChange={(checked) => {
                                         return checked ? field.onChange([...field.value, item]) : field.onChange(field.value?.filter((value) => value !== item))
                                     }} /></FormControl>
-                                    <FormLabel className="font-normal">{item}</FormLabel>
+                                    <FormLabel className="font-normal text-sm">{item}</FormLabel>
                                     </FormItem>
                                 )} />
                             ))}
@@ -299,3 +300,5 @@ Roadmap:
     </motion.div>
   );
 }
+
+    
