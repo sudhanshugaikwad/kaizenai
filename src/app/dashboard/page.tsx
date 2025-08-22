@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Lightbulb } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -22,12 +22,6 @@ const features = [
     description: "Answer a few questions to discover the career path that best matches your skills and goals.",
     href: "/dashboard/dream-career-finder",
     icon: Sparkles,
-  },
-  {
-    title: "Project Idea Generator",
-    description: "Get practical project ideas with roadmaps based on your chosen tech stack and experience.",
-    href: "/dashboard/project-idea-generator",
-    icon: Lightbulb,
   },
   {
     title: "Roadmap Generator",

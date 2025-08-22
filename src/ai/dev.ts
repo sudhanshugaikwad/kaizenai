@@ -15,4 +15,3 @@ import '@/ai/flows/website-prompt-generator.ts';
 import '@/ai/flows/website-editor.ts';
 import '@/ai/flows/event-finder.ts';
 import '@/ai/flows/dream-career-finder.ts';
-import '@/ai/flows/project-idea-generator.ts';
