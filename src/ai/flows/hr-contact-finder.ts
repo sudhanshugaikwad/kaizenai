@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const HrContactInputSchema = z.object({
@@ -45,6 +46,7 @@ export async function findHrContacts(input: HrContactInput): Promise<HrContactOu
 
 const prompt = ai.definePrompt({
   name: 'hrContactPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: HrContactInputSchema},
   output: {schema: HrContactOutputSchema},
   prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups and large global corporations. You pull HR details from trusted platforms like LinkedIn, Naukri, Xing, and many others.

@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const WebsitePromptGeneratorInputSchema = z.object({
@@ -28,6 +29,7 @@ export async function generateWebsitePrompt(input: WebsitePromptGeneratorInput):
 
 const prompt = ai.definePrompt({
   name: 'websitePromptGenerator',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: WebsitePromptGeneratorInputSchema},
   output: {schema: WebsitePromptGeneratorOutputSchema},
   prompt: `You are a creative director and prompt engineer. Based on the provided website name, generate a detailed and descriptive prompt for an AI web developer to build a modern, professional, and responsive single-page website.

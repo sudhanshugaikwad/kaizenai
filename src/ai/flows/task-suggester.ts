@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const TaskSuggesterInputSchema = z.object({
@@ -28,6 +29,7 @@ export async function suggestTaskContent(input: TaskSuggesterInput): Promise<Tas
 
 const prompt = ai.definePrompt({
   name: 'taskSuggesterPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: TaskSuggesterInputSchema},
   output: {schema: TaskSuggesterOutputSchema},
   prompt: `You are a productivity assistant who is an expert at breaking down tasks. Based on the provided project or task heading, generate a well-crafted, descriptive text that can be used as the task's body. This could be a brief, actionable description or a list of sub-tasks.

@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const CareerChatInputSchema = z.object({
@@ -28,6 +29,7 @@ export async function chatWithCoach(input: CareerChatInput): Promise<CareerChatO
 
 const prompt = ai.definePrompt({
   name: 'careerChatPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: CareerChatInputSchema},
   output: {schema: CareerChatOutputSchema},
   prompt: `You are Kaizen Ai, an expert career coach. Your role is to provide supportive, insightful, and actionable advice to users about their career questions.

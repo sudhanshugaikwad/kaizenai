@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const RoadmapInputSchema = z.object({
@@ -55,6 +56,7 @@ export async function generateRoadmap(input: RoadmapInput): Promise<RoadmapOutpu
 
 const prompt = ai.definePrompt({
   name: 'roadmapPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: RoadmapInputSchema},
   output: {schema: RoadmapOutputSchema},
   prompt: `You are a career coach who helps people achieve their career goals.

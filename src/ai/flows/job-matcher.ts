@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const JobMatcherInputSchema = z.object({
@@ -42,6 +43,7 @@ export async function matchJobs(input: JobMatcherInput): Promise<JobMatcherOutpu
 
 const prompt = ai.definePrompt({
   name: 'jobMatcherPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: JobMatcherInputSchema},
   output: {schema: JobMatcherOutputSchema},
   prompt: `You are an expert career consultant and recruiter specializing in the Indian job market. Your task is to:

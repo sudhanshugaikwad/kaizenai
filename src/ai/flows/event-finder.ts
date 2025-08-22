@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const EventFinderInputSchema = z.object({
@@ -46,6 +47,7 @@ export async function findEvents(input: EventFinderInput): Promise<EventFinderOu
 
 const prompt = ai.definePrompt({
   name: 'eventFinderPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: EventFinderInputSchema},
   output: {schema: EventFinderOutputSchema},
   prompt: `You are an expert at finding professional development events, webinars, challenges, and hackathons for students and professionals. Your task is to find relevant opportunities from top platforms like Hack2Skill, MLH (Major League Hacking), HackerEarth, and GeeksforGeeks Contests.

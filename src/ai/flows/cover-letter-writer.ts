@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const CoverLetterInputSchema = z.object({
@@ -31,6 +32,7 @@ export async function generateCoverLetter(input: CoverLetterInput): Promise<Cove
 
 const prompt = ai.definePrompt({
   name: 'coverLetterPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: CoverLetterInputSchema},
   output: {schema: CoverLetterOutputSchema},
   prompt: `You are an expert career coach specializing in crafting compelling cover letters.

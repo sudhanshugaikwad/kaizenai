@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const AnalyzeResumeInputSchema = z.object({
@@ -31,7 +32,7 @@ const AnalyzeResumeOutputSchema = z.object({
         suggestion: z.string().describe('The specific suggestion for improvement.'),
       })
     )
-    .describe('A list of suggestions for improving the resume.'),
+    .describe('A list of actionable improvements for the resume.'),
   atsKeywords: z.object({
     matchingKeywords: z.array(z.string()).describe('Keywords from the job description found in the resume.'),
     missingKeywords: z.array(z.string()).describe('Keywords from the job description missing from the resume.'),
@@ -46,6 +47,7 @@ export async function analyzeResume(input: AnalyzeResumeInput): Promise<AnalyzeR
 
 const prompt = ai.definePrompt({
   name: 'analyzeResumePrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: AnalyzeResumeInputSchema},
   output: {schema: AnalyzeResumeOutputSchema},
   prompt: `You are a world-class resume expert and career coach. You will analyze the provided resume and provide a comprehensive evaluation. If a job description is provided, you must compare the resume against it.

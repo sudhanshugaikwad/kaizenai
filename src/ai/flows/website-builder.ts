@@ -8,6 +8,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {
     WebsiteBuilderInputSchema,
     WebsiteBuilderOutputSchema,
@@ -22,6 +23,7 @@ export async function generateWebsite(input: WebsiteBuilderInput): Promise<Websi
 
 const prompt = ai.definePrompt({
   name: 'websiteBuilderPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: WebsiteBuilderInputSchema},
   output: {schema: WebsiteBuilderOutputSchema},
   prompt: `You are an expert web developer specializing in creating modern, responsive, and professional websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to generate the complete code for a single-page website based on the user's requirements.

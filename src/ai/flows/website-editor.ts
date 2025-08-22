@@ -8,6 +8,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import {
     WebsiteBuilderOutputSchema,
     type WebsiteBuilderOutput
@@ -28,6 +29,7 @@ export async function editWebsite(input: WebsiteEditorInput): Promise<WebsiteBui
 
 const prompt = ai.definePrompt({
   name: 'websiteEditorPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: WebsiteEditorInputSchema},
   output: {schema: WebsiteBuilderOutputSchema},
   prompt: `You are an expert web developer specializing in editing websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to modify the provided website code based on the user's instructions.
