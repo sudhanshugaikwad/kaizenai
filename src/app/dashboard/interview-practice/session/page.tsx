@@ -30,14 +30,21 @@ export default function InterviewSessionPage() {
     const { toast } = useToast();
     
     useEffect(() => {
-        const storedSettings = sessionStorage.getItem('interviewSettings');
-        if (storedSettings) {
-            const parsedSettings = JSON.parse(storedSettings);
-            setSettings(parsedSettings);
-        } else {
+        try {
+            const storedSettings = sessionStorage.getItem('interviewSettings');
+            if (storedSettings) {
+                const parsedSettings = JSON.parse(storedSettings);
+                setSettings(parsedSettings);
+            } else {
+                toast({ title: "No settings found", description: "Redirecting to setup page.", variant: "destructive" });
+                router.push('/dashboard/interview-practice');
+            }
+        } catch (e) {
+            console.error("Failed to parse settings", e);
+            toast({ title: "Error loading settings", description: "Redirecting to setup page.", variant: "destructive" });
             router.push('/dashboard/interview-practice');
         }
-    }, [router]);
+    }, [router, toast]);
 
     useEffect(() => {
         if (settings) {
@@ -89,7 +96,7 @@ export default function InterviewSessionPage() {
         router.push('/dashboard/interview-practice/summary');
     };
 
-    if (isLoading) {
+    if (isLoading || !settings) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-center">
                 <Loader2 className="h-12 w-12 animate-spin text-primary" />

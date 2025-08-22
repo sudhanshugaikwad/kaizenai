@@ -28,7 +28,7 @@ import Link from 'next/link';
 type UserCategory = 'Student' | 'Job Seeker' | 'Professional' | 'Other';
 
 type Question = {
-    key: string;
+    key: keyof Omit<DreamCareerFinderInput, 'userCategory'>;
     question: string;
     options?: string[];
     type?: 'text';
@@ -66,8 +66,6 @@ export default function DreamCareerFinderPage() {
   };
 
   const questions = answers.userCategory === 'Student' ? studentQuestions : professionalQuestions;
-  
-  const isLastQuestion = step === questions.length +1;
 
   const nextStep = () => {
     const currentQuestionKey = questions[step - 1]?.key;

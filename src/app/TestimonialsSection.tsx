@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
+import Autoplay from "embla-carousel-autoplay";
 
 type Feedback = {
   name: string;
@@ -25,12 +26,12 @@ const defaultTestimonials: Feedback[] = [
         name: "Sudhanshu Gaikwad",
         feedback: "This website is very useful for students, it solves all the problems they face, such as interview preparation, resume analysis, finding jobs and internships, and many more options available on the website.",
         rating: 5,
-        avatar: "https://i.pravatar.cc/150?img=1"
+        avatar: "https://github.com/sudhanshugaikwad.png"
     },
     {
         name: "Rohan Verma",
         feedback: "The resume analyzer is a game-changer. I got actionable feedback that helped my resume stand out and I landed more interviews.",
-        rating: 3,
+        rating: 5,
         avatar: "https://i.pravatar.cc/150?img=2"
     },
     {
@@ -56,6 +57,9 @@ const defaultTestimonials: Feedback[] = [
 export default function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<Feedback[]>(defaultTestimonials);
     const [isMounted, setIsMounted] = useState(false);
+    const plugin = React.useRef(
+        Autoplay({ delay: 3000, stopOnInteraction: true })
+    );
 
     useEffect(() => {
         setIsMounted(true);
@@ -68,13 +72,15 @@ export default function TestimonialsSection() {
             const storedFeedback = localStorage.getItem('kaizen-ai-feedback');
             if (storedFeedback) {
                 const parsedFeedback = JSON.parse(storedFeedback);
-                // Combine default and user feedback, ensuring no duplicates if a user has the same name as a default one.
-                const userNames = new Set(parsedFeedback.map((f: Feedback) => f.name));
-                const combined = [
-                    ...parsedFeedback,
-                    ...defaultTestimonials.filter(f => !userNames.has(f.name))
-                ];
-                setTestimonials(combined);
+                if(Array.isArray(parsedFeedback)) {
+                    // Combine default and user feedback, ensuring no duplicates if a user has the same name as a default one.
+                    const userNames = new Set(parsedFeedback.map((f: Feedback) => f.name));
+                    const combined = [
+                        ...parsedFeedback,
+                        ...defaultTestimonials.filter(f => !userNames.has(f.name))
+                    ];
+                    setTestimonials(combined);
+                }
             }
         } catch (e) {
             console.error("Could not load feedback from localStorage", e);
@@ -93,10 +99,13 @@ export default function TestimonialsSection() {
             Hear from professionals who have supercharged their careers with Kaizen Ai.
         </p>
         <Carousel
+            plugins={[plugin.current]}
             opts={{
                 align: 'start',
                 loop: true,
             }}
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
             className="w-full max-w-4xl mx-auto mt-12"
         >
             <CarouselContent>
