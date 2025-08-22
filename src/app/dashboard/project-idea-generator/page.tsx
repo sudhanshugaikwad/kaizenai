@@ -346,7 +346,7 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
                                             <h4 className="font-semibold">Resources:</h4>
                                             <ul className="list-none pl-5 space-y-1">
                                                 {step.resources.map((resource, i) => (
-                                                    <li key={i} key={i}>
+                                                    <li key={i}>
                                                         <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-2">
                                                             {resource.name} <ExternalLink className="h-4 w-4" />
                                                         </a>
