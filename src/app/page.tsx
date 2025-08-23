@@ -49,9 +49,9 @@ const features = [
   },
   {
     icon: <FileText className="h-6 w-6 text-primary" />,
-    title: 'AI Resume Optimizer',
+    title: 'AI Resume Analyzer',
     description: 'Optimize your resume with AI-powered feedback.',
-    href: '/dashboard/resume-optimizer',
+    href: '/dashboard/resume-analyzer',
   },
   {
     icon: <PenSquare className="h-6 w-6 text-primary" />,
@@ -121,8 +121,8 @@ const footerFeatures = [
       href: '/dashboard/roadmap-generator',
     },
     {
-      title: 'AI Resume Optimizer',
-      href: '/dashboard/resume-optimizer',
+      title: 'AI Resume Analyzer',
+      href: '/dashboard/resume-analyzer',
     },
     {
       title: 'AI Cover Letter Writer',

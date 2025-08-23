@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 config();
 
 import '@/ai/flows/roadmap-generator.ts';
-import '@/ai/flows/resume-optimizer.ts';
+import '@/ai/flows/resume-analyzer.ts';
 import '@/ai/flows/cover-letter-writer.ts';
 import '@/ai/flows/career-chat.ts';
 import '@/ai/flows/job-matcher.ts';
@@ -16,3 +16,4 @@ import '@/ai/flows/website-editor.ts';
 import '@/ai/flows/event-finder.ts';
 import '@/ai/flows/dream-career-finder.ts';
 import '@/ai/flows/smart-job-recommender.ts';
+

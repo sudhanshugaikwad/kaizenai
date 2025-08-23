@@ -32,9 +32,9 @@ const features = [
     pro: true,
   },
   {
-    title: "AI Resume Optimizer",
+    title: "Resume Analyzer",
     description: "Optimize your resume. Get AI-powered feedback to stand out to recruiters.",
-    href: "/dashboard/resume-optimizer",
+    href: "/dashboard/resume-analyzer",
     icon: FileText,
     pro: true,
   },

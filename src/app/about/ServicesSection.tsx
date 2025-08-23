@@ -12,7 +12,7 @@ const services = [
     },
     {
         icon: <FileText className="h-6 w-6 text-primary" />,
-        title: 'AI Resume Optimizer',
+        title: 'AI Resume Analyzer',
         description: 'Optimize your resume with AI-powered feedback.',
     },
     {
