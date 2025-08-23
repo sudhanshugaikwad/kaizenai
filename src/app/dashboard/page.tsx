@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -44,8 +45,8 @@ const features = [
     icon: PenSquare,
   },
   {
-    title: "Job Matcher",
-    description: "Find your next role. Get job recommendations based on your resume.",
+    title: "Job Search and Matching",
+    description: "Find your next role with smart recommendations and market insights.",
     href: "/dashboard/job-matcher",
     icon: Briefcase,
     pro: true,

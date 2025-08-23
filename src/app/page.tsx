@@ -20,6 +20,7 @@ import {
   Star,
   Globe,
   CalendarCheck,
+  Sparkles,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -59,6 +60,12 @@ const features = [
     href: '/dashboard/cover-letter-writer',
   },
   {
+    icon: <Sparkles className="h-6 w-6 text-primary" />,
+    title: 'Dream Career Finder',
+    description: 'Answer a few questions to discover the career path.',
+    href: '/dashboard/website-builder',
+  },
+  {
     icon: <Rocket className="h-6 w-6 text-primary" />,
     title: 'AI Roadmap Generator',
     description: 'Get a personalized career plan with resources.',
@@ -66,7 +73,7 @@ const features = [
   },
   {
     icon: <Briefcase className="h-6 w-6 text-primary" />,
-    title: 'AI Job Matcher',
+    title: 'AI Job Search and Matching',
     description: 'Let our AI find the best job openings for you.',
     href: '/dashboard/job-matcher',
   },
@@ -122,7 +129,7 @@ const footerFeatures = [
       href: '/dashboard/cover-letter-writer',
     },
     {
-      title: 'AI Job Matcher',
+      title: 'AI Job Search and Matching',
       href: '/dashboard/job-matcher',
     },
     {

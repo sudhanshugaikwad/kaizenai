@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -51,7 +52,7 @@ const navItems = [
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
-  { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Matcher' },
+  { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Search and Matching' },
   { href: '/dashboard/interview-practice', icon: BookOpenCheck, label: 'Interview Practice' },
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
   { href: '/dashboard/events-hackathons', icon: CalendarCheck, label: 'Events & Hackathons' },
