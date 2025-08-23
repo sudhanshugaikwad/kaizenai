@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
@@ -14,22 +14,6 @@ const features = [
     icon: Sparkles,
     href: "/dashboard/interview-practice/setup",
     cta: "Start Practice",
-    disabled: false,
-  },
-  {
-    title: "Browse Question Bank",
-    description: "Explore a curated library of questions filtered by role, industry, and difficulty.",
-    icon: BookOpen,
-    href: "/dashboard/interview-practice/question-bank",
-    cta: "Browse Questions",
-    disabled: false,
-  },
-  {
-    title: "Try Behavioral Coach",
-    description: "Learn to structure your answers effectively using methods like STAR to impress recruiters.",
-    icon: MessageCircle,
-    href: "/dashboard/interview-practice/behavioral-coach",
-    cta: "Start Coaching",
     disabled: false,
   },
 ];
@@ -62,7 +46,7 @@ export default function InterviewPracticeLandingPage() {
       </motion.div>
 
       <motion.div
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 justify-center"
         variants={containerVariants}
       >
         {features.map((feature) => (
