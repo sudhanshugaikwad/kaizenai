@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -34,7 +34,7 @@ const features = [
   {
     title: "AI Resume Builder",
     description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
-    href: "/dashboard/resume-builder",
+    href: "/dashboard/resume-analyzer",
     icon: FileText,
     pro: true,
   },
@@ -70,6 +70,12 @@ const features = [
     description: "Discover events, hackathons, and challenges from top platforms.",
     href: "/dashboard/events-hackathons",
     icon: CalendarCheck,
+  },
+  {
+    title: "Website Builder",
+    description: "Create and deploy simple websites using AI.",
+    href: "/dashboard/website-builder",
+    icon: Globe,
   },
   {
     title: "Sticky Notes",
@@ -152,5 +158,3 @@ export default function DashboardPage() {
     </motion.div>
   );
 }
-
-    
