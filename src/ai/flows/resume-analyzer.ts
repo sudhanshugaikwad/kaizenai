@@ -36,6 +36,10 @@ const AnalyzeResumeOutputSchema = z.object({
     matchingKeywords: z.array(z.string()).describe('Keywords from the job description found in the resume.'),
     missingKeywords: z.array(z.string()).describe('Keywords from the job description missing from the resume.'),
   }).describe('An analysis of keywords for Applicant Tracking Systems (ATS).'),
+  identifiedRole: z.string().describe("The candidate's most likely job role based on the resume content."),
+  formattingSuggestions: z.array(
+      z.string()
+  ).describe("A list of suggestions to improve the resume's formatting and layout."),
 });
 export type AnalyzeResumeOutput = z.infer<typeof AnalyzeResumeOutputSchema>;
 
@@ -56,8 +60,10 @@ const prompt = ai.definePrompt({
   2.  A concise **Summary** of the resume's strengths and weaknesses.
   3.  A list of actionable **Improvements**, categorized by resume section (e.g., Summary, Experience, Skills, Education).
   4.  An **ATS Keyword Analysis** that identifies matching and missing keywords based on the job description. If no job description is provided, this section should be based on general best practices for the inferred role.
+  5.  The candidate's most likely **Identified Role** based on the skills and experience listed in the resume.
+  6.  A list of **Formatting Suggestions** to improve the layout, readability, and overall presentation of the resume.
 
-  **IMPORTANT**: If the provided resume file cannot be processed, is empty, or seems invalid, you MUST set the 'overallScore' to 0, the 'summary' to 'Could not process the provided resume. Please ensure it is a valid and readable file.', and return empty arrays for 'improvements' and 'atsKeywords'. Do not throw an error.
+  **IMPORTANT**: If the provided resume file cannot be processed, is empty, or seems invalid, you MUST set the 'overallScore' to 0, the 'summary' to 'Could not process the provided resume. Please ensure it is a valid and readable file.', and return empty arrays for 'improvements', 'atsKeywords', and 'formattingSuggestions' and an empty string for 'identifiedRole'. Do not throw an error.
 
   Resume: {{media url=resumeDataUri}}
 
