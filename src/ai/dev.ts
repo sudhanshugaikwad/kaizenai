@@ -16,4 +16,6 @@ import '@/ai/flows/website-editor.ts';
 import '@/ai/flows/event-finder.ts';
 import '@/ai/flows/dream-career-finder.ts';
 import '@/ai/flows/smart-job-recommender.ts';
+import '@/ai/flows/question-bank.ts';
+import '@/ai/flows/behavioral-coach.ts';
 

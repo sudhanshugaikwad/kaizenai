@@ -20,17 +20,17 @@ const features = [
     title: "Browse Question Bank",
     description: "Explore a curated library of questions filtered by role, industry, and difficulty.",
     icon: BookOpen,
-    href: "#",
-    cta: "Coming Soon",
-    disabled: true,
+    href: "/dashboard/interview-practice/question-bank",
+    cta: "Browse Questions",
+    disabled: false,
   },
   {
     title: "Try Behavioral Coach",
     description: "Learn to structure your answers effectively using methods like STAR to impress recruiters.",
     icon: MessageCircle,
-    href: "#",
-cta: "Coming Soon",
-    disabled: true,
+    href: "/dashboard/interview-practice/behavioral-coach",
+    cta: "Start Coaching",
+    disabled: false,
   },
 ];
 
@@ -94,5 +94,3 @@ export default function InterviewPracticeLandingPage() {
     </motion.div>
   );
 }
-
-    
