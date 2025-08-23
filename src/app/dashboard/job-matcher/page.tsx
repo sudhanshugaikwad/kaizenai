@@ -465,12 +465,12 @@ function JobMarketInsightsView() {
                     <div className="p-4 border rounded-lg">
                         <h3 className="font-semibold mb-4">Filters</h3>
                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            <Select disabled><SelectTrigger><SelectValue placeholder="Select Industry" /></SelectTrigger></Select>
-                            <Select disabled><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></Select>
-                            <Select disabled><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger></Select>
-                            <Input placeholder="Enter City" disabled />
-                            <Select disabled><SelectTrigger><SelectValue placeholder="Experience Level" /></SelectTrigger></Select>
-                            <Select disabled><SelectTrigger><SelectValue placeholder="Job Type" /></SelectTrigger></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Industry" /></SelectTrigger></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger></Select>
+                            <Input placeholder="Enter City" />
+                            <Select><SelectTrigger><SelectValue placeholder="Experience Level" /></SelectTrigger></Select>
+                            <Select><SelectTrigger><SelectValue placeholder="Job Type" /></SelectTrigger></Select>
                         </div>
                     </div>
 
