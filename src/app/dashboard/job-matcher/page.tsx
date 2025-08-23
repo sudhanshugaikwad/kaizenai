@@ -7,7 +7,8 @@ import { matchJobs, type JobMatcherOutput } from '@/ai/flows/job-matcher';
 import { recommendJobs, type SmartJobRecommenderOutput } from '@/ai/flows/smart-job-recommender';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star, Checkbox } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -291,3 +292,5 @@ export default function JobMatcherPage() {
     </div>
   );
 }
+
+    
