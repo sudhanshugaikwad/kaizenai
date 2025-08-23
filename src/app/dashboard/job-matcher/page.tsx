@@ -15,23 +15,49 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Check, ChevronsUpDown } from 'lucide-react';
+
 
 type ViewMode = 'ai-match' | 'recommendations' | 'insights';
 
-const jobSkills = [
-  "Web Developer",
-  "Frontend Developer",
-  "Backend Developer",
-  "Full Stack Developer",
-  "Data Science",
-  "Machine Learning Engineer",
-  "DevOps Engineer",
-  "UI/UX Designer",
-  "Product Manager",
-  "Mobile App Developer",
-  "Cybersecurity Analyst",
-  "Cloud Engineer"
+const allSkills = [
+    "Software Engineer", "Web Developer", "Frontend Developer", "Backend Developer", "Full Stack Developer",
+    "Data Scientist", "Data Analyst", "Machine Learning Engineer", "AI Engineer",
+    "DevOps Engineer", "Cloud Engineer", "Cybersecurity Analyst", "Network Engineer",
+    "UI/UX Designer", "Product Manager", "Project Manager", "Business Analyst",
+    "Marketing Manager", "Digital Marketing Specialist", "Content Strategist", "SEO Specialist",
+    "Sales Representative", "Account Executive", "Customer Success Manager",
+    "Financial Analyst", "Accountant", "Investment Banker",
+    "Human Resources Manager", "Recruiter",
+    "Graphic Designer", "Video Editor"
 ];
+
+const jobTypes = ["Full-time", "Part-time", "Internship", "Contract"];
+
+const countries = [
+    { value: 'USA', label: 'United States' },
+    { value: 'India', label: 'India' },
+    { value: 'Canada', label: 'Canada' },
+    { value: 'GBR', label: 'United Kingdom' },
+    { value: 'AUS', label: 'Australia' },
+    { value: 'DEU', label: 'Germany' },
+    { value: 'FRA', label: 'France' },
+    { value: 'JPN', label: 'Japan' },
+    { value: 'CHN', label: 'China' },
+    { value: 'BRA', label: 'Brazil' },
+    { value: 'ZAF', label: 'South Africa' },
+];
+
 
 function AiMatchView() {
     const [result, setResult] = useState<JobMatcherOutput | null>(null);
@@ -96,7 +122,6 @@ function AiMatchView() {
         }
     }, [file, toast]);
 
-    // Pagination logic
     const indexOfLastJob = currentPage * jobsPerPage;
     const indexOfFirstJob = indexOfLastJob - jobsPerPage;
     const currentJobs = result?.matchedJobs.slice(indexOfFirstJob, indexOfLastJob) || [];
@@ -214,28 +239,31 @@ function SmartRecommendationsView() {
     const [recommendations, setRecommendations] = useState<SmartJobRecommenderOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+    const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
+    const [country, setCountry] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [open, setOpen] = useState(false);
     const { toast } = useToast();
 
-    const handleSkillChange = (skill: string) => {
-        setSelectedSkills(prev => 
-            prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
-        );
-    };
+    const jobsPerPage = 9;
 
     const fetchRecommendations = useCallback(async () => {
         if (selectedSkills.length === 0) {
-            toast({ title: "No skills selected", description: "Please select at least one skill to get recommendations.", variant: "destructive" });
+            toast({ title: "No skills selected", description: "Please select at least one skill.", variant: "destructive" });
             return;
         }
         setIsLoading(true);
         setRecommendations(null);
+        setCurrentPage(1);
         try {
             const result = await recommendJobs({
                 jobPreferences: {
                     roles: selectedSkills,
-                    locations: ["Remote", "Pune", "Mumbai", "Bangalore", "Hyderabad"],
-                    jobTypes: ["Full-time", "Internship"],
-                    experienceLevel: "Entry-level" // This could be a filter as well
+                    jobTypes: selectedJobTypes as any,
+                    country: country,
+                    city: city,
+                    experienceLevel: "Any" 
                 }
             });
             setRecommendations(result);
@@ -245,34 +273,104 @@ function SmartRecommendationsView() {
         } finally {
             setIsLoading(false);
         }
-    }, [selectedSkills, toast]);
+    }, [selectedSkills, selectedJobTypes, country, city, toast]);
+
+    const handleSkillChange = (skill: string) => {
+        setSelectedSkills(prev => 
+            prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
+        );
+    };
+
+    const handleJobTypeChange = (jobType: string) => {
+        setSelectedJobTypes(prev =>
+            prev.includes(jobType) ? prev.filter(jt => jt !== jobType) : [...prev, jobType]
+        );
+    };
+
+    const indexOfLastJob = currentPage * jobsPerPage;
+    const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+    const currentJobs = recommendations?.recommendedJobs.slice(indexOfFirstJob, indexOfLastJob) || [];
+    const totalPages = recommendations ? Math.ceil(recommendations.recommendedJobs.length / jobsPerPage) : 0;
+    
+    const paginate = (pageNumber: number) => {
+        if (pageNumber > 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             <Card>
                 <CardHeader>
                     <CardTitle>Smart Job Recommendations</CardTitle>
-                    <CardDescription>AI-powered job recommendations tailored to your profile and preferences.</CardDescription>
+                    <CardDescription>AI-powered global job recommendations tailored to your profile and preferences.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <div>
-                        <Label className="font-semibold">Select your skills of interest:</Label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-                            {jobSkills.map(skill => (
-                                <div key={skill} className="flex items-center space-x-2">
-                                    <Checkbox 
-                                        id={skill}
-                                        checked={selectedSkills.includes(skill)}
-                                        onCheckedChange={() => handleSkillChange(skill)}
-                                    />
-                                    <label
-                                        htmlFor={skill}
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    <div className="space-y-4">
+                        <div>
+                            <Label className="font-semibold">Skills / Roles</Label>
+                             <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="w-full justify-between mt-2"
                                     >
-                                        {skill}
-                                    </label>
+                                    {selectedSkills.length > 0 ? `${selectedSkills.length} selected` : "Select skills..."}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                    <Command>
+                                        <CommandInput placeholder="Search skills..." />
+                                        <CommandList>
+                                            <CommandEmpty>No skill found.</CommandEmpty>
+                                            <CommandGroup>
+                                                {allSkills.map((skill) => (
+                                                <CommandItem
+                                                    key={skill}
+                                                    value={skill}
+                                                    onSelect={() => handleSkillChange(skill)}
+                                                >
+                                                    <Check className={cn("mr-2 h-4 w-4", selectedSkills.includes(skill) ? "opacity-100" : "opacity-0")} />
+                                                    {skill}
+                                                </CommandItem>
+                                                ))}
+                                            </CommandGroup>
+                                        </CommandList>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                           <div>
+                            <Label className="font-semibold">Job Type</Label>
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                                {jobTypes.map(type => (
+                                <div key={type} className="flex items-center space-x-2">
+                                    <Checkbox id={`jt-${type}`} checked={selectedJobTypes.includes(type)} onCheckedChange={() => handleJobTypeChange(type)} />
+                                    <Label htmlFor={`jt-${type}`} className="font-normal">{type}</Label>
                                 </div>
-                            ))}
+                                ))}
+                            </div>
+                           </div>
+                           <div>
+                               <Label className="font-semibold">Country</Label>
+                               <Select onValueChange={setCountry}>
+                                    <SelectTrigger className="w-full mt-2">
+                                        <SelectValue placeholder="Select Country" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {countries.map(c => <SelectItem key={c.value} value={c.label}>{c.label}</SelectItem>)}
+                                    </SelectContent>
+                                </Select>
+                           </div>
+                           <div>
+                               <Label className="font-semibold">City (Optional)</Label>
+                               <Input placeholder="Enter city name" value={city} onChange={(e) => setCity(e.target.value)} className="mt-2" />
+                           </div>
                         </div>
                     </div>
                     <Button onClick={fetchRecommendations} disabled={isLoading}>
@@ -289,33 +387,51 @@ function SmartRecommendationsView() {
             )}
             
             {recommendations && (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {recommendations.recommendedJobs.map((job, index) => (
-                         <motion.div key={index} initial={{ opacity: 0, y:20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-                            <Card className="flex flex-col h-full">
-                                <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <CardTitle className="text-lg">{job.jobTitle}</CardTitle>
-                                        <Badge variant="default">{job.matchScore}%</Badge>
+                <div className="space-y-6">
+                    <h2 className="text-2xl font-bold tracking-tight">Found {recommendations.recommendedJobs.length} Jobs</h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {currentJobs.map((job, index) => (
+                            <motion.div key={index} initial={{ opacity: 0, y:20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
+                                <Card className="flex flex-col h-full">
+                                    <CardHeader>
+                                        <div className="flex items-center justify-between">
+                                            <CardTitle className="text-lg">{job.jobTitle}</CardTitle>
+                                            <Badge variant="default">{job.matchScore}%</Badge>
+                                        </div>
+                                        <CardDescription>{job.companyName} - {job.location}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow space-y-3">
+                                        <p className="text-sm text-muted-foreground line-clamp-3">{job.jobDescription}</p>
+                                        <div>
+                                            <p className="text-sm font-semibold">Match Score: {job.matchScore}%</p>
+                                            <Progress value={job.matchScore} className="h-2 mt-1" />
+                                        </div>
+                                        <p className="text-sm text-muted-foreground"><span className="font-semibold">Salary:</span> {job.salaryRange}</p>
+                                    </CardContent>
+                                    <div className="p-6 pt-0">
+                                        <Link href={job.applyLink} target="_blank" rel="noopener noreferrer">
+                                            <Button className="w-full">Apply Now <ExternalLink className="ml-2 h-4 w-4" /></Button>
+                                        </Link>
                                     </div>
-                                    <CardDescription>{job.companyName} - {job.location}</CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-3">
-                                    <p className="text-sm text-muted-foreground">{job.jobDescription.substring(0,100)}...</p>
-                                    <div>
-                                        <p className="text-sm font-semibold">Match Score: {job.matchScore}%</p>
-                                        <Progress value={job.matchScore} className="h-2 mt-1" />
-                                    </div>
-                                    <p className="text-sm text-muted-foreground"><span className="font-semibold">Salary:</span> {job.salaryRange}</p>
-                                </CardContent>
-                                <div className="p-6 pt-0">
-                                    <Link href={job.applyLink} target="_blank" rel="noopener noreferrer">
-                                        <Button className="w-full">Apply Now <ExternalLink className="ml-2 h-4 w-4" /></Button>
-                                    </Link>
-                                </div>
-                            </Card>
-                         </motion.div>
-                    ))}
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </div>
+                     {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-4 pt-4">
+                            <Button variant="outline" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                                <ChevronLeft className="w-4 h-4 mr-2" />
+                                Previous
+                            </Button>
+                            <span className="text-sm font-medium">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <Button variant="outline" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+                                Next
+                                <ChevronRight className="w-4 h-4 ml-2" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             )}
         </motion.div>
