@@ -7,7 +7,7 @@ import { matchJobs, type JobMatcherOutput } from '@/ai/flows/job-matcher';
 import { recommendJobs, type SmartJobRecommenderOutput } from '@/ai/flows/smart-job-recommender';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star, ChevronLeft, ChevronRight, Download, RefreshCw } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +26,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
 
 type ViewMode = 'ai-match' | 'recommendations' | 'insights';
@@ -442,7 +442,7 @@ function SmartRecommendationsView() {
     )
 }
 
-const industryData = [
+const initialIndustryData = [
     { name: 'Tech', value: 4500, fill: 'hsl(var(--chart-1))' },
     { name: 'Finance', value: 3200, fill: 'hsl(var(--chart-2))' },
     { name: 'Healthcare', value: 2800, fill: 'hsl(var(--chart-3))' },
@@ -450,30 +450,40 @@ const industryData = [
     { name: 'Education', value: 1800, fill: 'hsl(var(--chart-5))' },
   ];
 
+const initialSkillsData = [
+    'Python', 'React', 'JavaScript', 'SQL', 'AWS', 'LLM', 'Agentic AI', 'Go', 'TypeScript', 'Docker', 'Kubernetes', 'Java', 'Machine Learning'
+];
+
 function JobMarketInsightsView() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [industryData, setIndustryData] = useState(initialIndustryData);
+    const [skillsData, setSkillsData] = useState(initialSkillsData);
+
+    const handleRefresh = () => {
+        setIsLoading(true);
+        // Simulate fetching data
+        setTimeout(() => {
+            // Shuffle data to simulate update
+            setIndustryData(prev => [...prev].sort(() => Math.random() - 0.5));
+            setSkillsData(prev => [...prev].sort(() => Math.random() - 0.5));
+            setIsLoading(false);
+        }, 1500);
+    }
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                     <div>
                         <CardTitle>Job Market Insights</CardTitle>
-                        <CardDescription>Real-time insights and analytics. This feature is coming soon!</CardDescription>
+                        <CardDescription>Real-time insights on industries and in-demand skills.</CardDescription>
                     </div>
-                     <Button variant="outline" disabled><Download className="mr-2 h-4 w-4" /> Download Section</Button>
+                     <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
+                        {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                        Top Refresh
+                     </Button>
                 </CardHeader>
                 <CardContent className="space-y-8">
-                    <div className="p-4 border rounded-lg">
-                        <h3 className="font-semibold mb-4">Filters</h3>
-                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            <Select><SelectTrigger><SelectValue placeholder="Select Industry" /></SelectTrigger></Select>
-                            <Select><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></Select>
-                            <Select><SelectTrigger><SelectValue placeholder="Select Country" /></SelectTrigger></Select>
-                            <Input placeholder="Enter City" />
-                            <Select><SelectTrigger><SelectValue placeholder="Experience Level" /></SelectTrigger></Select>
-                            <Select><SelectTrigger><SelectValue placeholder="Job Type" /></SelectTrigger></Select>
-                        </div>
-                    </div>
-
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <Card>
                             <CardHeader>
@@ -481,31 +491,44 @@ function JobMarketInsightsView() {
                                 <CardDescription>Top growing industries based on job postings.</CardDescription>
                             </CardHeader>
                              <CardContent>
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart data={industryData}>
-                                        <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                                        <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value / 1000}k`} />
-                                        <Bar dataKey="value" radius={[4, 4, 0, 0]} />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center h-[300px]"><Loader2 className="h-8 w-8 animate-spin" /></div>
+                                ) : (
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={industryData}>
+                                            <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                                            <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value / 1000}k`} />
+                                            <Tooltip
+                                                contentStyle={{ 
+                                                    background: "hsl(var(--background))",
+                                                    borderColor: "hsl(var(--border))"
+                                                }}
+                                            />
+                                            <Bar dataKey="value" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                )}
                             </CardContent>
                         </Card>
                         <Card>
                             <CardHeader>
                                 <CardTitle>In-Demand Skills</CardTitle>
-                                <CardDescription>The most requested skills by employers.</CardDescription>
+                                <CardDescription>Most requested languages, frameworks, and AI skills.</CardDescription>
                             </CardHeader>
-                             <CardContent className="flex flex-wrap gap-2">
-                                {['React', 'Python', 'AWS', 'SQL', 'Go', 'LLMs', 'Agentic AI', 'TypeScript', 'Docker', 'Kubernetes'].map(skill => (
-                                    <Badge key={skill} variant="secondary">{skill}</Badge>
-                                ))}
+                             <CardContent>
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center h-[300px]"><Loader2 className="h-8 w-8 animate-spin" /></div>
+                                ) : (
+                                    <div className="flex flex-wrap gap-2">
+                                        {skillsData.map(skill => (
+                                            <Badge key={skill} variant={['LLM', 'AI/ML', 'Agentic AI'].includes(skill) ? "default" : "secondary"} className="text-base py-1 px-3">
+                                                {skill}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                )}
                             </CardContent>
                         </Card>
-                    </div>
-                     <div className="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-lg">
-                        <BarChart2 className="w-16 h-16 text-muted-foreground/50" />
-                        <p className="mt-4 text-lg font-semibold">Full Insights Dashboard Coming Soon</p>
-                        <p className="text-muted-foreground">We're developing advanced analytics for salary insights, company reviews, and more.</p>
                     </div>
                 </CardContent>
             </Card>
