@@ -14,8 +14,24 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { Label } from '@/components/ui/label';
 
 type ViewMode = 'ai-match' | 'recommendations' | 'insights';
+
+const jobSkills = [
+  "Web Developer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "Data Science",
+  "Machine Learning Engineer",
+  "DevOps Engineer",
+  "UI/UX Designer",
+  "Product Manager",
+  "Mobile App Developer",
+  "Cybersecurity Analyst",
+  "Cloud Engineer"
+];
 
 function AiMatchView() {
     const [result, setResult] = useState<JobMatcherOutput | null>(null);
@@ -127,7 +143,7 @@ function AiMatchView() {
                 </div>
             )}
 
-            {result && (
+            {result && result.matchedJobs.length > 0 && (
                 <div className="space-y-6">
                     {result.userJobRole && (
                         <Card>
@@ -197,19 +213,29 @@ function AiMatchView() {
 function SmartRecommendationsView() {
     const [recommendations, setRecommendations] = useState<SmartJobRecommenderOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const { toast } = useToast();
 
+    const handleSkillChange = (skill: string) => {
+        setSelectedSkills(prev => 
+            prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
+        );
+    };
+
     const fetchRecommendations = useCallback(async () => {
+        if (selectedSkills.length === 0) {
+            toast({ title: "No skills selected", description: "Please select at least one skill to get recommendations.", variant: "destructive" });
+            return;
+        }
         setIsLoading(true);
         setRecommendations(null);
         try {
             const result = await recommendJobs({
-                // In a real app, these would come from user profile/preferences in Firestore
                 jobPreferences: {
-                    roles: ["Frontend Developer", "React Developer"],
-                    locations: ["Pune", "Remote"],
-                    jobTypes: ["Full-time"],
-                    experienceLevel: "2-4 years"
+                    roles: selectedSkills,
+                    locations: ["Remote", "Pune", "Mumbai", "Bangalore", "Hyderabad"],
+                    jobTypes: ["Full-time", "Internship"],
+                    experienceLevel: "Entry-level" // This could be a filter as well
                 }
             });
             setRecommendations(result);
@@ -219,7 +245,7 @@ function SmartRecommendationsView() {
         } finally {
             setIsLoading(false);
         }
-    }, [toast]);
+    }, [selectedSkills, toast]);
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
@@ -228,16 +254,30 @@ function SmartRecommendationsView() {
                     <CardTitle>Smart Job Recommendations</CardTitle>
                     <CardDescription>AI-powered job recommendations tailored to your profile and preferences.</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-4 items-center">
-                        <p className="font-semibold">Filters:</p>
-                        <div className="flex items-center space-x-2"><Checkbox id="remote" /><label htmlFor="remote" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Remote</label></div>
-                        <div className="flex items-center space-x-2"><Checkbox id="full-time" defaultChecked /><label htmlFor="full-time">Full-time</label></div>
-                        <div className="flex items-center space-x-2"><Checkbox id="part-time" /><label htmlFor="part-time">Part-time</label></div>
-                        <Button onClick={fetchRecommendations} disabled={isLoading}>
-                            {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Fetching...</> : 'Get Recommendations'}
-                        </Button>
+                <CardContent className="space-y-6">
+                    <div>
+                        <Label className="font-semibold">Select your skills of interest:</Label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                            {jobSkills.map(skill => (
+                                <div key={skill} className="flex items-center space-x-2">
+                                    <Checkbox 
+                                        id={skill}
+                                        checked={selectedSkills.includes(skill)}
+                                        onCheckedChange={() => handleSkillChange(skill)}
+                                    />
+                                    <label
+                                        htmlFor={skill}
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        {skill}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                    <Button onClick={fetchRecommendations} disabled={isLoading}>
+                        {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Fetching...</> : 'Get Recommendations'}
+                    </Button>
                 </CardContent>
             </Card>
 
