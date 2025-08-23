@@ -18,7 +18,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Sparkles, FileUp, Trophy, CheckCircle, XCircle, UserCheck, Edit, LayoutList } from 'lucide-react';
+import { Loader2, Sparkles, FileUp, Trophy, CheckCircle, XCircle, UserCheck, Edit, LayoutList, FileText } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { Progress } from '@/components/ui/progress';
@@ -307,3 +307,5 @@ export default function ResumeAnalyzerPage() {
     </motion.div>
   );
 }
+
+    
