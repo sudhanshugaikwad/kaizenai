@@ -7,7 +7,7 @@ import { matchJobs, type JobMatcherOutput } from '@/ai/flows/job-matcher';
 import { recommendJobs, type SmartJobRecommenderOutput } from '@/ai/flows/smart-job-recommender';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star } from 'lucide-react';
+import { Loader2, FileUp, Sparkles, Briefcase, ExternalLink, Building, Clock, UserCheck, MapPin, BarChart2, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,10 @@ function AiMatchView() {
     const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState(1);
     const { toast } = useToast();
+    
+    const jobsPerPage = 9;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
@@ -59,6 +62,7 @@ function AiMatchView() {
 
         setIsLoading(true);
         setResult(null);
+        setCurrentPage(1);
 
         try {
         const resumeDataUri = await fileToDataUri(file);
@@ -75,6 +79,19 @@ function AiMatchView() {
         setIsLoading(false);
         }
     }, [file, toast]);
+
+    // Pagination logic
+    const indexOfLastJob = currentPage * jobsPerPage;
+    const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+    const currentJobs = result?.matchedJobs.slice(indexOfFirstJob, indexOfLastJob) || [];
+    const totalPages = result ? Math.ceil(result.matchedJobs.length / jobsPerPage) : 0;
+
+    const paginate = (pageNumber: number) => {
+        if (pageNumber > 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
@@ -126,7 +143,7 @@ function AiMatchView() {
 
                     <h2 className="text-2xl font-bold tracking-tight">Recommended Jobs & Internships for You</h2>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {result.matchedJobs.map((job, index) => (
+                    {currentJobs.map((job, index) => (
                         <motion.div key={index} initial={{ opacity: 0, y:20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                             <Card className="flex flex-col h-full">
                                 <CardHeader>
@@ -156,6 +173,21 @@ function AiMatchView() {
                         </motion.div>
                     ))}
                     </div>
+                     {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-4 pt-4">
+                            <Button variant="outline" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                                <ChevronLeft className="w-4 h-4 mr-2" />
+                                Previous
+                            </Button>
+                            <span className="text-sm font-medium">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <Button variant="outline" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+                                Next
+                                <ChevronRight className="w-4 h-4 ml-2" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             )}
         </motion.div>
@@ -292,5 +324,3 @@ export default function JobMatcherPage() {
     </div>
   );
 }
-
-    

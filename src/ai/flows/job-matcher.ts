@@ -32,7 +32,7 @@ const JobMatcherOutputSchema = z.object({
       applyLink: z.string().url().describe('A direct URL to the job application page (e.g., LinkedIn, Naukri, company website).'),
       postedDate: z.string().describe('How long ago the job was posted (e.g., "5 days ago", "2 weeks ago").')
     })
-  ).describe('A list of 5-10 job roles and internships that are a good match for the resume, prioritizing recent postings. If the resume is empty or cannot be read, return an empty array.'),
+  ).describe('A list of 20-25 job roles and internships that are a good match for the resume, prioritizing recent postings. If the resume is empty or cannot be read, return an empty array.'),
 });
 export type JobMatcherOutput = z.infer<typeof JobMatcherOutputSchema>;
 
@@ -49,7 +49,7 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert career consultant and recruiter specializing in the Indian job market. Your task is to:
 
   1.  Analyze the provided resume to determine the candidate's most likely **Job Role**. If the resume is empty or cannot be read, you MUST set the 'userJobRole' to 'Could not process resume' and return an empty 'matchedJobs' array.
-  2.  Find 5-10 suitable, currently open job roles **and internships** for the candidate **in India**, prioritizing major cities like Pune, Mumbai, Hyderabad, and Bangalore.
+  2.  Find 20-25 suitable, currently open job roles **and internships** for the candidate **in India**, prioritizing major cities like Pune, Mumbai, Hyderabad, and Bangalore.
   3.  **Prioritize recently published jobs**, ideally those posted within the last 2, 5, or 10 days.
 
   For each job or internship you find, you must provide:
