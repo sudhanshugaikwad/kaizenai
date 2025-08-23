@@ -36,7 +36,8 @@ const SmartJobRecommenderOutputSchema = z.object({
       salaryRange: z.string().describe('An estimated or provided salary range for the role (e.g., "$80,000 - $120,000", "₹12,00,000 - ₹18,00,000", "Not Disclosed").'),
       matchScore: z.number().min(0).max(100).describe('A score from 0-100 indicating how well the job matches the user\'s profile and preferences.'),
       jobDescription: z.string().describe('A brief summary of the job responsibilities and requirements.'),
-      applyLink: z.string().url().describe('A direct URL to the job application page.'),
+      postedDate: z.string().describe('How long ago the job was posted (e.g., "5 days ago", "2 weeks ago", "Posted today").'),
+      applyLink: z.string().url().describe('A direct URL to the job application page from a reputable source like LinkedIn, Naukri, or an official company career site.'),
     })
   ).describe('A list of 20-25 recommended jobs tailored to the user from across the globe.'),
 });
@@ -68,9 +69,11 @@ const prompt = ai.definePrompt({
 
   **Instructions:**
   1.  Find **20 to 25 currently open job roles** that are an excellent match for the user's selected roles/skills and preferences. The search must be **global** unless a specific country or city is provided.
-  2.  For each job, calculate a **Match Score** (0-100) representing the alignment between the job requirements and the user's profile.
-  3.  Provide an estimated **Salary Range**. If the actual salary is not listed, provide a realistic market-rate estimate based on the role, location, and experience level, in the local currency.
-  4.  Provide all other required fields: Job Title, Company Name, Location (City, Country), a brief Job Description, and a direct Apply Link from a reputable source (e.g., LinkedIn, company career page, Indeed).
+  2.  Aggregate these jobs from reputable sources like **LinkedIn, Naukri, and official company career pages**.
+  3.  For each job, calculate a **Match Score** (0-100) representing the alignment between the job requirements and the user's profile.
+  4.  Provide an estimated **Salary Range**. If the actual salary is not listed, provide a realistic market-rate estimate based on the role, location, and experience level, in the local currency.
+  5.  Provide the **Posted Date**, indicating how recently the job was advertised (e.g., "Posted 2 days ago", "1 week ago").
+  6.  Provide all other required fields: Job Title, Company Name, Location (City, Country), a brief Job Description, and a direct Apply Link.
 
   **IMPORTANT**: Prioritize recent job postings. Find real, active jobs. If no jobs are found matching the criteria, return an empty array for 'recommendedJobs'. Do not throw an error.
   `,
@@ -87,3 +90,4 @@ const smartJobRecommenderFlow = ai.defineFlow(
     return output!;
   }
 );
+

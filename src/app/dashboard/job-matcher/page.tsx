@@ -332,7 +332,10 @@ function SmartRecommendationsView() {
                                                 <CommandItem
                                                     key={skill}
                                                     value={skill}
-                                                    onSelect={() => handleSkillChange(skill)}
+                                                    onSelect={() => {
+                                                        handleSkillChange(skill);
+                                                        setOpen(false);
+                                                    }}
                                                 >
                                                     <Check className={cn("mr-2 h-4 w-4", selectedSkills.includes(skill) ? "opacity-100" : "opacity-0")} />
                                                     {skill}
@@ -394,11 +397,12 @@ function SmartRecommendationsView() {
                             <motion.div key={index} initial={{ opacity: 0, y:20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                                 <Card className="flex flex-col h-full">
                                     <CardHeader>
-                                        <div className="flex items-center justify-between">
-                                            <CardTitle className="text-lg">{job.jobTitle}</CardTitle>
+                                        <div className="flex items-start justify-between">
+                                            <CardTitle className="text-lg line-clamp-1">{job.jobTitle}</CardTitle>
                                             <Badge variant="default">{job.matchScore}%</Badge>
                                         </div>
                                         <CardDescription>{job.companyName} - {job.location}</CardDescription>
+                                        <Badge variant="outline" className="flex items-center gap-1.5 whitespace-nowrap w-fit"><Clock className="w-3 h-3"/>{job.postedDate}</Badge>
                                     </CardHeader>
                                     <CardContent className="flex-grow space-y-3">
                                         <p className="text-sm text-muted-foreground line-clamp-3">{job.jobDescription}</p>
