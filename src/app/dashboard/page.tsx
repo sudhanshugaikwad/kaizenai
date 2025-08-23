@@ -32,9 +32,9 @@ const features = [
     pro: true,
   },
   {
-    title: "Resume Analyzer",
-    description: "Optimize your resume. Get AI-powered feedback to stand out to recruiters.",
-    href: "/dashboard/resume-analyzer",
+    title: "AI Resume Builder",
+    description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
+    href: "/dashboard/resume-builder",
     icon: FileText,
     pro: true,
   },
@@ -152,3 +152,5 @@ export default function DashboardPage() {
     </motion.div>
   );
 }
+
+    

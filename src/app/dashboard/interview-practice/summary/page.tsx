@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, XCircle, ChevronRight, ChevronsRight } from 'lucide-react';
+import { CheckCircle, XCircle, ChevronsRight, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 type InterviewQuestion = {
@@ -128,8 +128,11 @@ export default function InterviewSummaryPage() {
                 </CardContent>
             </Card>
 
-            <div className="flex justify-center">
-                <Button onClick={() => router.push('/dashboard/interview-practice')}>
+            <div className="flex justify-center gap-4">
+                 <Button variant="outline" onClick={() => router.push('/dashboard/interview-practice')}>
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Practice Home
+                </Button>
+                <Button onClick={() => router.push('/dashboard/interview-practice/setup')}>
                     Try Another Interview <ChevronsRight className="ml-2 h-4 w-4" />
                 </Button>
             </div>
@@ -137,3 +140,5 @@ export default function InterviewSummaryPage() {
         </motion.div>
     );
 }
+
+    
