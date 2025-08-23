@@ -26,7 +26,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Loader2, Search, ArrowLeft, Lightbulb } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
-import { fetchQuestionBank, QuestionBankInputSchema, type QuestionBankOutput } from '@/ai/flows/question-bank';
+import { fetchQuestionBank } from '@/ai/flows/question-bank';
+import { QuestionBankInputSchema, type QuestionBankOutput } from '@/ai/flows/question-bank.types';
 import { useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';

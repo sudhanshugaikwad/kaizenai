@@ -24,7 +24,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Loader2, Sparkles, ArrowLeft, Wand2, Star, User, Bot } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
-import { BehavioralCoachInputSchema, rewriteWithSTAR, type BehavioralCoachOutput } from '@/ai/flows/behavioral-coach';
+import { rewriteWithSTAR } from '@/ai/flows/behavioral-coach';
+import { BehavioralCoachInputSchema, type BehavioralCoachOutput } from '@/ai/flows/behavioral-coach.types';
 import { useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
