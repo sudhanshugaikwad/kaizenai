@@ -17,3 +17,5 @@ export const WebsiteBuilderOutputSchema = z.object({
     javascript: z.string().optional().describe('The JavaScript code for any interactive functionality.'),
 });
 export type WebsiteBuilderOutput = z.infer<typeof WebsiteBuilderOutputSchema>;
+
+    
