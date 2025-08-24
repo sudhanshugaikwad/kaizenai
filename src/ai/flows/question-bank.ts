@@ -1,47 +1,44 @@
+
 'use server';
 
 /**
  * @fileOverview AI-powered interview question bank.
  *
- * - getQuestionsFromBank - A function that retrieves interview questions.
+ * - getQuestionsFromBank - A function that fetches interview questions.
  */
 
 import {ai} from '@/ai/genkit';
 import {googleAI} from '@genkit-ai/googleai';
 import {
-  QuestionBankInputSchema,
-  QuestionBankOutputSchema,
-  type QuestionBankInput,
-  type QuestionBankOutput,
+    QuestionBankInputSchema,
+    QuestionBankOutputSchema,
+    type QuestionBankInput,
+    type QuestionBankOutput,
 } from './question-bank.types';
 
-export {type QuestionBankInput, type QuestionBankOutput};
-
-export async function getQuestionsFromBank(
-  input: QuestionBankInput
-): Promise<QuestionBankOutput> {
+export async function getQuestionsFromBank(input: QuestionBankInput): Promise<QuestionBankOutput> {
   return questionBankFlow(input);
 }
 
 const prompt = ai.definePrompt({
   name: 'questionBankPrompt',
-  model: googleAI.model('gemini-pro'),
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: QuestionBankInputSchema},
   output: {schema: QuestionBankOutputSchema},
-  prompt: `You are an expert content creator for a career coaching platform. Your task is to generate a list of 20 high-quality interview questions based on the provided filters. For each question, provide a detailed, expert-level sample answer.
+  prompt: `You are an expert career coach and interviewer. Your task is to generate a list of 20 high-quality interview questions based on the provided criteria. For each question, provide a detailed, expert-level sample answer.
 
   **Question Criteria:**
-  - **Role:** {{{role}}}
-  - **Type:** {{{questionType}}}
+  - **Job Role:** {{{jobRole}}}
+  - **Question Type:** {{{questionType}}}
   - **Difficulty:** {{{difficulty}}}
-
+  
   **Instructions:**
-  1.  Generate **20 questions** that precisely match the specified role, type, and difficulty level.
-  2.  For each question, write a comprehensive **sample answer**.
-      - For **technical questions**, the answer should be accurate, explain the concept clearly, and provide code examples where applicable.
-      - For **behavioral questions**, the answer should follow the STAR method (Situation, Task, Action, Result) and demonstrate strong soft skills.
-      - For **situational questions**, the answer should showcase problem-solving abilities and sound judgment.
-  3.  Ensure the content is professional, insightful, and valuable for a candidate preparing for an interview.
+  1.  Generate **20 questions** that are highly relevant to the specified job role, question type, and difficulty level.
+  2.  For each question, write a comprehensive **sample answer**. The answer should be detailed, well-structured, and demonstrate what an ideal candidate would say.
+      - For technical questions, the answer should be accurate and include explanations of the concepts.
+      - For behavioral questions, the answer should use a clear structure like the STAR method.
+      - For situational questions, the answer should outline a logical approach to solving the problem.
+  3.  Ensure the questions and answers are appropriate for the specified difficulty level (Beginner, Intermediate, or Advanced).
 
   Generate the response in the required JSON format.
   `,

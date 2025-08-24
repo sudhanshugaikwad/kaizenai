@@ -29,7 +29,7 @@ export async function editWebsite(input: WebsiteEditorInput): Promise<WebsiteBui
 
 const prompt = ai.definePrompt({
   name: 'websiteEditorPrompt',
-  model: googleAI.model('gemini-pro'),
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: WebsiteEditorInputSchema},
   output: {schema: WebsiteBuilderOutputSchema},
   prompt: `You are an expert web developer specializing in creating modern, professional, and accessible websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to modify the provided website code based on the user's instructions, ensuring a polished and responsive UI.
@@ -80,5 +80,3 @@ const editWebsiteFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    

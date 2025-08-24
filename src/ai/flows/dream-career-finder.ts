@@ -25,7 +25,7 @@ export async function suggestDreamCareer(input: DreamCareerFinderInput): Promise
 
 const prompt = ai.definePrompt({
   name: 'dreamCareerFinderPrompt',
-  model: googleAI.model('gemini-pro'),
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: DreamCareerFinderInputSchema},
   output: {schema: DreamCareerFinderOutputSchema},
   prompt: `You are an expert career coach for a global audience. Your task is to analyze the user's answers from the "Find Your Dream Career" quiz and provide a comprehensive and encouraging recommendation. The user can be a student, a job seeker, or a working professional.
