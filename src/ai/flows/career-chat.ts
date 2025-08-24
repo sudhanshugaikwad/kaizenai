@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -28,7 +29,7 @@ export async function chatWithCoach(input: CareerChatInput): Promise<CareerChatO
 
 const prompt = ai.definePrompt({
   name: 'careerChatPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-1.5-pro-latest'),
   input: {schema: CareerChatInputSchema},
   output: {schema: CareerChatOutputSchema},
   prompt: `You are Kaizen Ai, an expert career coach. Your role is to provide supportive, insightful, and actionable advice to users about their career questions.
