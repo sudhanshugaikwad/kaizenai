@@ -23,7 +23,7 @@ export async function generateInterviewQuestions(input: InterviewQuestionsInput)
 
 const prompt = ai.definePrompt({
   name: 'interviewQuestionPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-pro'),
   input: {schema: InterviewQuestionsInputSchema},
   output: {schema: InterviewQuestionsOutputSchema},
   prompt: `You are an expert interviewer and career coach. Your task is to generate a list of 20-30 multiple-choice questions (MCQs) based on the provided details. For each question, provide 4 distinct options and clearly indicate the correct answer.

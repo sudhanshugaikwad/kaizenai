@@ -29,25 +29,30 @@ export async function generateWebsitePrompt(input: WebsitePromptGeneratorInput):
 
 const prompt = ai.definePrompt({
   name: 'websitePromptGenerator',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-pro'),
   input: {schema: WebsitePromptGeneratorInputSchema},
   output: {schema: WebsitePromptGeneratorOutputSchema},
-  prompt: `You are a creative director and prompt engineer. Based on the provided website name, generate a detailed and descriptive prompt for an AI web developer to build a modern, professional, and responsive single-page website.
+  prompt: `You are a creative director and prompt engineer specializing in modern, professional, and accessible web design. Based on the provided website name, generate a detailed and descriptive prompt for an AI web developer to build a single-page website with a polished, responsive, and user-friendly UI using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap.
 
   **Website Name:** {{{websiteName}}}
 
   **Instructions:**
-  1.  **Infer the Purpose:** Based on the website name, infer the likely purpose (e.g., portfolio, small business, event, blog).
-  2.  **Describe the Vibe:** Suggest a color scheme (e.g., "modern and clean with a palette of blues, whites, and a touch of gold for accents") and a visual style (e.g., "minimalist", "corporate", "artistic").
-  3.  **Outline the Sections:** Detail the essential sections for the website. Common sections include:
-      - A compelling **Hero Section** with a strong headline, a brief tagline, and a clear call-to-action button.
-      - An **About Us/Me Section** to introduce the person or company.
-      - A **Services/Features Section** to highlight key offerings, perhaps using cards with icons.
-      - A **Portfolio/Gallery Section** to showcase work (if applicable).
-      - A **Testimonials Section** to build trust.
-      - A simple **Contact Section** with a form (name, email, message) and social media links.
-  4.  **Suggest Interactivity:** Recommend subtle animations or interactive elements (e.g., "on-scroll fade-in effects for sections," "a hover effect on portfolio items").
-  5.  **Structure the Output:** Format the final output as a single, coherent block of text that can be directly used as a prompt.
+  1. **Infer the Purpose:** Based on the website name, infer the likely purpose (e.g., portfolio, small business, event, blog).
+  2. **Describe the Vibe:** Suggest a modern and professional color scheme (e.g., "clean and elegant with a palette of navy blue, crisp white, and subtle coral accents") and a visual style (e.g., "minimalist with bold typography", "corporate with sleek transitions", "creative with vibrant imagery").
+  3. **Outline the Sections:** Detail the essential sections for a professional UI, including:
+     - A **Hero Section** with a bold headline, concise tagline, and a prominent call-to-action button (e.g., "Get Started" or "Contact Us").
+     - An **About Us/Me Section** with a professional introduction and a high-quality image or icon.
+     - A **Services/Features Section** using responsive cards with icons or images for key offerings.
+     - A **Portfolio/Gallery Section** (if applicable) with a grid layout and hover effects.
+     - A **Testimonials Section** with quotes or reviews to build trust, styled as cards or a carousel.
+     - A **Contact Section** with a clean form (name, email, message) and social media icons linked to profiles.
+  4. **Specify Interactivity:** Recommend subtle animations (e.g., "fade-in effects on scroll for sections", "smooth hover transitions on buttons and cards") and interactive elements (e.g., "a sticky navigation bar that highlights the active section").
+  5. **Emphasize Professional UI Principles:**
+     - **Responsive Design:** Ensure the layout adapts seamlessly to mobile, tablet, and desktop using Tailwind CSS responsive classes or Bootstrap's grid system.
+     - **Accessibility:** Include semantic HTML, ARIA attributes, keyboard navigation support, and high-contrast color ratios.
+     - **Performance:** Optimize for fast loading with minimal CSS/JS, compressed images, and efficient code structure.
+     - **Consistency:** Use Tailwind CSS for primary styling and Bootstrap for grid or component utilities, maintaining a cohesive design language.
+  6. **Structure the Output:** Format the final output as a single, coherent block of text that can be directly used as a prompt for an AI web developer.
   `,
 });
 

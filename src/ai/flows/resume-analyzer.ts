@@ -50,7 +50,7 @@ export async function analyzeResume(input: AnalyzeResumeInput): Promise<AnalyzeR
 
 const prompt = ai.definePrompt({
   name: 'analyzeResumePrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-pro'),
   input: {schema: AnalyzeResumeInputSchema},
   output: {schema: AnalyzeResumeOutputSchema},
   prompt: `You are a world-class resume expert and career coach. You will analyze the provided resume and provide a comprehensive evaluation. If a job description is provided, you must compare the resume against it.

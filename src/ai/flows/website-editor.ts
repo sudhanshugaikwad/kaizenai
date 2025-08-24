@@ -29,20 +29,26 @@ export async function editWebsite(input: WebsiteEditorInput): Promise<WebsiteBui
 
 const prompt = ai.definePrompt({
   name: 'websiteEditorPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-pro'),
   input: {schema: WebsiteEditorInputSchema},
   output: {schema: WebsiteBuilderOutputSchema},
-  prompt: `You are an expert web developer specializing in editing websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to modify the provided website code based on the user's instructions.
+  prompt: `You are an expert web developer specializing in creating modern, professional, and accessible websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to modify the provided website code based on the user's instructions, ensuring a polished and responsive UI.
 
   **User's Change Request:** {{{prompt}}}
 
   **Instructions:**
-  1.  Analyze the user's prompt and the existing code.
-  2.  Generate the **complete, updated code** for all three files: \`index.html\`, \`style.css\`, and \`script.js\`.
-  3.  **Return the entire file content for each file**, not just the changed parts.
-  4.  Ensure the code remains clean, well-structured, and fully responsive.
-  5.  If the user asks for a change that would be better handled by a different framework (e.g. "add a React component"), you should still fulfill the request using the existing technologies (HTML/CSS/JS) as best as possible. Do not introduce new frameworks.
-  6.  Preserve existing CDN links for Tailwind CSS and Bootstrap.
+  1. Analyze the user's prompt and the existing code.
+  2. Generate the **complete, updated code** for all three files: \`index.html\`, \`style.css\`, and \`script.js\`.
+  3. **Return the entire file content for each file**, not just the changed parts.
+  4. Ensure the code is:
+     - **Professional and Modern**: Use clean typography, consistent color schemes, and modern design principles (e.g., minimalistic layouts, smooth animations).
+     - **Responsive**: Optimize for all screen sizes using Tailwind CSS responsive classes or Bootstrap's grid system.
+     - **Accessible**: Include semantic HTML, ARIA attributes, and proper contrast ratios.
+     - **Performant**: Minimize CSS/JavaScript bloat and optimize for fast loading.
+  5. If the user requests features requiring frameworks (e.g., React components), implement them using vanilla HTML/CSS/JS, Tailwind CSS, or Bootstrap as best as possible.
+  6. Preserve existing CDN links for Tailwind CSS and Bootstrap.
+  7. Ensure code is well-structured, commented, and maintainable.
+  8. Use Tailwind CSS for primary styling, with Bootstrap for grid or component utilities if needed.
 
   **Current HTML (\`index.html\`):**
   \`\`\`html
@@ -59,7 +65,7 @@ const prompt = ai.definePrompt({
   {{{javascript}}}
   \`\`\`
 
-  Now, provide the complete and updated code for each file based on the user's request.
+  Now, provide the complete and updated code for each file based on the user's request, prioritizing a professional and modern UI.
   `,
 });
 
