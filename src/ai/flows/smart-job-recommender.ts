@@ -50,7 +50,7 @@ export async function recommendJobs(input: SmartJobRecommenderInput): Promise<Sm
 
 const prompt = ai.definePrompt({
   name: 'smartJobRecommenderPrompt',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: SmartJobRecommenderInputSchema},
   output: {schema: SmartJobRecommenderOutputSchema},
   prompt: `You are an expert global career consultant and AI-powered job recommender. Your task is to analyze the user's profile and preferences to find highly relevant job openings worldwide, across any professional field (e.g., IT, Finance, Marketing, Healthcare).
