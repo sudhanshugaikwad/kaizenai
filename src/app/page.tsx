@@ -38,6 +38,7 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
 import TestimonialsSection from './TestimonialsSection';
+import ProductShowcaseSection from './ProductShowcaseSection';
 
 
 const features = [
@@ -359,40 +360,7 @@ export default function Home() {
           </motion.div>
         </motion.section>
 
-        {/* Product Showcase Section */}
-        <motion.section
-          className="py-16 sm:py-20 md:py-24"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-              <div
-                  className="absolute inset-0 top-1/4 w-full h-full bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10 blur-3xl"
-                  style={{
-                      WebkitMaskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, black, transparent)',
-                      maskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, black, transparent)'
-                  }}
-              />
-              <div className="relative bg-background/50 border border-border/50 rounded-xl shadow-2xl p-2.5 backdrop-blur-md">
-                   <div className="flex items-center gap-1.5 p-2 border-b">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </div>
-                  <Image
-                      src="https://placehold.co/1200x700.png"
-                      alt="Kaizen AI product showcase"
-                      width={1200}
-                      height={700}
-                      className="rounded-b-lg w-full h-auto"
-                      data-ai-hint="product interface"
-                      priority
-                  />
-              </div>
-          </div>
-        </motion.section>
+        <ProductShowcaseSection />
 
         {/* Features Section */}
         <motion.section
