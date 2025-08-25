@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import {
   Rocket,
   FileText,
@@ -21,6 +22,7 @@ import {
   Globe,
   CalendarCheck,
   Sparkles,
+  Lightbulb,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import Image from "next/image";
@@ -36,7 +38,6 @@ import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
-import TestimonialsSection from './TestimonialsSection';
 import ProductShowcaseSection from './ProductShowcaseSection';
 
 
@@ -63,13 +64,19 @@ const features = [
     icon: <Sparkles className="h-6 w-6 text-primary" />,
     title: 'Dream Career Finder',
     description: 'Answer a few questions to discover the career path.',
-    href: '/dashboard/website-builder',
+    href: '/dashboard/dream-career-finder',
   },
   {
     icon: <Rocket className="h-6 w-6 text-primary" />,
     title: 'AI Roadmap Generator',
     description: 'Get a personalized career plan with resources.',
     href: '/dashboard/roadmap-generator',
+  },
+  {
+    icon: <Lightbulb className="h-6 w-6 text-primary" />,
+    title: 'Project Idea Generator',
+    description: 'Receive practical project ideas with a full roadmap.',
+    href: '/dashboard/project-idea-generator',
   },
   {
     icon: <Briefcase className="h-6 w-6 text-primary" />,
@@ -155,6 +162,10 @@ const footerFeatures = [
     {
         title: 'Website Builder',
         href: '/dashboard/website-builder',
+    },
+    {
+        title: 'Project Idea Generator',
+        href: '/dashboard/project-idea-generator',
     }
   ];
 
@@ -203,6 +214,7 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
+
 
 
 const HowItWorksSection = () => {
@@ -413,7 +425,9 @@ export default function Home() {
                         maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)'
                     }}
                 />
+                 
                 <div className="relative z-10 flex flex-col items-center">
+              
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Kaizen Ai</h2>
                     <p className="max-w-2xl text-lg mt-4 text-muted-foreground mb-8">
                         Your intelligent career coach, providing resume analysis, personalized learning paths, and career guidance.
@@ -426,19 +440,10 @@ export default function Home() {
                 </div>
           </div>
         </motion.section>
-        
+        {/* How It Works Section Component */}
         <HowItWorksSection />
 
-        <motion.section 
-            id="testimonials"
-            className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-            initial="hidden"
-            whileInView="visible"
-            variants={sectionVariants}
-            viewport={{ once: true, amount: 0.2 }}
-        >
-            <TestimonialsSection />
-        </motion.section>
+     
         
         <motion.section 
             id="articles"

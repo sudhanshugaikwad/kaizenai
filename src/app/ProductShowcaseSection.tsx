@@ -2,9 +2,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Code, CodeXml } from 'lucide-react';
+import { MessageSquareText, CodeXml } from 'lucide-react';
 import Image from 'next/image';
 import Kaizenaiwebsite from "./assets/Kaizenaiwebsite.png"
+import Kaizenaichat from "./assets/Kaizenaichat.png"
+import Jobmatch from "./assets/Jobmatch.png"
 const WindowFrame = ({ children, className, title }: { children: React.ReactNode, className?: string, title?: string }) => (
     <div className={`relative rounded-xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-2xl ${className}`}>
         <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
@@ -42,7 +44,7 @@ export default function ProductShowcaseSection() {
 
   return (
     <motion.section
-        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] overflow-hidden"
+        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] h-[920px] overflow-hidden"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
@@ -57,13 +59,13 @@ export default function ProductShowcaseSection() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                    <WindowFrame title="Image Background">
+                    <WindowFrame title="Kaizen Ai Website Workspace">
                         <Image
                             src={Kaizenaiwebsite}
                             alt="Background showcase"
                             width={1200}
                             height={600}
-                            className="object-cover w-full h-full rounded-md opacity-20"
+                            className="object-cover w-full h-full rounded-md opacity-60"
                             data-ai-hint="abstract background"
                         />
                     </WindowFrame>
@@ -76,18 +78,18 @@ export default function ProductShowcaseSection() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <WindowFrame title="Image">
+                    <WindowFrame title="Smart Job Recommendations">
                          <Image
-                            src="https://placehold.co/400x600.png"
+                            src={Jobmatch}
                             alt="Left panel showcase"
                             width={400}
                             height={600}
-                            className="object-cover w-full h-full rounded-md opacity-50"
+                            className="object-cover w-full h-full rounded-md opacity-100"
                             data-ai-hint="code editor"
                         />
                     </WindowFrame>
                      <FloatingIcon className="top-1/2 -right-6">
-                        <CodeXml className="w-5 h-5 text-white/50" />
+                        <CodeXml className="w-10 h-10 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
 
@@ -98,18 +100,18 @@ export default function ProductShowcaseSection() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <WindowFrame title="Image">
+                    <WindowFrame title="Kaizen Ai Chat">
                          <Image
-                            src="https://placehold.co/400x600.png"
+                            src={Kaizenaichat}
                             alt="Right panel showcase"
                             width={400}
                             height={600}
-                            className="object-cover w-full h-full rounded-md opacity-50"
+                            className="object-cover w-full h-full rounded-md opacity-100"
                             data-ai-hint="website preview"
                         />
                     </WindowFrame>
                     <FloatingIcon className="bottom-1/2 -left-6">
-                        <Code className="w-5 h-5 text-white/50" />
+                        <MessageSquareText  className="w-9 h-9 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
             </div>

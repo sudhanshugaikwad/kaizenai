@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -30,6 +30,12 @@ const features = [
     href: "/dashboard/roadmap-generator",
     icon: Rocket,
     pro: true,
+  },
+  {
+    title: "Project Idea Generator",
+    description: "Receive practical project ideas with a full roadmap based on your tech stack and experience.",
+    href: "/dashboard/project-idea-generator",
+    icon: Lightbulb,
   },
   {
     title: "AI Resume Builder",
