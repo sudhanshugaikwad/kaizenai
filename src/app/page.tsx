@@ -206,9 +206,21 @@ const itemVariants = {
 };
 
 
-
 const HowItWorksSection = () => {
     const [activeStep, setActiveStep] = React.useState(0);
+
+    const WindowFrame = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+        <div className={cn('relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm', className)}>
+            <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <div className="p-4 pt-10 h-full flex items-center justify-center">
+                {children}
+            </div>
+        </div>
+    );
 
     return (
         <motion.section
@@ -220,7 +232,7 @@ const HowItWorksSection = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How it Works?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How does it work?</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="flex flex-col gap-4">
@@ -251,15 +263,13 @@ const HowItWorksSection = () => {
                     </motion.div>
                 ))}
             </div>
-            <motion.div className="relative h-[450px] w-full" variants={itemVariants}>
-                <Image
-                    src={howItWorksSteps[activeStep].image}
-                    alt={howItWorksSteps[activeStep].title}
-                    data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
-                    width={600}
-                    height={450}
-                    className="rounded-lg shadow-2xl object-cover w-full h-full"
-                />
+             <motion.div className="relative h-[450px] w-full" variants={itemVariants}>
+                <WindowFrame className="absolute top-0 left-0 w-[80%] h-[80%]">
+                    <span className="text-muted-foreground text-xl">Image</span>
+                </WindowFrame>
+                <WindowFrame className="absolute bottom-0 right-0 w-[60%] h-[60%]">
+                    <span className="text-muted-foreground text-xl">Image</span>
+                </WindowFrame>
             </motion.div>
           </div>
         </motion.section>
@@ -362,6 +372,9 @@ export default function Home() {
 
         <ProductShowcaseSection />
 
+        {/* How It Works Section Component */}
+        <HowItWorksSection />
+        
         {/* Features Section */}
         <motion.section
           id="features"
@@ -430,10 +443,6 @@ export default function Home() {
                 </div>
           </div>
         </motion.section>
-        {/* How It Works Section Component */}
-        <HowItWorksSection />
-
-     
         
         <motion.section 
             id="articles"

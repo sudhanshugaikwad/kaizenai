@@ -29,7 +29,7 @@ const features = [
     description: "Chart your path to success. Get a personalized career roadmap based on your goals.",
     href: "/dashboard/roadmap-generator",
     icon: Rocket,
-    pro: true,
+   
   },
   {
     title: "AI Resume Builder",
@@ -43,6 +43,7 @@ const features = [
     description: "Craft the perfect pitch. Generate compelling cover letters for any job application.",
     href: "/dashboard/cover-letter-writer",
     icon: PenSquare,
+    pro: true,
   },
   {
     title: "Job Search and Matching",
@@ -50,6 +51,7 @@ const features = [
     href: "/dashboard/job-matcher",
     icon: Briefcase,
     pro: true,
+   
   },
    {
     title: "Interview Practice",
@@ -70,6 +72,7 @@ const features = [
     description: "Discover events, hackathons, and challenges from top platforms.",
     href: "/dashboard/events-hackathons",
     icon: CalendarCheck,
+    pro: true,
   },
   {
     title: "Website Builder",
