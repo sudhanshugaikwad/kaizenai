@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { generateProjectIdea } from '@/ai/flows/project-idea-generator';
@@ -112,7 +112,7 @@ const getTreeLayout = (projectTree: ProjectIdeaOutput['projectTree']) => {
 
 export default function ProjectIdeaGeneratorPage() {
   const [project, setProject] = useState<ProjectIdeaOutput | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const projectContentRef = useRef<HTMLDivElement>(null);
 
@@ -148,21 +148,20 @@ export default function ProjectIdeaGeneratorPage() {
   }, [form]);
 
   async function onSubmit(values: ProjectIdeaInput) {
-    setIsLoading(true);
     setProject(null);
-    try {
-      const result = await generateProjectIdea(values);
-      setProject(result);
-    } catch (error) {
-      console.error('Failed to generate project idea:', error);
-      toast({
-        title: "Error",
-        description: "Failed to generate project idea. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    startTransition(async () => {
+        try {
+          const result = await generateProjectIdea(values);
+          setProject(result);
+        } catch (error) {
+          console.error('Failed to generate project idea:', error);
+          toast({
+            title: "Error",
+            description: "Failed to generate project idea. Please try again.",
+            variant: "destructive",
+          });
+        }
+    });
   }
 
   const handleCopy = () => {
@@ -282,8 +281,8 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
                 </Accordion>
 
 
-                <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
-                    {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating Idea...</> : <><Lightbulb className="mr-2 h-4 w-4" />Generate Project Idea</>}
+                <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
+                    {isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating Idea...</> : <><Lightbulb className="mr-2 h-4 w-4" />Generate Project Idea</>}
                 </Button>
               </form>
             </Form>
@@ -291,7 +290,7 @@ ${step.resources.map(r => `- ${r.name}: ${r.url}`).join('\n')}
         </Card>
       </motion.div>
 
-       {isLoading && (
+       {isPending && (
         <motion.div className="flex justify-center pt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Loader2 className="mr-2 h-8 w-8 animate-spin text-primary" />
             <p className="text-muted-foreground">AI is building your project plan...</p>
