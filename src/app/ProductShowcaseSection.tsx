@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { Code, CodeXml } from 'lucide-react';
 import Image from 'next/image';
-
+import Kaizenaiwebsite from "./assets/Kaizenaiwebsite.png"
 const WindowFrame = ({ children, className, title }: { children: React.ReactNode, className?: string, title?: string }) => (
     <div className={`relative rounded-xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-2xl ${className}`}>
         <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
@@ -59,7 +59,7 @@ export default function ProductShowcaseSection() {
                 >
                     <WindowFrame title="Image Background">
                         <Image
-                            src="https://placehold.co/1200x600.png"
+                            src={Kaizenaiwebsite}
                             alt="Background showcase"
                             width={1200}
                             height={600}

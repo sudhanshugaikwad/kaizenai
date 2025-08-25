@@ -18,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Rocket, Lightbulb, HelpCircle, Download } from 'lucide-react';
+import { Loader2, Rocket, Lightbulb, HelpCircle, Download, ExternalLink, Milestone, Clock, BookOpen } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import ReactFlow, {
@@ -29,6 +29,7 @@ import ReactFlow, {
 } from 'reactflow';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { cn } from '@/lib/utils';
 
 
 import 'reactflow/dist/style.css';
@@ -210,6 +211,17 @@ export default function RoadmapGeneratorPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
+  const stepColors = [
+    'text-blue-400',
+    'text-green-400',
+    'text-yellow-400',
+    'text-red-400',
+    'text-purple-400',
+    'text-pink-400',
+    'text-indigo-400',
+    'text-teal-400',
+  ];
+
   return (
     <motion.div 
       className="space-y-8"
@@ -276,22 +288,67 @@ export default function RoadmapGeneratorPage() {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            ref={roadmapContentRef}
         >
+        <div ref={roadmapContentRef} className="p-4 bg-background rounded-lg">
+            <motion.div variants={itemVariants}>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <div>
+                            <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
+                            <CardDescription>
+                                Follow these steps to achieve your career goal. 
+                                <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
+                            </CardDescription>
+                        </div>
+                         <Button variant="outline" size="icon" onClick={handleDownload}>
+                          <Download className="h-4 w-4" />
+                          <span className="sr-only">Download Roadmap</span>
+                        </Button>
+                    </CardHeader>
+                     <CardContent>
+                         <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
+                            {roadmap.roadmap.map((item, index) => (
+                                <AccordionItem value={`item-${index}`} key={index}>
+                                    <AccordionTrigger>
+                                        <div className="flex items-center gap-3">
+                                            <Milestone className={cn("h-6 w-6", stepColors[index % stepColors.length])}/>
+                                            <span className="font-semibold text-left">{`Step ${index + 1}: ${item.step}`}</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="prose prose-sm max-w-none text-muted-foreground space-y-4 pl-8">
+                                        <p>{item.reasoning}</p>
+                                        <div className="flex items-center gap-2 text-xs">
+                                            <Clock className="h-4 w-4"/>
+                                            <strong>Duration:</strong> {item.duration}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold flex items-center gap-2"><BookOpen className="h-4 w-4"/>Free Resources:</h4>
+                                            <ul className="list-none pl-5 space-y-1 mt-2">
+                                                {item.resources.map((resource, i) => (
+                                                    <li key={i}>
+                                                        <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-2">
+                                                            {resource.name} <ExternalLink className="h-4 w-4" />
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                     </CardContent>
+                </Card>
+            </motion.div>
+        </div>
+        
         <motion.div variants={itemVariants}>
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <div>
-                        <CardTitle>Your Personalized Roadmap to Becoming a {form.getValues('careerGoal')}</CardTitle>
-                        <CardDescription>
-                            Follow these steps to achieve your career goal. 
-                            <span className="font-semibold"> Total Estimated Duration: {roadmap.totalDuration}</span>
-                        </CardDescription>
-                    </div>
-                     <Button variant="outline" size="icon" onClick={handleDownload}>
-                      <Download className="h-4 w-4" />
-                      <span className="sr-only">Download Roadmap</span>
-                    </Button>
+                <CardHeader>
+                    <CardTitle>Interactive Roadmap</CardTitle>
+                    <CardDescription>
+                        A visual representation of your career path.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent style={{ height: 600 }}>
                      <ReactFlow
@@ -305,7 +362,7 @@ export default function RoadmapGeneratorPage() {
                 </CardContent>
             </Card>
         </motion.div>
-        
+
         {roadmap.recommendedProjects && roadmap.recommendedProjects.length > 0 && (
             <motion.div variants={itemVariants}>
                 <Card>
