@@ -264,11 +264,14 @@ const HowItWorksSection = () => {
                 ))}
             </div>
              <motion.div className="relative h-[450px] w-full" variants={itemVariants}>
-                <WindowFrame className="absolute top-0 left-0 w-[80%] h-[80%]">
-                    <span className="text-muted-foreground text-xl">Image</span>
-                </WindowFrame>
-                <WindowFrame className="absolute bottom-0 right-0 w-[60%] h-[60%]">
-                    <span className="text-muted-foreground text-xl">Image</span>
+                 <WindowFrame className="absolute inset-0">
+                    <Image 
+                        src={howItWorksSteps[activeStep].image}
+                        alt={howItWorksSteps[activeStep].title}
+                        className="rounded-md object-contain"
+                        data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
+                        placeholder="blur"
+                    />
                 </WindowFrame>
             </motion.div>
           </div>
