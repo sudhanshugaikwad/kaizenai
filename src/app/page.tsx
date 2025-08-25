@@ -23,7 +23,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
-import { ThemeToggle } from '@/components/theme-toggle';
 import Image from "next/image";
 import logo from "./Kaizenai.png"
 import React from 'react';
@@ -312,7 +311,6 @@ export default function Home() {
                         
                     </div>
                 </SignedOut>
-                <ThemeToggle />
             </div>
         </div>
       </header>
