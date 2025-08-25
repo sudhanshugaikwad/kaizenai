@@ -73,12 +73,6 @@ const features = [
     href: '/dashboard/roadmap-generator',
   },
   {
-    icon: <Lightbulb className="h-6 w-6 text-primary" />,
-    title: 'Project Idea Generator',
-    description: 'Receive practical project ideas with a full roadmap.',
-    href: '/dashboard/project-idea-generator',
-  },
-  {
     icon: <Briefcase className="h-6 w-6 text-primary" />,
     title: 'AI Job Search and Matching',
     description: 'Let our AI find the best job openings for you.',
@@ -163,10 +157,6 @@ const footerFeatures = [
         title: 'Website Builder',
         href: '/dashboard/website-builder',
     },
-    {
-        title: 'Project Idea Generator',
-        href: '/dashboard/project-idea-generator',
-    }
   ];
 
 

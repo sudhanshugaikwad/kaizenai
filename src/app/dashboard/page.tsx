@@ -32,12 +32,6 @@ const features = [
     pro: true,
   },
   {
-    title: "Project Idea Generator",
-    description: "Receive practical project ideas with a full roadmap based on your tech stack and experience.",
-    href: "/dashboard/project-idea-generator",
-    icon: Lightbulb,
-  },
-  {
     title: "AI Resume Builder",
     description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
     href: "/dashboard/resume-analyzer",
