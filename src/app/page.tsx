@@ -37,7 +37,6 @@ import ScrollRevealText from './ScrollRevealText';
 import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
-import ProductShowcaseSection from './ProductShowcaseSection';
 import { PageFooter } from './PageFooter';
 
 
@@ -329,8 +328,6 @@ export default function Home() {
               </motion.div>
             </motion.div>
         </section>
-
-        <ProductShowcaseSection />
 
         {/* How It Works Section Component */}
         <HowItWorksSection />
