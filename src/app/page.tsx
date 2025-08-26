@@ -22,12 +22,12 @@ import {
   Globe,
   CalendarCheck,
   Sparkles,
-  Lightbulb,
+  CreditCard,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import Image from "next/image";
 import logo from "./Kaizenai.png"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import CreateAccount from "./assets/CreateYourAccount.png"
 import UsetheAITools from "./assets/UsetheAITools.png"
@@ -279,6 +279,115 @@ const HowItWorksSection = () => {
     );
 };
 
+type Article = {
+  id: number;
+  title: string;
+  url: string;
+};
+
+const PageFooter = () => {
+    const [articles, setArticles] = useState<Article[]>([]);
+
+    useEffect(() => {
+        async function fetchArticles() {
+            try {
+                const response = await fetch('https://dev.to/api/articles?username=sudhanshudevelopers');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch articles');
+                }
+                const data: Article[] = await response.json();
+                setArticles(data.slice(0, 5));
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchArticles();
+    }, []);
+
+    return (
+        <footer
+            className="bg-card/20 border-t border-border/50"
+        >
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="grid gap-8 md:grid-cols-4 lg:grid-cols-5 text-center md:text-left">
+                <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 lg:col-span-1">
+                <Link href="/" className="flex items-center gap-2">
+                    <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
+                </Link>
+                <p className="text-muted-foreground">Your intelligent career coach, guiding students, job seekers, and professionals to unlock new opportunities.</p>
+                </div>
+                <div className="col-span-1">
+                <h4 className="font-semibold mb-2">Kaizen Ai Tools</h4>
+                <ul className="space-y-2 text-muted-foreground">
+                    {footerFeatures.slice(0,5).map((f) => (
+                    <li key={f.title}>
+                        <Link href={f.href} className="hover:text-primary">
+                        {f.title}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+                </div>
+                <div className="col-span-1">
+                 <h4 className="font-semibold mb-2 opacity-0">Kaizen Ai Tools</h4>
+                  <ul className="space-y-2 text-muted-foreground">
+                    {footerFeatures.slice(5).map((f) => (
+                    <li key={f.title}>
+                        <Link href={f.href} className="hover:text-primary">
+                        {f.title}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+                </div>
+                <div className="col-span-1">
+                  <h4 className="font-semibold mb-2">Latest Articles</h4>
+                  <ul className="space-y-2 text-muted-foreground">
+                      {articles.map(article => (
+                          <li key={article.id}>
+                              <Link href={article.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary line-clamp-1">
+                                  {article.title}
+                              </Link>
+                          </li>
+                      ))}
+                  </ul>
+                </div>
+                <div className="col-span-1">
+                <h4 className="font-semibold mb-2">Legal</h4>
+                <ul className="space-y-2 text-muted-foreground">
+                    <li>
+                    <Link href="/terms-of-service" className="hover:text-primary">
+                        Terms of Service
+                    </Link>
+                    </li>
+                    <li>
+                    <Link href="/privacy-policy" className="hover:text-primary">
+                        Privacy Policy
+                    </Link>
+                    </li>
+                     <li>
+                      <Link href="/verify-certificate" className="hover:text-primary">
+                        Verify Certificate
+                      </Link>
+                    </li>
+                </ul>
+                 <h4 className="font-semibold mb-2 mt-4">Payment Methods</h4>
+                  <div className="flex justify-center md:justify-start items-center gap-2 flex-wrap">
+                      <CreditCard className="w-8 h-8"/>
+                      <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M11.998 8.243c-1.353 0-2.45-1.096-2.45-2.448s1.097-2.448 2.45-2.448c1.352 0 2.449 1.096 2.449 2.448s-1.097 2.448-2.45 2.448m0-3.818c-.76 0-1.373.613-1.373 1.37s.614 1.37 1.373 1.37c.76 0 1.373-.613 1.373-1.37s-.614-1.37-1.374-1.37m6.85 7.472l-2.73-4.322c-.228-.359-.611-.578-1.03-.578H8.887c-.42 0-.802.22-1.03.578L5.129 11.9c-.31.488-.069 1.12.518 1.12h1.636l2.35-3.72h1.706l-2.324 3.72h4.529l.525-.838c.228-.358.113-.82-.262-.977M21.43 5.438H2.57C1.157 5.438 0 6.596 0 8v8c0 1.404 1.157 2.562 2.57 2.562h18.86C22.843 18.562 24 17.404 24 16V8c0-1.404-1.157-2.562-2.57-2.562M15.42 16H8.552c-.618 0-.948-.71-.52-1.144l2.73-4.322c.228-.359.611-.578 1.03-.578h4.416c.42 0 .802.22 1.03.578l2.73 4.322c.428.435.098 1.144-.519 1.144Z"/></svg>
+                      <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M16.516 11.517c.508 0 .93.435.93.93v.033a.925.925 0 0 1-.93.93h-1.928v1.89h1.928c.508 0 .93.434.93.93v.034a.925.925 0 0 1-.93.93h-1.928v2.368h-.92v-8.105zM12.9 11.517h.93v8.105h-.93zM10.74 15.352c.217-1.17.973-2.19 2.058-2.613v-1.222H7.484v1.222c1.085.424 1.84 1.444 2.058 2.613zm-.124 1.025H8.71c-.574 0-1.04.46-1.04 1.02v.04c0 .56.466 1.02 1.04 1.02h1.907c.574 0 1.039-.46 1.039-1.02v-.04c0-.56-.465-1.02-1.04-1.02m-1.748-8.009l.347.34a.465.465 0 0 1 0 .664l-.348.34a.48.48 0 0 1-.655 0l-.348-.34a.465.465 0 0 1 0-.665l.348-.34a.48.48 0 0 1 .656 0m5.348.34l-.347.34a.465.465 0 0 0 0 .664l.348.34a.48.48 0 0 0 .655 0l.348-.34a.465.465 0 0 0 0-.665l-.348-.34a.48.48 0 0 0-.656 0M21.465.002H2.535C1.139.002 0 1.14 0 2.536v18.928C0 22.86 1.139 24 2.535 24h18.93C22.861 24 24 22.86 24 21.464V2.536C24 1.14 22.861.002 21.465.002"/></svg>
+                  </div>
+                </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
+                <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
+                <p>Designed by Sudhanshu Gaikwad</p>
+            </div>
+            </div>
+        </footer>
+    );
+}
+
 
 export default function Home() {
   const { user } = useUser();
@@ -497,66 +606,7 @@ export default function Home() {
         </motion.section>
       </main>
 
-       <footer
-        className="bg-card/20 border-t border-border/50"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid gap-8 md:grid-cols-4 text-center md:text-left">
-            <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 md:col-span-1">
-              <Link href="/" className="flex items-center gap-2">
-                <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
-              </Link>
-              <p className="text-muted-foreground">Kaizen AI Your intelligent career coach, guiding students, job seekers, and professionals to unlock new opportunities.</p>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Kaizen Ai Tools</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                {footerFeatures.map((f) => (
-                  <li key={f.title}>
-                    <Link href={f.href} className="hover:text-primary">
-                      {f.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Company</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>
-                  <Link href="/about" className="hover:text-primary">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/verify-certificate" className="hover:text-primary">
-                    Verify Certificate
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <h4 className="font-semibold mb-2">Legal</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>
-                  <Link href="#" className="hover:text-primary">
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-primary">
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
-            <p>Designed by Sudhanshu Gaikwad</p>
-          </div>
-        </div>
-      </footer>
+      <PageFooter />
       <BackToTop />
     </div>
   );
