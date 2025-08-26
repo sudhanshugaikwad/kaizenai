@@ -333,7 +333,6 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative">
-          <div className="dark-veil">
             <motion.div
               className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
               initial="hidden"
@@ -374,7 +373,6 @@ export default function Home() {
                 </SignedOut>
               </motion.div>
             </motion.div>
-          </div>
         </section>
 
         <ProductShowcaseSection />
