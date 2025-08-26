@@ -23,7 +23,6 @@ import {
   CalendarCheck,
   Sparkles,
   CreditCard,
-  Home,
   Newspaper,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
