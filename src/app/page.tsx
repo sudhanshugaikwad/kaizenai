@@ -332,46 +332,50 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <motion.section
-          className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
-          initial="hidden"
-          animate="visible"
-          variants={sectionVariants}
-        >
-          <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4"
-            variants={itemVariants}
-          >
-            Supercharge Your Career with{' '}
-            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Kaizen Ai
-            </span>
-          </motion.h1>
-          <motion.p 
-            className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8"
-            variants={itemVariants}
-          >
-            The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
-          </motion.p>
-          <motion.div className="flex flex-col sm:flex-row justify-center gap-4" variants={itemVariants}>
-            <SignedIn>
-              <Link href="/dashboard">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Go to Dashboard
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </SignedIn>
-            <SignedOut>
-              <Link href="/sign-up">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Get Started for Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </SignedOut>
-          </motion.div>
-        </motion.section>
+        <section className="relative">
+          <div className="dark-veil">
+            <motion.div
+              className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+            >
+              <motion.h1 
+                className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4"
+                variants={itemVariants}
+              >
+                Supercharge Your Career with{' '}
+                <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  Kaizen Ai
+                </span>
+              </motion.h1>
+              <motion.p 
+                className="max-w-3xl mx-auto text-md sm:text-lg text-muted-foreground mb-8"
+                variants={itemVariants}
+              >
+                The all-in-one AI platform to help you build a personalized career roadmap, optimize your resume, write compelling cover letters, and find the perfect job.
+              </motion.p>
+              <motion.div className="flex flex-col sm:flex-row justify-center gap-4" variants={itemVariants}>
+                <SignedIn>
+                  <Link href="/dashboard">
+                    <Button size="lg" className="w-full sm:w-auto">
+                      Go to Dashboard
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <Link href="/sign-up">
+                    <Button size="lg" className="w-full sm:w-auto">
+                      Get Started for Free
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </SignedOut>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
 
         <ProductShowcaseSection />
 

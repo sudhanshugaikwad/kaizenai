@@ -86,3 +86,35 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .dark-veil {
+      position: relative;
+      isolation: isolate;
+  }
+
+  .dark-veil::before,
+  .dark-veil::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+  }
+
+  .dark-veil::before {
+      background:
+          radial-gradient(ellipse at 50% 0%, #00000045, #00000000 60%),
+          radial-gradient(circle at 100% 100%, #00000045, #00000000 60%);
+  }
+
+  .dark-veil::after {
+      background-image: url("https://daxbuilt.com/images/textured-background-2.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.1;
+      mix-blend-mode: soft-light;
+  }
+}

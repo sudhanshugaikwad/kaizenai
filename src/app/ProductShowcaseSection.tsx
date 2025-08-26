@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { MessageSquareText, CodeXml } from 'lucide-react';
 import Image from 'next/image';
 import Kaizenaiwebsite from "./assets/Kaizenaiwebsite.png"
-import Kaizenaichat from "./assets/Kaizenaichat.png"
-import Jobmatch from "./assets/Jobmatch.png"
+import Rightside from "./assets/Rightside.png"
+import Leftslide from "./assets/Leftslide.png"
 const WindowFrame = ({ children, className, title }: { children: React.ReactNode, className?: string, title?: string }) => (
     <div className={`relative rounded-xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-2xl ${className}`}>
         <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
@@ -80,7 +80,7 @@ export default function ProductShowcaseSection() {
                 >
                     <WindowFrame title="Smart Job Recommendations">
                          <Image
-                            src={Jobmatch}
+                            src={Leftslide}
                             alt="Left panel showcase"
                             width={400}
                             height={600}
@@ -102,7 +102,7 @@ export default function ProductShowcaseSection() {
                 >
                     <WindowFrame title="Kaizen Ai Chat">
                          <Image
-                            src={Kaizenaichat}
+                            src={Rightside}
                             alt="Right panel showcase"
                             width={400}
                             height={600}
