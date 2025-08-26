@@ -44,6 +44,7 @@ import { Logo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
 import logo from "../Kaizenai.png"
+import React, { useEffect, useState } from 'react';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -67,6 +68,19 @@ const accountItems = [
     { href: '/dashboard/feedback', icon: Star, label: 'Manage Feedback' },
     { href: '/dashboard/certification', icon: Award, label: 'Generate Certification' },
 ]
+
+const PageFooter = () => {
+    return (
+        <footer className="bg-card/20 border-t border-border/50 mt-auto">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div className="text-center text-xs text-muted-foreground">
+                    <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
+                    <p>Designed by Sudhanshu Gaikwad</p>
+                </div>
+            </div>
+        </footer>
+    );
+}
 
 export default function DashboardLayout({
   children,
@@ -129,30 +143,35 @@ export default function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-         <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
-            <div className='flex items-center gap-2'>
-              <SidebarTrigger className='md:hidden'>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SidebarTrigger>
-               <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
-                <Logo className="h-6 w-auto text-primary" />
-              </Link>
+         <div className="flex flex-col min-h-svh">
+            <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+                <div className='flex items-center gap-2'>
+                <SidebarTrigger className='md:hidden'>
+                    <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    </Button>
+                </SidebarTrigger>
+                <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
+                    <Logo className="h-6 w-auto text-primary" />
+                </Link>
+                </div>
+            <div className="flex items-center gap-4">
+                <Link href="/">
+                    <Button variant="outline">
+                        <Home className="mr-2 h-4 w-4" />
+                        Home
+                    </Button>
+                </Link>
+                <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
+                <UserButton afterSignOutUrl="/" />
             </div>
-          <div className="flex items-center gap-4">
-            <Link href="/">
-                <Button variant="outline">
-                    <Home className="mr-2 h-4 w-4" />
-                    Home
-                </Button>
-            </Link>
-             <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </header>
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+            </header>
+            <main className="flex-grow p-4 sm:p-6 lg:p-8">{children}</main>
+            <PageFooter />
+         </div>
       </SidebarInset>
     </SidebarProvider>
   );
 }
+
+    
