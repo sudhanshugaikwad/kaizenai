@@ -44,7 +44,8 @@ import { Logo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
 import logo from "../Kaizenai.png"
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { PageFooter } from '../PageFooter';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -68,19 +69,6 @@ const accountItems = [
     { href: '/dashboard/feedback', icon: Star, label: 'Manage Feedback' },
     { href: '/dashboard/certification', icon: Award, label: 'Generate Certification' },
 ]
-
-const PageFooter = () => {
-    return (
-        <footer className="bg-card/20 border-t border-border/50 mt-auto">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div className="text-center text-xs text-muted-foreground">
-                    <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
-                    <p>Designed by Sudhanshu Gaikwad</p>
-                </div>
-            </div>
-        </footer>
-    );
-}
 
 export default function DashboardLayout({
   children,
@@ -173,5 +161,3 @@ export default function DashboardLayout({
     </SidebarProvider>
   );
 }
-
-    
