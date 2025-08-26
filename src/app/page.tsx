@@ -38,7 +38,7 @@ import { BackToTop } from '@/components/ui/back-to-top';
 import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
 import { PageFooter } from './PageFooter';
-
+import ProductShowcaseSection from './ProductShowcaseSection';
 
 const features = [
   {
@@ -328,6 +328,8 @@ export default function Home() {
               </motion.div>
             </motion.div>
         </section>
+        
+        <ProductShowcaseSection />
 
         {/* How It Works Section Component */}
         <HowItWorksSection />
