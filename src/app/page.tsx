@@ -116,48 +116,19 @@ const features = [
   },
 ];
 
-const footerFeatures = [
-    {
-      title: 'AI Roadmap Generator',
-      href: '/dashboard/roadmap-generator',
-    },
-    {
-      title: 'AI Resume Analyzer',
-      href: '/dashboard/resume-analyzer',
-    },
-    {
-      title: 'AI Cover Letter Writer',
-      href: '/dashboard/cover-letter-writer',
-    },
-    {
-      title: 'AI Job Search and Matching',
-      href: '/dashboard/job-matcher',
-    },
-    {
-      title: 'Kaizen Ai Chat',
-      href: '/dashboard/kaizen-ai-chat',
-    },
-    {
-        title: 'Interview Practice',
-        href: '/dashboard/interview-practice',
-    },
-    {
-        title: 'HR Contact Finder',
-        href: '/dashboard/hr-contact-finder',
-    },
-    {
-        title: 'Events & Hackathons',
-        href: '/dashboard/events-hackathons',
-    },
-    {
-        title: 'Sticky Notes',
-        href: '/dashboard/sticky-notes',
-    },
-    {
-        title: 'Website Builder',
-        href: '/dashboard/website-builder',
-    },
-  ];
+const footerTools = [
+    { title: 'AI Roadmap Generator', href: '/dashboard/roadmap-generator' },
+    { title: 'AI Resume Analyzer', href: '/dashboard/resume-analyzer' },
+    { title: 'AI Cover Letter Writer', href: '/dashboard/cover-letter-writer' },
+    { title: 'AI Job Search', href: '/dashboard/job-matcher' },
+    { title: 'Kaizen AI Chat', href: '/dashboard/kaizen-ai-chat' },
+];
+
+const footerLinks = [
+    { title: 'Home', href: '/' },
+    { title: 'About', href: '/about' },
+    { title: 'Login', href: '/sign-in' },
+];
 
 
 const howItWorksSteps = [
@@ -279,105 +250,46 @@ const HowItWorksSection = () => {
     );
 };
 
-type Article = {
-  id: number;
-  title: string;
-  url: string;
-};
-
 const PageFooter = () => {
-    const [articles, setArticles] = useState<Article[]>([]);
-
-    useEffect(() => {
-        async function fetchArticles() {
-            try {
-                const response = await fetch('https://dev.to/api/articles?username=sudhanshudevelopers');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch articles');
-                }
-                const data: Article[] = await response.json();
-                setArticles(data.slice(0, 5));
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        fetchArticles();
-    }, []);
-
     return (
-        <footer
-            className="bg-card/20 border-t border-border/50"
-        >
+        <footer className="bg-card/20 border-t border-border/50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="grid gap-8 md:grid-cols-4 lg:grid-cols-5 text-center md:text-left">
-                <div className="space-y-2 flex flex-col items-center md:items-start col-span-1 lg:col-span-1">
-                <Link href="/" className="flex items-center gap-2">
-                    <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
-                </Link>
-                <p className="text-muted-foreground">Your intelligent career coach, guiding students, job seekers, and professionals to unlock new opportunities.</p>
-                </div>
-                <div className="col-span-1">
-                <h4 className="font-semibold mb-2">Kaizen Ai Tools</h4>
-                <ul className="space-y-2 text-muted-foreground">
-                    {footerFeatures.slice(0,5).map((f) => (
-                    <li key={f.title}>
-                        <Link href={f.href} className="hover:text-primary">
-                        {f.title}
+                <div className="grid gap-8 md:grid-cols-3 text-center md:text-left">
+                    <div className="space-y-2 flex flex-col items-center md:items-start col-span-1">
+                        <Link href="/" className="flex items-center gap-2">
+                            <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
                         </Link>
-                    </li>
-                    ))}
-                </ul>
+                        <p className="text-sm text-muted-foreground">Your intelligent career coach to help you land your dream job.</p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-2">Kaizen AI Tools</h4>
+                        <ul className="space-y-2 text-muted-foreground text-sm">
+                            {footerTools.map((item) => (
+                                <li key={item.title}>
+                                    <Link href={item.href} className="hover:text-primary transition-colors">
+                                        {item.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-2">Links</h4>
+                        <ul className="space-y-2 text-muted-foreground text-sm">
+                            {footerLinks.map((item) => (
+                                <li key={item.title}>
+                                    <Link href={item.href} className="hover:text-primary transition-colors">
+                                        {item.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
-                <div className="col-span-1">
-                 <h4 className="font-semibold mb-2 opacity-0">Kaizen Ai Tools</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                    {footerFeatures.slice(5).map((f) => (
-                    <li key={f.title}>
-                        <Link href={f.href} className="hover:text-primary">
-                        {f.title}
-                        </Link>
-                    </li>
-                    ))}
-                </ul>
+                <div className="mt-8 pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
+                    <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
+                    <p>Designed by Sudhanshu Gaikwad</p>
                 </div>
-                <div className="col-span-1">
-                  <h4 className="font-semibold mb-2">Latest Articles</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                      {articles.map(article => (
-                          <li key={article.id}>
-                              <Link href={article.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary line-clamp-1">
-                                  {article.title}
-                              </Link>
-                          </li>
-                      ))}
-                  </ul>
-                </div>
-                <div className="col-span-1">
-                <h4 className="font-semibold mb-2">Legal</h4>
-                <ul className="space-y-2 text-muted-foreground">
-                    <li>
-                    <Link href="/terms-of-service" className="hover:text-primary">
-                        Terms of Service
-                    </Link>
-                    </li>
-                    <li>
-                    <Link href="/privacy-policy" className="hover:text-primary">
-                        Privacy Policy
-                    </Link>
-                    </li>
-                     <li>
-                      <Link href="/verify-certificate" className="hover:text-primary">
-                        Verify Certificate
-                      </Link>
-                    </li>
-                </ul>
-                
-                </div>
-            </div>
-            <div className="mt-8 pt-8 border-t border-border/50 text-center text-muted-foreground">
-                <p>&copy; {new Date().getFullYear()} Kaizen Ai.</p>
-                <p>Designed by Sudhanshu Gaikwad</p>
-            </div>
             </div>
         </footer>
     );
