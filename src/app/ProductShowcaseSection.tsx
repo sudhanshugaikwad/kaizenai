@@ -7,15 +7,16 @@ import Image from 'next/image';
 import Kaizenaiwebsite from "./assets/Kaizenaiwebsite.png"
 import Rightside from "./assets/Rightside.png"
 import Leftslide from "./assets/Leftslide.png"
+
 const WindowFrame = ({ children, className, title }: { children: React.ReactNode, className?: string, title?: string }) => (
     <div className={`relative rounded-xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-2xl ${className}`}>
         <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
         </div>
-        {title && <div className="absolute top-2.5 left-20 text-sm text-white/40">{title}</div>}
-        <div className="p-4 pt-10 h-full">
+        {title && <div className="absolute top-2.5 left-16 text-xs text-white/40">{title}</div>}
+        <div className="p-4 pt-8 h-full">
             {children}
         </div>
     </div>
@@ -44,17 +45,17 @@ export default function ProductShowcaseSection() {
 
   return (
     <motion.section
-        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] h-[920px] overflow-hidden"
+        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] overflow-hidden"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
     >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative flex items-center justify-center h-[600px]">
+            <div className="relative flex items-center justify-center h-[400px] md:h-[600px] lg:h-[700px]">
                 {/* Background Window */}
                 <motion.div 
-                    className="absolute w-full max-w-6xl h-4/5 z-0"
+                    className="absolute w-full max-w-sm md:max-w-4xl lg:max-w-6xl h-4/5 z-0"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -63,9 +64,8 @@ export default function ProductShowcaseSection() {
                         <Image
                             src={Kaizenaiwebsite}
                             alt="Background showcase"
-                            width={1200}
-                            height={600}
-                            className="object-cover w-full h-full rounded-md opacity-60"
+                            fill
+                            className="object-cover rounded-md opacity-60"
                             data-ai-hint="abstract background"
                         />
                     </WindowFrame>
@@ -73,45 +73,43 @@ export default function ProductShowcaseSection() {
 
                 {/* Left Window */}
                 <motion.div 
-                    className="absolute left-0 bottom-0 w-2/5 max-w-sm h-4/5 z-10"
+                    className="absolute left-0 bottom-0 w-2/5 max-w-[150px] md:max-w-xs h-4/5 z-10"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <WindowFrame title="Smart Job Recommendations">
+                    <WindowFrame>
                          <Image
                             src={Leftslide}
                             alt="Left panel showcase"
-                            width={400}
-                            height={600}
-                            className="object-cover w-full h-full rounded-md opacity-100"
+                            fill
+                            className="object-cover rounded-md opacity-100"
                             data-ai-hint="code editor"
                         />
                     </WindowFrame>
-                     <FloatingIcon className="top-1/2 -right-6">
-                        <CodeXml className="w-10 h-10 text-white/50" />
+                     <FloatingIcon className="top-1/2 -right-4 md:-right-6">
+                        <CodeXml className="w-6 h-6 md:w-10 md:h-10 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
 
                 {/* Right Window */}
                  <motion.div 
-                    className="absolute right-0 top-0 w-2/5 max-w-sm h-4/5 z-10"
+                    className="absolute right-0 top-0 w-2/5 max-w-[150px] md:max-w-xs h-4/5 z-10"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <WindowFrame title="Kaizen Ai Chat">
+                    <WindowFrame>
                          <Image
                             src={Rightside}
                             alt="Right panel showcase"
-                            width={400}
-                            height={600}
-                            className="object-cover w-full h-full rounded-md opacity-100"
+                            fill
+                            className="object-cover rounded-md opacity-100"
                             data-ai-hint="website preview"
                         />
                     </WindowFrame>
-                    <FloatingIcon className="bottom-1/2 -left-6">
-                        <MessageSquareText  className="w-9 h-9 text-white/50" />
+                    <FloatingIcon className="bottom-1/2 -left-4 md:-left-6">
+                        <MessageSquareText  className="w-5 h-5 md:w-9 md:h-9 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
             </div>
@@ -119,3 +117,4 @@ export default function ProductShowcaseSection() {
     </motion.section>
   );
 }
+
