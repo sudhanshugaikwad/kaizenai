@@ -40,9 +40,15 @@ To get started with Kaizen AI, follow these steps:
 -   **AI Resume Analyzer**: Receive an in-depth analysis of your resume with an overall score and improvement suggestions.
 -   **AI Cover Letter Writer**: Generate compelling, professional cover letters customized for any job application.
 -   **AI Job Matcher**: Upload your resume and let our AI find the most relevant job and internship openings.
+-   **Smart Job Recommender**: Get tailored job recommendations based on your skills and preferences.
+-   **Dream Career Finder**: Take a quiz to discover the perfect career path based on your interests and strengths.
 -   **Kaizen AI Chat**: Get 24/7 career advice from our AI coach on any topic.
 -   **Interview Practice**: Ace your next interview with AI-powered mock interviews and real-time feedback.
+-   **Behavioral Question Coach**: Reframe your experiences into STAR-method answers for interviews.
+-   **Interview Question Bank**: Access a vast library of questions and expert answers for any role.
 -   **HR Contact Finder**: Discover relevant HR contacts by department or by analyzing your resume.
+-   **Events & Hackathons**: Find professional events, webinars, and hackathons to boost your skills.
+-   **Website Builder**: Create and deploy a professional-looking website in minutes using AI.
 -   **Sticky Notes**: Organize your daily tasks and boost your productivity.
 
 ---
