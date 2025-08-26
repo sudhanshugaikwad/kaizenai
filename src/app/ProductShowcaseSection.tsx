@@ -43,26 +43,27 @@ export default function ProductShowcaseSection() {
 
   return (
     <motion.section
-        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] overflow-hidden"
+        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] h-[920px] overflow-hidden"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
     >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative flex items-center justify-center h-[400px] md:h-[600px]">
+            <div className="relative flex items-center justify-center h-[600px]">
                 {/* Background Window */}
                 <motion.div 
-                    className="absolute w-full max-w-lg md:max-w-4xl lg:max-w-6xl h-full md:h-4/5 z-0"
+                    className="absolute w-full max-w-6xl h-4/5 z-0"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                    <WindowFrame >
+                    <WindowFrame>
                         <Image
                             src={Kaizenaiwebsite}
                             alt="Background showcase"
-                            fill
+                            width={1200}
+                            height={600}
                             className="object-cover w-full h-full rounded-md opacity-60"
                             data-ai-hint="abstract background"
                         />
@@ -71,7 +72,7 @@ export default function ProductShowcaseSection() {
 
                 {/* Left Window */}
                 <motion.div 
-                    className="absolute left-0 bottom-0 w-2/5 max-w-[150px] sm:max-w-xs h-3/5 md:h-4/5 z-10"
+                    className="absolute left-0 bottom-0 w-2/5 max-w-sm h-4/5 z-10"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -80,19 +81,20 @@ export default function ProductShowcaseSection() {
                          <Image
                             src={Leftslide}
                             alt="Left panel showcase"
-                            fill
+                            width={400}
+                            height={600}
                             className="object-cover w-full h-full rounded-md opacity-100"
                             data-ai-hint="code editor"
                         />
                     </WindowFrame>
-                     <FloatingIcon className="top-1/2 -right-6 hidden md:block">
+                     <FloatingIcon className="top-1/2 -right-6">
                         <CodeXml className="w-10 h-10 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
 
                 {/* Right Window */}
                  <motion.div 
-                    className="absolute right-0 top-0 w-2/5 max-w-[150px] sm:max-w-xs h-3/5 md:h-4/5 z-10"
+                    className="absolute right-0 top-0 w-2/5 max-w-sm h-4/5 z-10"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -101,12 +103,13 @@ export default function ProductShowcaseSection() {
                          <Image
                             src={Rightside}
                             alt="Right panel showcase"
-                            fill
+                            width={400}
+                            height={600}
                             className="object-cover w-full h-full rounded-md opacity-100"
                             data-ai-hint="website preview"
                         />
                     </WindowFrame>
-                    <FloatingIcon className="bottom-1/2 -left-6 hidden md:block">
+                    <FloatingIcon className="bottom-1/2 -left-6">
                         <MessageSquareText  className="w-9 h-9 text-white/50" />
                     </FloatingIcon>
                 </motion.div>
