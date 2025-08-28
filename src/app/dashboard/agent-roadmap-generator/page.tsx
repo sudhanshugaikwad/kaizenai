@@ -18,8 +18,6 @@ import {
     Select,
     SelectContent,
     SelectItem,
-    SelectGroup,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
@@ -41,15 +39,15 @@ import Link from 'next/link';
 import { generateAgentDescription } from '@/ai/flows/agent-description-generator';
 import { generateAgentRoadmap, type AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator';
 
-const agentTypes = {
-    'Chat & Conversation Agents': ['Customer Support Agent', 'FAQ / Knowledge Base Bot', 'Personal Assistant Chatbot', 'Social Media Chatbot', 'Community / Forum Assistant'],
-    'Research & Knowledge Agents': ['Data Research Assistant', 'Academic / Scientific Research Agent', 'Market Analysis Agent', 'News & Trend Analysis Bot', 'Legal Research Assistant'],
-    'Content & Creativity Agents': ['Copywriting / Marketing Content Agent', 'Blog / Article Generator', 'Storytelling / Creative Writing Agent', 'Video / Script Idea Generator', 'Social Media Content Planner'],
-    'Development & Code Agents': ['Code Completion / Helper Agent', 'Code Review / Debugging Agent', 'API Integration Assistant', 'Automation Workflow Agent', 'Test Case / QA Agent'],
-    'Business & Productivity Agents': ['Project Management Assistant', 'CRM / Sales Support Agent', 'Workflow Automation Agent', 'Scheduling / Calendar Assistant', 'Meeting Summarizer'],
-    'Data & Analytics Agents': ['Data Cleaning / Transformation Agent', 'Business Intelligence Agent', 'KPI / Metrics Dashboard Agent', 'Predictive Analytics Agent', 'Data Visualization Assistant'],
-    'Personal / Lifestyle Agents': ['Personal Finance Advisor', 'Health & Fitness Assistant', 'Study / Learning Companion', 'Travel / Trip Planner'],
-};
+const agentTypes = [
+    'Chat & Conversation Agents',
+    'Research & Knowledge Agents',
+    'Content & Creativity Agents',
+    'Development & Code Agents',
+    'Business & Productivity Agents',
+    'Data & Analytics Agents',
+    'Personal / Lifestyle Agents',
+];
 
 const platformNames = ["n8n", "Make.com", "Zapier", "Custom API"];
 
@@ -217,12 +215,7 @@ export default function AiAgentRoadmapGeneratorPage() {
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl><SelectTrigger><SelectValue placeholder="Select an agent type" /></SelectTrigger></FormControl>
                                                 <SelectContent>
-                                                    {Object.entries(agentTypes).map(([group, options]) => (
-                                                        <SelectGroup key={group}>
-                                                            <SelectLabel>{group}</SelectLabel>
-                                                            {options.map(option => <SelectItem key={option} value={option}>{option}</SelectItem>)}
-                                                        </SelectGroup>
-                                                    ))}
+                                                    {agentTypes.map(option => <SelectItem key={option} value={option}>{option}</SelectItem>)}
                                                 </SelectContent>
                                             </Select>
                                         <FormMessage /></FormItem>
@@ -301,7 +294,7 @@ export default function AiAgentRoadmapGeneratorPage() {
                         <Card>
                              <CardHeader>
                                 <div className="flex items-center justify-between">
-                                    <div>
+                                    <div className="flex-1">
                                         <CardTitle className="flex items-center gap-2"><Code2 className="h-6 w-6 text-primary"/>Platform JSON Output</CardTitle>
                                         <CardDescription>Copy or download this JSON to import into {form.getValues('platformName')}.</CardDescription>
                                     </div>
@@ -316,9 +309,12 @@ export default function AiAgentRoadmapGeneratorPage() {
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <pre className="p-4 rounded-md bg-muted/80 text-xs w-full max-w-full overflow-x-auto font-mono break-words whitespace-pre-wrap">
-                                    <code>{roadmap.jsonOutput}</code>
-                                </pre>
+                                <div className="p-4 rounded-md bg-muted/80 w-full max-w-full overflow-hidden relative">
+                                    <pre className="text-xs font-mono break-words whitespace-pre-wrap max-h-60 overflow-y-auto">
+                                        <code>{roadmap.jsonOutput}</code>
+                                    </pre>
+                                    <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-muted/80 to-transparent pointer-events-none"></div>
+                                </div>
                             </CardContent>
 
                         </Card>
