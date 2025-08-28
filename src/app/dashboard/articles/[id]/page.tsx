@@ -35,7 +35,7 @@ type Article = {
     published_at: string;
     last_comment_at: string;
     reading_time_minutes: number;
-    tags: string;
+    tags: string | string[];
     tag_list: string[];
     body_html: string;
     body_markdown: string;
@@ -142,7 +142,7 @@ export default function SingleArticlePage() {
                         <span>{article.reading_time_minutes} min read</span>
                     </CardDescription>
                      <div className="flex flex-wrap gap-2 pt-2">
-                        {(article.tags || '').split(', ').map(tag => (
+                        {(article.tag_list || []).map(tag => (
                             <Badge key={tag} variant="secondary">{tag}</Badge>
                         ))}
                     </div>
