@@ -88,6 +88,7 @@ export default function ArticlesPage() {
              setFilteredArticles([...articles].sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()));
         } else {
             let filterTerm = activeFilter.toLowerCase().replace(' article', '').replace('.js', '');
+            if (filterTerm === 'react') filterTerm = 'reactjs'; // api uses reactjs
             setFilteredArticles(
                 articles.filter(article =>
                     article.tag_list.some(tag => tag.toLowerCase().includes(filterTerm))
@@ -161,12 +162,12 @@ export default function ArticlesPage() {
                     {currentArticles.map((article, index) => (
                         <motion.div key={article.id} variants={itemVariants}>
                             <Card className="flex flex-col md:flex-row items-center p-4 gap-6 hover:border-primary/50 transition-colors">
-                                <div className="w-full md:w-1/4 h-48 md:h-full relative flex-shrink-0">
+                                <div className="w-full md:w-1/4 h-48 md:h-auto relative flex-shrink-0 self-stretch">
                                     <Image
                                     src={article.cover_image || `https://picsum.photos/seed/${article.id}/400/300`}
                                     alt={article.title}
-                                    layout="fill"
-                                    objectFit="cover"
+                                    fill
+                                    style={{objectFit:"cover"}}
                                     className="rounded-md"
                                     data-ai-hint="article cover"
                                     />
@@ -176,7 +177,7 @@ export default function ArticlesPage() {
                                     <p className="text-muted-foreground mt-2 flex-grow line-clamp-2">{article.description}</p>
                                     <div className="flex items-center text-sm text-muted-foreground mt-4 gap-4">
                                         <div className="flex items-center gap-2"><Calendar className="w-4 h-4"/>{format(new Date(article.published_at), 'MMM dd, yyyy')}</div>
-                                        <span>{article.reading_time_minutes} min read</span>
+                                       
                                     </div>
                                     <div className="flex justify-end mt-4">
                                         <a href={article.url} target="_blank" rel="noopener noreferrer">
