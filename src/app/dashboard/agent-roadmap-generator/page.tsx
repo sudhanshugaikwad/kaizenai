@@ -157,6 +157,20 @@ export default function AiAgentRoadmapGeneratorPage() {
         toast({ title: "Copied!", description: "JSON output copied to clipboard." });
     }
 
+    const handleDownloadJson = () => {
+        if (!roadmap?.jsonOutput) return;
+        const blob = new Blob([roadmap.jsonOutput], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${form.getValues('agentName') || 'agent'}-workflow.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast({ title: "Downloaded!", description: "JSON output saved." });
+    }
+
     const handleNew = () => {
         form.reset();
         setRoadmap(null);
@@ -288,19 +302,25 @@ export default function AiAgentRoadmapGeneratorPage() {
                              <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <CardTitle>Platform JSON Output</CardTitle>
-                                        <CardDescription>Copy this JSON to import into {form.getValues('platformName')}.</CardDescription>
+                                        <CardTitle className="flex items-center gap-2"><Code2 className="h-6 w-6 text-primary"/>Platform JSON Output</CardTitle>
+                                        <CardDescription>Copy or download this JSON to import into {form.getValues('platformName')}.</CardDescription>
                                     </div>
-                                    <Button variant="outline" size="sm" onClick={handleCopyJson}>
-                                        <Copy className="mr-2 h-4 w-4"/> Copy JSON
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button variant="outline" size="sm" onClick={handleCopyJson}>
+                                            <Copy className="mr-2 h-4 w-4"/> Copy JSON
+                                        </Button>
+                                        <Button variant="outline" size="sm" onClick={handleDownloadJson}>
+                                            <Download className="mr-2 h-4 w-4"/> Download JSON
+                                        </Button>
+                                    </div>
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <pre className="p-4 rounded-md bg-muted text-xs overflow-x-auto font-mono">
+                                <pre className="p-4 rounded-md bg-muted/80 text-xs w-full max-w-full overflow-x-auto font-mono break-words whitespace-pre-wrap">
                                     <code>{roadmap.jsonOutput}</code>
                                 </pre>
                             </CardContent>
+
                         </Card>
                     </motion.div>
 
