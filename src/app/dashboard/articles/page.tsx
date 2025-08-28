@@ -48,7 +48,7 @@ type Article = {
 };
 
 const categories = [
-  'All Articles', 'Recent Articles', 'Javascript Article', 'React.Js Article', 'API', 'JSON', 'Database', 'AI'
+  'All Articles', 'Javascript', 'React.Js', 'API', 'JSON', 'Database', 'AI', 'Deployment', 'Software Engineering'
 ];
 
 export default function ArticlesPage() {
@@ -84,11 +84,9 @@ export default function ArticlesPage() {
         setCurrentPage(1);
         if (activeFilter === 'All Articles') {
             setFilteredArticles(articles);
-        } else if (activeFilter === 'Recent Articles') {
-             setFilteredArticles([...articles].sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()));
         } else {
-            let filterTerm = activeFilter.toLowerCase().replace(' article', '').replace('.js', '');
-            if (filterTerm === 'react') filterTerm = 'reactjs'; // api uses reactjs
+            let filterTerm = activeFilter.toLowerCase().replace('.js', 'js').replace(/\s/g, '');
+            if (filterTerm === 'reactjs') filterTerm = 'react';
             setFilteredArticles(
                 articles.filter(article =>
                     article.tag_list.some(tag => tag.toLowerCase().includes(filterTerm))
