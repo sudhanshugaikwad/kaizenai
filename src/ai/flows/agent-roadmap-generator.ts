@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
       - The workflow must have 4 nodes corresponding to the workflow steps.
       - **Node 1 (startNode):** A "Start" node.
       - **Node 2 (setNode):** A "Set" node to define the input. Give it a descriptive name and include a string field named \`prompt\`.
-      - **Node 3 (aiNode):** A "Google Gemini" node. Set the "Model" to "gemini-1.5-flash-latest" and the "Text" field to an expression that references the prompt from the Set node (e.g., \`{{ $('Set').item.json.prompt }}\`).
+      - **Node 3 (aiNode):** A "Google Gemini" node. Set the "Model" to "gemini-1.5-flash-latest" and the "Text" field to an expression that references the prompt from the Set node (e.g., \`\{{ $('Set Input').item.json.prompt }}\`).
       - **Node 4 (outputNode):** A "Respond to Webhook" node. Configure it to return the text output from the Gemini node.
       - Define the connections between the nodes logically: Start -> Set -> AI -> Respond.
   4.  **Resources and Tips:** Provide a list of 3-4 helpful resources and tips. Each item must have a 'title' and 'content'. Include topics relevant to building n8n workflows with AI.
@@ -72,7 +72,7 @@ const prompt = ai.definePrompt({
         "position": [1040, 440]
       },
       {
-        "parameters": { "model": "gemini-1.5-flash-latest", "text": "{{ $('Set Input').item.json.prompt }}" },
+        "parameters": { "model": "gemini-1.5-flash-latest", "text": "=\\{{ $('Set Input').item.json.prompt }}" },
         "id": "a2b4c6d8-1e9f-4a2b-9c8d-3e5f7a9b1d2c",
         "name": "Gemini AI Call",
         "type": "n8n-nodes-base.googleGemini",
@@ -81,7 +81,7 @@ const prompt = ai.definePrompt({
         "credentials": { "googleGeminiApi": { "id": "YOUR_CREDENTIAL_ID", "name": "Google Gemini account" } }
       },
       {
-        "parameters": { "responseCode": 200, "responseData": "={{ $('Gemini AI Call').item.json.text }}" },
+        "parameters": { "responseCode": 200, "responseData": "=\\{{ $('Gemini AI Call').item.json.text }}" },
         "id": "f8d7e6c5-3b2a-4f1e-9c8d-2a4b6c8d0e1f",
         "name": "Respond to Webhook",
         "type": "n8n-nodes-base.respondToWebhook",
