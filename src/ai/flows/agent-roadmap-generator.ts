@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
       - The workflow must have 4 nodes corresponding to the workflow steps.
       - **Node 1 (startNode):** A "Start" node.
       - **Node 2 (setNode):** A "Set" node to define the input. Give it a descriptive name and include a string field named \`prompt\`.
-      - **Node 3 (aiNode):** A "Google Gemini" node. Set the "Model" to "gemini-1.5-flash-latest" and the "Text" field to an expression that references the prompt from the Set node, for example: "={{ $('Set Input').item.json.prompt }}".
+      - **Node 3 (aiNode):** A "Google Gemini" node. Set the "Model" to "gemini-1.5-flash-latest" and configure the "Text" field to use the prompt from the Set node. The expression should look like this: ={{ $('Set Input').item.json.prompt }}
       - **Node 4 (outputNode):** A "Respond to Webhook" node. Configure it to return the text output from the Gemini node.
       - Define the connections between the nodes logically: Start -> Set -> AI -> Respond.
   4.  **Resources and Tips:** Provide a list of 3-4 helpful resources and tips. Each item must have a 'title' and 'content'. Include topics relevant to building n8n workflows with AI.
