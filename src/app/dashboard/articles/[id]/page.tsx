@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -62,9 +63,7 @@ export default function SingleArticlePage() {
             setIsLoading(true);
             try {
                 // Fetch all articles to enable next/previous navigation
-                const allRes = await fetch(`https://dev.to/api/articles?username=sudhanshudevelopers`, {
-                    headers: { 'api-key': 'GbWwTMGiH7eb7TA8rtWZgygV' }
-                });
+                const allRes = await fetch(`https://dev.to/api/articles?username=sudhanshudevelopers`);
                 if (!allRes.ok) throw new Error('Failed to fetch articles');
                 const allData: Article[] = await allRes.json();
                 setAllArticles(allData);
@@ -73,9 +72,7 @@ export default function SingleArticlePage() {
                 const currentArticleId = Number(id);
                 const foundIndex = allData.findIndex(a => a.id === currentArticleId);
                 if (foundIndex !== -1) {
-                    const singleRes = await fetch(`https://dev.to/api/articles/${currentArticleId}`, {
-                        headers: { 'api-key': 'GbWwTMGiH7eb7TA8rtWZgygV' }
-                    });
+                    const singleRes = await fetch(`https://dev.to/api/articles/${currentArticleId}`);
                     if (!singleRes.ok) throw new Error('Failed to fetch single article');
                     const singleData = await singleRes.json();
                     setArticle(singleData);

@@ -64,11 +64,7 @@ export default function ArticlesPage() {
         const fetchArticles = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch('https://dev.to/api/articles?username=sudhanshudevelopers', {
-                    headers: {
-                        'api-key': 'GbWwTMGiH7eb7TA8rtWZgygV'
-                    }
-                });
+                const response = await fetch('https://dev.to/api/articles?username=sudhanshudevelopers');
                 if (!response.ok) {
                     throw new Error('Failed to fetch articles');
                 }
