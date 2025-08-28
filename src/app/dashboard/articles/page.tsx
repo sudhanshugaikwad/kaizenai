@@ -179,9 +179,9 @@ export default function ArticlesPage() {
                                         <span>{article.reading_time_minutes} min read</span>
                                     </div>
                                     <div className="flex justify-end mt-4">
-                                        <Link href={`/dashboard/articles/${article.id}`}>
+                                        <a href={article.url} target="_blank" rel="noopener noreferrer">
                                             <Button variant="outline">View Post</Button>
-                                        </Link>
+                                        </a>
                                     </div>
                                 </div>
                             </Card>
