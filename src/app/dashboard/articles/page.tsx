@@ -70,6 +70,7 @@ export default function ArticlesPage() {
                 }
                 const data: Article[] = await response.json();
                 setArticles(data);
+                // console.log("Articel Data >> ",data)
                 setFilteredArticles(data);
             } catch (error) {
                 console.error(error);
@@ -125,7 +126,7 @@ export default function ArticlesPage() {
             variants={containerVariants}
         >
             <motion.div variants={itemVariants} className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Latest Articles From Sudhanshu Dev.</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Latest Articles</h1>
                 <Link href="/dashboard">
                     <Button variant="outline"><LayoutDashboard className="mr-2 h-4 w-4"/> Go Back to Dashboard</Button>
                 </Link>

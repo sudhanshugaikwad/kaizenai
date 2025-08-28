@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -25,6 +26,7 @@ import {
   Sparkles,
   Lightbulb,
   Newspaper,
+  PanelLeft,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -49,7 +51,6 @@ import { PageFooter } from '../PageFooter';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/articles', icon: Newspaper, label: 'Articles' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/dream-career-finder', icon: Sparkles, label: 'Dream Career Finder' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
@@ -60,6 +61,7 @@ const navItems = [
   { href: '/dashboard/hr-contact-finder', icon: UserSearch, label: 'HR Contact Finder' },
   { href: '/dashboard/events-hackathons', icon: CalendarCheck, label: 'Events & Hackathons' },
   { href: '/dashboard/website-builder', icon: Globe, label: 'Website Builder' },
+  { href: '/dashboard/articles', icon: Newspaper, label: 'Articles' },
   { href: '/dashboard/sticky-notes', icon: StickyNote, label: 'Sticky Notes' },
 ];
 
@@ -132,17 +134,22 @@ export default function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-         <div className="flex flex-col min-h-svh">
+         <div className="flex flex-col min-h-svh overflow-hidden">
             <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
                 <div className='flex items-center gap-2'>
-                <SidebarTrigger className='md:hidden'>
-                    <Button variant="ghost" size="icon">
-                    <Menu className="h-6 w-6" />
-                    </Button>
-                </SidebarTrigger>
-                <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
-                    <Logo className="h-6 w-auto text-primary" />
-                </Link>
+                    <SidebarTrigger className='md:hidden'>
+                        <Button variant="ghost" size="icon">
+                        <Menu className="h-6 w-6" />
+                        </Button>
+                    </SidebarTrigger>
+                     <SidebarTrigger className='hidden md:flex'>
+                        <Button variant="ghost" size="icon">
+                            <PanelLeft className="h-6 w-6" />
+                        </Button>
+                    </SidebarTrigger>
+                    <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
+                        <Logo className="h-6 w-auto text-primary" />
+                    </Link>
                 </div>
             <div className="flex items-center gap-4">
                 <Link href="/">
@@ -155,7 +162,7 @@ export default function DashboardLayout({
                 <UserButton afterSignOutUrl="/" />
             </div>
             </header>
-            <main className="flex-grow p-4 sm:p-6 lg:p-8">{children}</main>
+            <main className="flex-grow p-4 sm:p-6 lg:p-8 overflow-y-auto">{children}</main>
             <PageFooter />
          </div>
       </SidebarInset>

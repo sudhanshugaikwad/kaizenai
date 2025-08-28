@@ -18,12 +18,6 @@ const features = [
     icon: MessageSquare,
   },
   {
-    title: "Articles",
-    description: "Read the latest articles on web development, AI, and more from Sudhanshu Dev.",
-    href: "/dashboard/articles",
-    icon: Newspaper,
-  },
-  {
     title: "Dream Career Finder",
     description: "Answer a few questions to discover the career path that best matches your skills and goals.",
     href: "/dashboard/dream-career-finder",
@@ -84,6 +78,12 @@ const features = [
     description: "Create and deploy simple websites using AI.",
     href: "/dashboard/website-builder",
     icon: Globe,
+  },
+  {
+    title: "Articles",
+    description: "Read the latest articles on web development, AI, and more from Sudhanshu Dev.",
+    href: "/dashboard/articles",
+    icon: Newspaper,
   },
   {
     title: "Sticky Notes",
