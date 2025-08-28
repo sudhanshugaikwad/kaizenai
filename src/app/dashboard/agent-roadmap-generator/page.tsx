@@ -285,15 +285,19 @@ export default function AiAgentRoadmapGeneratorPage() {
 
                     <motion.div variants={itemVariants}>
                         <Card>
-                             <CardHeader className="flex flex-row items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2"><Code2 className="h-6 w-6 text-primary"/>Platform JSON Output</CardTitle>
-                                    <CardDescription>Copy this JSON to import into {form.getValues('platformName')}.</CardDescription>
+                             <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle>Platform JSON Output</CardTitle>
+                                        <CardDescription>Copy this JSON to import into {form.getValues('platformName')}.</CardDescription>
+                                    </div>
+                                    <Button variant="outline" size="sm" onClick={handleCopyJson}>
+                                        <Copy className="mr-2 h-4 w-4"/> Copy JSON
+                                    </Button>
                                 </div>
-                                <Button variant="outline" size="sm" onClick={handleCopyJson}><Copy className="mr-2 h-4 w-4"/> Copy JSON</Button>
                             </CardHeader>
                             <CardContent>
-                                <pre className="p-4 rounded-md bg-muted text-xs overflow-x-auto">
+                                <pre className="p-4 rounded-md bg-muted text-xs overflow-x-auto font-mono">
                                     <code>{roadmap.jsonOutput}</code>
                                 </pre>
                             </CardContent>
@@ -324,4 +328,3 @@ export default function AiAgentRoadmapGeneratorPage() {
         </motion.div>
     );
 }
-
