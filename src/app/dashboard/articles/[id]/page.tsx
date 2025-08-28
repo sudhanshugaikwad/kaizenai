@@ -35,6 +35,7 @@ type Article = {
     published_at: string;
     last_comment_at: string;
     reading_time_minutes: number;
+    tags: string;
     tag_list: string[];
     body_html: string;
     body_markdown: string;
@@ -54,7 +55,7 @@ export default function SingleArticlePage() {
     const { id } = useParams();
     const router = useRouter();
     const [article, setArticle] = useState<Article | null>(null);
-    const [allArticles, setAllArticles] = useState<Article[]>([]);
+    const [allArticles, setAllArticles] = useState<Pick<Article, 'id'>[]>([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -65,7 +66,7 @@ export default function SingleArticlePage() {
                 // Fetch all articles to enable next/previous navigation
                 const allRes = await fetch(`https://dev.to/api/articles?username=sudhanshudevelopers`);
                 if (!allRes.ok) throw new Error('Failed to fetch articles');
-                const allData: Article[] = await allRes.json();
+                const allData: Pick<Article, 'id'>[] = await allRes.json();
                 setAllArticles(allData);
 
                 // Find the current article and its index
@@ -141,7 +142,7 @@ export default function SingleArticlePage() {
                         <span>{article.reading_time_minutes} min read</span>
                     </CardDescription>
                      <div className="flex flex-wrap gap-2 pt-2">
-                        {article.tag_list.map(tag => (
+                        {(article.tags || '').split(', ').map(tag => (
                             <Badge key={tag} variant="secondary">{tag}</Badge>
                         ))}
                     </div>
