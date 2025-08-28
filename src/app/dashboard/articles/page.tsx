@@ -48,14 +48,14 @@ type Article = {
 };
 
 const categories = [
-    'All', 'HTML', 'CSS', 'Bootstrap', 'Tailwind CSS', 'Javascript', 'DSA', 'Frameworks', 'API', 'JSON', 'Database', 'Authentication', 'AI', 'LLM', 'Agents', 'Recent', 'Tools', 'Other'
+  'All Articles', 'Recent Articles', 'Javascript Article', 'React.Js Article', 'API', 'JSON', 'Database', 'AI'
 ];
 
 export default function ArticlesPage() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeFilter, setActiveFilter] = useState('All');
+    const [activeFilter, setActiveFilter] = useState('All Articles');
     const [currentPage, setCurrentPage] = useState(1);
     const articlesPerPage = 6;
     const router = useRouter();
@@ -82,15 +82,15 @@ export default function ArticlesPage() {
 
     useEffect(() => {
         setCurrentPage(1);
-        if (activeFilter === 'All') {
+        if (activeFilter === 'All Articles') {
             setFilteredArticles(articles);
-        } else if (activeFilter === 'Recent') {
+        } else if (activeFilter === 'Recent Articles') {
              setFilteredArticles([...articles].sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()));
         } else {
-            const filterLower = activeFilter.toLowerCase();
+            let filterTerm = activeFilter.toLowerCase().replace(' article', '').replace('.js', '');
             setFilteredArticles(
                 articles.filter(article =>
-                    article.tag_list.some(tag => tag.toLowerCase().includes(filterLower))
+                    article.tag_list.some(tag => tag.toLowerCase().includes(filterTerm))
                 )
             );
         }
