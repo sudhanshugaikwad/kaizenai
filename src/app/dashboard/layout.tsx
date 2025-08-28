@@ -27,6 +27,7 @@ import {
   Lightbulb,
   Newspaper,
   PanelLeft,
+  Bot,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -54,6 +55,7 @@ const navItems = [
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/dream-career-finder', icon: Sparkles, label: 'Dream Career Finder' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },
+  { href: '/dashboard/agent-roadmap-generator', icon: Bot, label: 'AI Agent Roadmap' },
   { href: '/dashboard/resume-analyzer', icon: FileText, label: 'Resume Analyzer' },
   { href: '/dashboard/cover-letter-writer', icon: PenSquare, label: 'Cover Letter Writer' },
   { href: '/dashboard/job-matcher', icon: Briefcase, label: 'Job Search and Matching' },

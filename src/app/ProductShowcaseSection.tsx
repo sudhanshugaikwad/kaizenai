@@ -43,7 +43,8 @@ export default function ProductShowcaseSection() {
 
   return (
     <motion.section
-        className="py-16 sm:py-20 md:py-24 bg-[#0d0d0d] h-[920px] overflow-hidden"
+        className="py-16 sm:py-20 md:py-24 h-[920px] overflow-hidden"
+       
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
