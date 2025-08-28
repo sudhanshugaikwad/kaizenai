@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -25,6 +24,7 @@ import {
   CalendarCheck,
   Sparkles,
   Lightbulb,
+  Newspaper,
 } from 'lucide-react';
 import { UserButton, useUser } from "@clerk/nextjs";
 
@@ -49,6 +49,7 @@ import { PageFooter } from '../PageFooter';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard/articles', icon: Newspaper, label: 'Articles' },
   { href: '/dashboard/kaizen-ai-chat', icon: MessageSquare, label: 'Kaizen Ai Chat' },
   { href: '/dashboard/dream-career-finder', icon: Sparkles, label: 'Dream Career Finder' },
   { href: '/dashboard/roadmap-generator', icon: Rocket, label: 'Roadmap Generator' },

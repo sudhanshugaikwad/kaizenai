@@ -1,10 +1,9 @@
-
 'use client';
 
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe, Lightbulb } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe, Lightbulb, Newspaper } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -17,6 +16,12 @@ const features = [
     description: "Have a question? Ask our AI career coach for personalized advice and insights.",
     href: "/dashboard/kaizen-ai-chat",
     icon: MessageSquare,
+  },
+  {
+    title: "Articles",
+    description: "Read the latest articles on web development, AI, and more from Sudhanshu Dev.",
+    href: "/dashboard/articles",
+    icon: Newspaper,
   },
   {
     title: "Dream Career Finder",
