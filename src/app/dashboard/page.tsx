@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -31,9 +32,9 @@ const features = [
    
   },
   {
-    title: "AI Agent Roadmap Generator",
-    description: "Design and get a complete roadmap for your own AI agents for platforms like n8n.",
-    href: "/dashboard/agent-roadmap-generator",
+    title: "AI Agent Tools",
+    description: "Design agent roadmaps or convert JSON files for platforms like n8n, Zapier, and more.",
+    href: "/dashboard/agent-generator",
     icon: Bot,
   },
   {
