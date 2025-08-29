@@ -22,6 +22,7 @@ import {
   Globe,
   CalendarCheck,
   Sparkles,
+  Bot,
 } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import Image from "next/image";
@@ -69,7 +70,13 @@ const features = [
     icon: <Rocket className="h-6 w-6 text-primary" />,
     title: 'AI Roadmap Generator',
     description: 'Get a personalized career plan with resources.',
-    href: '/dashboard/agent-roadmap-generator',
+    href: '/dashboard/roadmap-generator',
+  },
+  {
+    icon: <Bot className="h-6 w-6 text-primary" />,
+    title: 'AI Agent Roadmap Generator',
+    description: 'Generate a full-fledged roadmap for building AI agents on platforms like n8n.',
+    href: '/dashboard/agent-generator',
   },
   {
     icon: <Briefcase className="h-6 w-6 text-primary" />,

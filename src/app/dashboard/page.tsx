@@ -32,6 +32,13 @@ const features = [
    
   },
   {
+    title: "AI Agent Roadmap Generator",
+    description: "Generate a full-fledged roadmap for building AI agents on platforms like n8n.",
+    href: "/dashboard/agent-generator",
+    icon: Bot,
+    pro: true,
+  },
+  {
     title: "AI Resume Builder",
     description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
     href: "/dashboard/resume-analyzer",
