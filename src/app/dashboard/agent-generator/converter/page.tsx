@@ -28,7 +28,8 @@ import { Loader2, Wand2, Copy, CheckCircle, XCircle, ArrowLeft, GitBranch, FileJ
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { convertJson, type JsonConverterOutput } from '@/ai/flows/json-converter';
+import { convertJson } from '@/ai/flows/json-converter';
+import type { JsonConverterOutput } from '@/ai/flows/json-converter.types';
 
 
 const platformNames = ["n8n", "Make.com", "Zapier", "General Purpose"];
