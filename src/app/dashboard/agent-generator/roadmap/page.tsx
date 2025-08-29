@@ -2,10 +2,12 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { generateAgentRoadmap, type AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator';
+import { generateAgentDescription } from '@/ai/flows/agent-description-generator';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -26,7 +28,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Sparkles, Download, BookOpen, Lightbulb, Copy, Milestone, Bot } from 'lucide-react';
+import { Loader2, Sparkles, Download, BookOpen, Lightbulb, Copy, Milestone, Bot, ArrowLeft, Plus, Wand2, LayoutDashboard } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import Editor from '@monaco-editor/react';
@@ -34,9 +36,9 @@ import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
   agentName: z.string().min(3, "Agent name must be at least 3 characters."),
-  agentType: z.string().min(3, "Agent type is required."),
+  agentType: z.string({ required_error: "Please select an agent type."}),
   platformName: z.enum(['n8n', 'Make.com', 'Zapier'], { required_error: "Please select a platform."}),
-  description: z.string().min(10, "Description must be at least 10 characters."),
+  description: z.string().optional(),
 });
 
 const agentTypeSuggestions = ["Chatbot", "Data Processor", "API Integrator", "Social Media Poster", "Email Assistant", "Automation Agent"];
@@ -44,6 +46,7 @@ const agentTypeSuggestions = ["Chatbot", "Data Processor", "API Integrator", "So
 export default function AgentRoadmapGeneratorPage() {
   const [roadmap, setRoadmap] = useState<AgentRoadmapOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDescLoading, setIsDescLoading] = useState(false);
   const { toast } = useToast();
   const { theme } = useTheme();
 
@@ -52,15 +55,24 @@ export default function AgentRoadmapGeneratorPage() {
     defaultValues: {
       agentName: '',
       agentType: '',
+      platformName: undefined,
       description: '',
     },
   });
 
   const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
+    if (!values.description) {
+        toast({
+            title: "Description Required",
+            description: "Please provide a description for the agent.",
+            variant: "destructive"
+        })
+        return;
+    }
     setIsLoading(true);
     setRoadmap(null);
     try {
-      const result = await generateAgentRoadmap(values);
+      const result = await generateAgentRoadmap(values as any);
       setRoadmap(result);
       toast({ title: "Roadmap Generated!", description: "Your AI agent roadmap is ready."});
     } catch (error) {
@@ -75,15 +87,39 @@ export default function AgentRoadmapGeneratorPage() {
     }
   }, [toast]);
 
+  const handleGenerateDescription = async () => {
+    const agentName = form.getValues('agentName');
+    const agentType = form.getValues('agentType');
+    if (!agentName || !agentType) {
+        toast({
+            title: "Agent Name and Type Required",
+            description: "Please enter an agent name and select a type first.",
+            variant: "destructive"
+        });
+        return;
+    }
+    setIsDescLoading(true);
+    try {
+        const result = await generateAgentDescription({ agentName, agentType });
+        form.setValue('description', result.description);
+        toast({ title: "Description generated!" });
+    } catch (error) {
+        console.error("Failed to generate description", error);
+        toast({ title: "Error", description: "Could not generate description.", variant: "destructive" });
+    } finally {
+        setIsDescLoading(false);
+    }
+  };
+
   const handleCopyJson = () => {
     if (!roadmap?.jsonOutput) return;
-    navigator.clipboard.writeText(JSON.stringify(roadmap.jsonOutput, null, 2));
+    navigator.clipboard.writeText(roadmap.jsonOutput);
     toast({ title: "Copied!", description: "Workflow JSON copied to clipboard." });
   }
 
   const handleDownloadJson = () => {
     if (!roadmap?.jsonOutput) return;
-    const blob = new Blob([JSON.stringify(roadmap.jsonOutput, null, 2)], { type: 'application/json' });
+    const blob = new Blob([roadmap.jsonOutput], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -94,6 +130,12 @@ export default function AgentRoadmapGeneratorPage() {
     URL.revokeObjectURL(url);
     toast({ title: "Downloaded!", description: "Workflow saved as a .json file." });
   };
+
+  const handleNew = () => {
+    form.reset();
+    setRoadmap(null);
+    setIsLoading(false);
+  }
 
 
   const containerVariants = {
@@ -108,50 +150,65 @@ export default function AgentRoadmapGeneratorPage() {
   
   return (
     <motion.div 
-      className="space-y-8"
+      className="space-y-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <motion.div variants={itemVariants}>
+      <motion.div variants={itemVariants} className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">AI Agent Roadmap Generator</h1>
-        <p className="text-muted-foreground">Design and build your AI agent with a step-by-step roadmap and importable JSON.</p>
+        <div className="flex gap-2">
+            <Link href="/dashboard">
+                <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4"/> Go Back to Dashboard</Button>
+            </Link>
+             <Button onClick={handleNew}><Plus className="mr-2 h-4 w-4"/> New</Button>
+        </div>
       </motion.div>
 
       <div className="grid lg:grid-cols-2 gap-8">
         <motion.div variants={itemVariants}>
           <Card>
-            <CardHeader>
-              <CardTitle>Agent Details</CardTitle>
-              <CardDescription>Provide the specifications for your AI agent.</CardDescription>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <FormField control={form.control} name="agentName" render={({ field }) => (
-                    <FormItem><FormLabel>Agent Name</FormLabel><FormControl><Input placeholder="e.g., Customer Support Chatbot" {...field} /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="agentType" render={({ field }) => (
-                     <FormItem><FormLabel>Agent Type</FormLabel><FormControl><Input placeholder="e.g., Chatbot, Data Processor" {...field} list="agent-types" /></FormControl>
-                     <datalist id="agent-types">
-                        {agentTypeSuggestions.map(s => <option key={s} value={s} />)}
-                     </datalist>
-                     <FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="platformName" render={({ field }) => (
-                    <FormItem><FormLabel>Platform</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a platform" /></SelectTrigger></FormControl>
-                        <SelectContent>
-                            <SelectItem value="n8n">n8n.io</SelectItem>
-                            <SelectItem value="Make.com">Make.com</SelectItem>
-                            <SelectItem value="Zapier">Zapier</SelectItem>
-                        </SelectContent>
-                    </Select><FormMessage /></FormItem>
-                  )} />
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FormField control={form.control} name="agentName" render={({ field }) => (
+                      <FormItem><FormLabel>Agent Name</FormLabel><FormControl><Input placeholder="e.g., SupportMaster 3000" {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                     <FormField control={form.control} name="agentType" render={({ field }) => (
+                        <FormItem><FormLabel>Agent Type</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select an agent type" /></SelectTrigger></FormControl>
+                            <SelectContent>
+                                {agentTypeSuggestions.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                            </SelectContent>
+                        </Select><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name="platformName" render={({ field }) => (
+                        <FormItem><FormLabel>Platform Name</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a platform" /></SelectTrigger></FormControl>
+                            <SelectContent>
+                                <SelectItem value="n8n">n8n.io</SelectItem>
+                                <SelectItem value="Make.com">Make.com</SelectItem>
+                                <SelectItem value="Zapier">Zapier</SelectItem>
+                            </SelectContent>
+                        </Select><FormMessage /></FormItem>
+                    )} />
+                  </div>
+                  
                   <FormField control={form.control} name="description" render={({ field }) => (
-                    <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea placeholder="Describe what the agent should do..." rows={3} {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem>
+                        <div className="flex justify-between items-center">
+                            <FormLabel>Write a description for the AI agent (Optional)</FormLabel>
+                            <Button type="button" variant="outline" size="sm" onClick={handleGenerateDescription} disabled={isDescLoading}>
+                                {isDescLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Wand2 className="mr-2 h-4 w-4" />}
+                                Generate Description
+                            </Button>
+                        </div>
+                        <FormControl><Textarea placeholder="Describe the main goal and functions of your AI agent..." rows={5} {...field} /></FormControl>
+                        <FormMessage />
+                    </FormItem>
                   )} />
-                  <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
-                    {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Roadmap</>}
+
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Agent Roadmap</>}
                   </Button>
                 </form>
               </Form>
@@ -220,7 +277,7 @@ export default function AgentRoadmapGeneratorPage() {
                                 <Editor
                                     height="100%"
                                     language="json"
-                                    value={JSON.stringify(roadmap.jsonOutput, null, 2)}
+                                    value={roadmap.jsonOutput}
                                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                                     options={{ readOnly: true, minimap: { enabled: false }, fontSize: 12 }}
                                 />
