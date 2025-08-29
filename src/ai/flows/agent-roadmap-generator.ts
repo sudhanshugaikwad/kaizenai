@@ -41,7 +41,7 @@ const prompt = ai.definePrompt({
   **Instructions:**
   1.  **Summary:** Write a brief, encouraging summary of the agent's purpose and the roadmap you are providing.
   2.  **Workflow Steps:** Define a clear, step-by-step workflow for the agent. Provide at least 4 logical steps, like "Webhook Input", "Pre-Processing", "AI Model Call", and "Respond to Webhook". Each step must have a unique 'id', 'title', and 'description'.
-  3.  **JSON Output:** Create a valid n8n workflow JSON string that a user can directly import. Use the structure provided below as a template. You MUST replace the "name" field with the user's requested "agentName". The rest of the structure should be used as is to ensure validity.
+  3.  **JSON Output:** Create a valid n8n workflow JSON string that a user can directly import. Use the structure provided below as a template. You MUST replace the "name" field with the user's requested "agentName" and ensure the "prompt" field in the "OpenAI Chat" node correctly references the output of the "Pre-Processing" node (i.e., "={{$json["prompt"]}}"). The rest of the structure should be used as is to ensure validity.
   4.  **Resources and Tips:** Provide a list of 3-4 helpful resources and tips. Each item must have a 'title' and 'content'. Include topics relevant to building n8n workflows with AI.
 
   **n8n JSON Template:**
@@ -58,7 +58,7 @@ const prompt = ai.definePrompt({
         "name": "Pre-Processing", "type": "n8n-nodes-base.function", "typeVersion": 1, "position": [500, 300]
       },
       {
-        "parameters": { "resource": "completion", "operation": "create", "model": "gpt-3.5-turbo", "prompt": "={{$json[\\"prompt\\"]}}", "temperature": 0.7, "maxTokens": 300 },
+        "parameters": { "resource": "completion", "operation": "create", "model": "gpt-3.5-turbo", "prompt": "", "temperature": 0.7, "maxTokens": 300 },
         "name": "OpenAI Chat", "type": "n8n-nodes-base.openAi", "typeVersion": 1, "position": [750, 300],
         "credentials": { "openAiApi": { "id": "your-credential-id", "name": "OpenAI Account" } }
       },
