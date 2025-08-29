@@ -69,7 +69,7 @@ const features = [
     icon: <Rocket className="h-6 w-6 text-primary" />,
     title: 'AI Roadmap Generator',
     description: 'Get a personalized career plan with resources.',
-    href: '/dashboard/roadmap-generator',
+    href: '/dashboard/agent-roadmap-generator',
   },
   {
     icon: <Briefcase className="h-6 w-6 text-primary" />,

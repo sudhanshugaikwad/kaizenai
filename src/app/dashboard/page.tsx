@@ -32,12 +32,6 @@ const features = [
    
   },
   {
-    title: "AI Agent Tools",
-    description: "Design agent roadmaps or convert JSON files for platforms like n8n, Zapier, and more.",
-    href: "/dashboard/agent-generator",
-    icon: Bot,
-  },
-  {
     title: "AI Resume Builder",
     description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
     href: "/dashboard/resume-analyzer",
