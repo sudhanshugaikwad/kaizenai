@@ -77,13 +77,13 @@ export default function AgentRoadmapGeneratorPage() {
 
   const handleCopyJson = () => {
     if (!roadmap?.jsonOutput) return;
-    navigator.clipboard.writeText(JSON.stringify(JSON.parse(roadmap.jsonOutput), null, 2));
+    navigator.clipboard.writeText(JSON.stringify(roadmap.jsonOutput, null, 2));
     toast({ title: "Copied!", description: "Workflow JSON copied to clipboard." });
   }
 
   const handleDownloadJson = () => {
     if (!roadmap?.jsonOutput) return;
-    const blob = new Blob([JSON.stringify(JSON.parse(roadmap.jsonOutput), null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(roadmap.jsonOutput, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -220,7 +220,7 @@ export default function AgentRoadmapGeneratorPage() {
                                 <Editor
                                     height="100%"
                                     language="json"
-                                    value={JSON.stringify(JSON.parse(roadmap.jsonOutput), null, 2)}
+                                    value={JSON.stringify(roadmap.jsonOutput, null, 2)}
                                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                                     options={{ readOnly: true, minimap: { enabled: false }, fontSize: 12 }}
                                 />
