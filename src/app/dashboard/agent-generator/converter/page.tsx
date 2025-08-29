@@ -30,6 +30,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { convertJson } from '@/ai/flows/json-converter';
 import type { JsonConverterOutput } from '@/ai/flows/json-converter.types';
+import { Label } from '@/components/ui/label';
 
 
 const platformNames = ["n8n", "Make.com", "Zapier", "General Purpose"];
@@ -165,7 +166,7 @@ export default function JsonConverterPage() {
                                 {result.isSuccess && (
                                     <div className="flex-1 flex flex-col space-y-4">
                                         <div className="flex justify-between items-center">
-                                            <FormLabel>Corrected & Converted JSON</FormLabel>
+                                            <Label>Corrected & Converted JSON</Label>
                                             <Button variant="ghost" size="sm" onClick={handleCopyJson}>
                                                 <Copy className="mr-2 h-4 w-4" /> Copy
                                             </Button>
