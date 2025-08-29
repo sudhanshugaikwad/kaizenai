@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Bot, GitBranch, ArrowLeft } from 'lucide-react';
+import { ArrowRight, Bot, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -15,13 +15,6 @@ const features = [
     icon: Bot,
     href: "/dashboard/agent-roadmap-generator",
     cta: "Start Building",
-  },
-  {
-    title: "JSON Validator & Converter",
-    description: "Validate, fix, and convert existing JSON for n8n, Zapier, or Make.com to ensure compatibility.",
-    icon: GitBranch,
-    href: "/dashboard/agent-generator/converter",
-    cta: "Start Converting",
   },
 ];
 
@@ -60,7 +53,7 @@ export default function AgentGeneratorLandingPage() {
       </motion.div>
 
       <motion.div
-        className="grid gap-8 md:grid-cols-2"
+        className="grid gap-8 md:grid-cols-1"
         variants={containerVariants}
       >
         {features.map((feature) => (
