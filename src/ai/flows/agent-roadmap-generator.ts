@@ -2,17 +2,34 @@
 'use server';
 
 /**
- * @fileOverview Generates a complete roadmap for building an AI agent.
+ * @fileOverview Generates a complete roadmap for building AI agents, including workflow steps for visualization.
  */
 
 import {ai} from '@/ai/genkit';
 import {googleAI} from '@genkit-ai/googleai';
-import {
-    AgentRoadmapInputSchema,
-    AgentRoadmapOutputSchema,
-    type AgentRoadmapInput,
-    type AgentRoadmapOutput,
-} from './agent-roadmap-generator.types';
+import {z} from 'genkit';
+
+export const AgentRoadmapInputSchema = z.object({
+  agentTypes: z.array(z.string()).describe('A list of desired agent types to generate roadmaps for.'),
+});
+export type AgentRoadmapInput = z.infer<typeof AgentRoadmapInputSchema>;
+
+const WorkflowStepSchema = z.object({
+  id: z.string().describe('A unique identifier for the workflow step (e.g., "step-1").'),
+  title: z.string().describe('The title of the workflow step (e.g., "Data Ingestion").'),
+  description: z.string().describe('A detailed description of what this step entails.'),
+});
+
+export const AgentRoadmapOutputSchema = z.object({
+    roadmaps: z.array(
+        z.object({
+            agentType: z.string().describe('The type of agent this roadmap is for.'),
+            summary: z.string().describe("A brief summary of the agent's purpose and the generated roadmap."),
+            workflowSteps: z.array(WorkflowStepSchema).describe('An array of clear, step-by-step workflow stages for the agent, which will be visualized.'),
+        })
+    )
+});
+export type AgentRoadmapOutput = z.infer<typeof AgentRoadmapOutputSchema>;
 
 export async function generateAgentRoadmap(input: AgentRoadmapInput): Promise<AgentRoadmapOutput> {
   return agentRoadmapFlow(input);
@@ -23,22 +40,22 @@ const prompt = ai.definePrompt({
   model: googleAI.model('gemini-1.5-flash'),
   input: {schema: AgentRoadmapInputSchema},
   output: {schema: AgentRoadmapOutputSchema},
-  prompt: `You are an expert AI agent architect for automation platforms like n8n, Make.com, and Zapier. Your task is to generate a complete and functional roadmap for creating the specified AI agent.
+  prompt: `You are an expert AI agent architect. Your task is to generate a comprehensive roadmap for creating various types of AI agents. For each agent type provided by the user, you must generate a separate roadmap.
 
-  **User's Request:**
-  - **Agent Name:** {{{agentName}}}
-  - **Agent Type:** {{{agentType}}}
-  - **Platform:** {{{platformName}}}
-  - **Description:** {{#if description}}{{{description}}}{{else}}Not provided.{{/if}}
+  **User's Requested Agent Types:**
+  {{#each agentTypes}}
+  - {{{this}}}
+  {{/each}}
 
   **Your Task:**
-  Generate a comprehensive roadmap for creating the specified AI agent on the selected platform. The output must be a valid JSON object that follows the defined schema.
+  For EACH requested agent type, generate a complete and functional roadmap. The output must be a valid JSON object that follows the defined schema.
 
-  **Instructions:**
-  1.  **Summary:** Write a brief, encouraging summary of the agent's purpose and the roadmap you are providing.
-  2.  **Workflow Steps:** Define a clear, step-by-step workflow for the agent. Provide a few logical steps (e.g., Trigger, Pre-Processing, AI Model Call, Output Formatting, etc.). Each step must have a unique 'id', 'title', and 'description'.
-  3.  **Platform JSON Output:** Create a valid workflow JSON string that a user can directly import into the specified platform. This JSON should be complete and reflect the workflow steps. You must invent a plausible structure for the requested platform. For n8n, use a nodes-and-connections structure. For other platforms, create a suitable structure. Ensure the JSON is properly escaped within the final string.
-  4.  **Resources and Tips:** Provide a list of 3-4 helpful resources and tips. Each item must have a 'title' and 'content'. Include topics relevant to building workflows with AI on the specified platform.
+  **Instructions for each roadmap:**
+  1.  **Agent Type:** Clearly state the agent type this roadmap corresponds to.
+  2.  **Summary:** Write a brief, encouraging summary of the agent's purpose and the roadmap you are providing.
+  3.  **Workflow Steps:** Define a clear, step-by-step workflow for the agent. This workflow will be visualized using a library like React Flow.
+      - Provide a logical sequence of 4-6 steps (e.g., Trigger, Data Collection, Pre-Processing, AI Model Call, Post-Processing, Output).
+      - Each step must have a unique 'id' (e.g., "step-1", "step-2"), a concise 'title', and a 'description'.
   `,
 });
 
