@@ -4,7 +4,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { generateAgentRoadmap, type AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator';
-
+import Editor from '@monaco-editor/react';
 import ReactFlow, {
   Controls,
   Background,
@@ -21,9 +21,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Sparkles, ArrowLeft, Plus, Milestone, BookOpen, ExternalLink, Lightbulb, Bot, Check, ChevronsUpDown, XIcon } from 'lucide-react';
+import { Loader2, Sparkles, ArrowLeft, Plus, Milestone, Check, ChevronsUpDown, XIcon, Bot, Copy, Download, FileJson } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const agentTypes = [
     "Data Analysis Agent", "Research Assistant Agent", "Code Generation Agent", "QA & Testing Agent", "Knowledge Base Agent", "Task Automation Agent", 
@@ -71,10 +72,11 @@ const getLayoutedElements = (steps: any[], yOffset = 0) => {
 
 export default function AgentRoadmapGeneratorPage() {
   const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
-  const [generatedRoadmaps, setGeneratedRoadmaps] = useState<AgentRoadmapOutput['roadmaps']>([]);
+  const [generatedOutput, setGeneratedOutput] = useState<AgentRoadmapOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const { theme } = useTheme();
 
   const handleSelectAgent = (agent: string) => {
     setSelectedAgents(prev => 
@@ -88,11 +90,11 @@ export default function AgentRoadmapGeneratorPage() {
         return;
     }
     setIsLoading(true);
-    setGeneratedRoadmaps([]);
+    setGeneratedOutput(null);
     try {
       const result = await generateAgentRoadmap({ agentTypes: selectedAgents });
-      setGeneratedRoadmaps(result.roadmaps);
-      toast({ title: "Roadmaps Generated!", description: "Your AI agent roadmaps are ready."});
+      setGeneratedOutput(result);
+      toast({ title: "Roadmaps Generated!", description: "Your AI agent roadmaps and JSON file are ready."});
     } catch (error) {
       console.error('Failed to generate agent roadmaps:', error);
       toast({
@@ -107,9 +109,29 @@ export default function AgentRoadmapGeneratorPage() {
 
   const handleNew = () => {
     setSelectedAgents([]);
-    setGeneratedRoadmaps([]);
+    setGeneratedOutput(null);
     setIsLoading(false);
   }
+  
+  const handleCopyJson = () => {
+    if (!generatedOutput?.n8nWorkflowJson) return;
+    navigator.clipboard.writeText(generatedOutput.n8nWorkflowJson);
+    toast({ title: "Copied!", description: "n8n workflow JSON copied to clipboard." });
+  };
+
+  const handleDownloadJson = () => {
+    if (!generatedOutput?.n8nWorkflowJson) return;
+    const blob = new Blob([generatedOutput.n8nWorkflowJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kaizen-ai-n8n-workflow.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({ title: "Downloaded!", description: "n8n workflow JSON file saved." });
+  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -209,7 +231,7 @@ export default function AgentRoadmapGeneratorPage() {
         </motion.div>
         )}
 
-        {!isLoading && generatedRoadmaps.length === 0 && (
+        {!isLoading && !generatedOutput && (
         <motion.div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed h-96 text-center p-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Bot className="h-16 w-16 text-muted-foreground/30" />
             <p className="mt-4 text-lg font-medium">Your agent roadmaps will appear here</p>
@@ -217,15 +239,18 @@ export default function AgentRoadmapGeneratorPage() {
         </motion.div>
         )}
             
-        {generatedRoadmaps.length > 0 && (
+        {generatedOutput && generatedOutput.roadmaps.length > 0 && (
         <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-6">
-            <Tabs defaultValue={generatedRoadmaps[0].agentType}>
-                <TabsList>
-                    {generatedRoadmaps.map(roadmap => (
-                        <TabsTrigger key={roadmap.agentType} value={roadmap.agentType}>{roadmap.agentType}</TabsTrigger>
-                    ))}
-                </TabsList>
-                {generatedRoadmaps.map(roadmap => {
+            <Tabs defaultValue={generatedOutput.roadmaps[0].agentType}>
+                <div className="flex justify-between items-center">
+                    <TabsList>
+                        {generatedOutput.roadmaps.map(roadmap => (
+                            <TabsTrigger key={roadmap.agentType} value={roadmap.agentType}>{roadmap.agentType}</TabsTrigger>
+                        ))}
+                         <TabsTrigger value="export-json"><FileJson className="mr-2 h-4 w-4"/>Export</TabsTrigger>
+                    </TabsList>
+                </div>
+                {generatedOutput.roadmaps.map(roadmap => {
                     const { nodes, edges } = getLayoutedElements(roadmap.workflowSteps);
                     return (
                          <TabsContent value={roadmap.agentType} key={roadmap.agentType}>
@@ -265,6 +290,29 @@ export default function AgentRoadmapGeneratorPage() {
                          </TabsContent>
                     )
                 })}
+                 <TabsContent value="export-json">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Export n8n Workflow JSON</CardTitle>
+                            <CardDescription>Copy or download the n8n-compatible JSON file to import into your workflow automation tool.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex gap-2">
+                                <Button onClick={handleCopyJson} variant="outline"><Copy className="mr-2 h-4 w-4"/> Copy JSON</Button>
+                                <Button onClick={handleDownloadJson}><Download className="mr-2 h-4 w-4"/> Download .json File</Button>
+                            </div>
+                            <div className="h-[500px] border rounded-lg overflow-hidden">
+                                <Editor
+                                    height="100%"
+                                    language="json"
+                                    value={JSON.stringify(JSON.parse(generatedOutput.n8nWorkflowJson), null, 2)}
+                                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                                    options={{ readOnly: true, minimap: { enabled: false }, fontSize: 14 }}
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
             </Tabs>
         </motion.div>
         )}

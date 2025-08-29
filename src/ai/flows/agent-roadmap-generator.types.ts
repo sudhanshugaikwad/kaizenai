@@ -22,6 +22,7 @@ export const AgentRoadmapOutputSchema = z.object({
             summary: z.string().describe("A brief summary of the agent's purpose and the generated roadmap."),
             workflowSteps: z.array(WorkflowStepSchema).describe('An array of clear, step-by-step workflow stages for the agent, which will be visualized.'),
         })
-    )
+    ),
+    n8nWorkflowJson: z.string().describe("A single, complete, and valid n8n workflow JSON string. This JSON should contain all the nodes and connections for every agent roadmap generated. It must be directly importable into n8n."),
 });
 export type AgentRoadmapOutput = z.infer<typeof AgentRoadmapOutputSchema>;
