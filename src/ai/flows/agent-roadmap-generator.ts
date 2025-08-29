@@ -40,15 +40,45 @@ const prompt = ai.definePrompt({
 
   **Instructions:**
   1.  **Summary:** Write a brief, encouraging summary of the agent's purpose and the roadmap you are providing.
-  2.  **Workflow Steps:** Define a clear, step-by-step workflow for the agent. Provide 4 logical steps: 1. "Manual Trigger", 2. "Set Input Data", 3. "AI Model Call", and 4. "Output Formatting". Each step must have a unique 'id', 'title', and 'description'.
-  3.  **JSON Output:** Create a valid n8n workflow JSON string that a user can directly import.
-      - The workflow must have 4 nodes corresponding to the workflow steps.
-      - **Node 1 (startNode):** A "Start" node.
-      - **Node 2 (setNode):** A "Set" node to define the input. Give it a descriptive name and include a string field named \`prompt\`.
-      - **Node 3 (aiNode):** A "Google Gemini" node. Set the "Model" to "gemini-1.5-flash-latest" and configure the "Text" field to use the prompt from the Set node using an n8n expression.
-      - **Node 4 (outputNode):** A "Respond to Webhook" node. Configure it to return the text output from the Gemini node using an n8n expression.
-      - Define the connections between the nodes logically: Start -> Set -> AI -> Respond.
+  2.  **Workflow Steps:** Define a clear, step-by-step workflow for the agent. Provide at least 4 logical steps, like "Webhook Input", "Pre-Processing", "AI Model Call", and "Respond to Webhook". Each step must have a unique 'id', 'title', and 'description'.
+  3.  **JSON Output:** Create a valid n8n workflow JSON string that a user can directly import. Use the structure provided below as a template. You MUST replace the "name" field with the user's requested "agentName". The rest of the structure should be used as is to ensure validity.
   4.  **Resources and Tips:** Provide a list of 3-4 helpful resources and tips. Each item must have a 'title' and 'content'. Include topics relevant to building n8n workflows with AI.
+
+  **n8n JSON Template:**
+  \`\`\`json
+  {
+    "name": "{{{agentName}}}",
+    "nodes": [
+      {
+        "parameters": { "httpMethod": "POST", "path": "genkit-ai", "options": {} },
+        "name": "Webhook Input", "type": "n8n-nodes-base.webhook", "typeVersion": 1, "position": [250, 300]
+      },
+      {
+        "parameters": { "functionCode": "return [{ json: { prompt: \`User said: \${$json[\\"userMessage\\"]}\`, context: $json[\\"context\\"] || {} } }];" },
+        "name": "Pre-Processing", "type": "n8n-nodes-base.function", "typeVersion": 1, "position": [500, 300]
+      },
+      {
+        "parameters": { "resource": "completion", "operation": "create", "model": "gpt-3.5-turbo", "prompt": "={{$json[\\"prompt\\"]}}", "temperature": 0.7, "maxTokens": 300 },
+        "name": "OpenAI Chat", "type": "n8n-nodes-base.openAi", "typeVersion": 1, "position": [750, 300],
+        "credentials": { "openAiApi": { "id": "your-credential-id", "name": "OpenAI Account" } }
+      },
+      {
+        "parameters": { "functionCode": "const responseText = $json[\\"data\\"]?.[0]?.[\\"text\\"] || ($json[\\"choices\\"] && $json[\\"choices\\"][0]?.[\\"message\\"]?.[\\"content\\"]) || \\"(no response)\\";\\nreturn [{ json: { response: responseText, context: $json[\\"context\\"], timestamp: new Date().toISOString() } }];" },
+        "name": "Post-Processing", "type": "n8n-nodes-base.function", "typeVersion": 1, "position": [1000, 300]
+      },
+      {
+        "parameters": { "respondWith": "json", "options": {} },
+        "name": "Respond to Webhook", "type": "n8n-nodes-base.respondToWebhook", "typeVersion": 1, "position": [1250, 300]
+      }
+    ],
+    "connections": {
+      "Webhook Input": { "main": [ [ { "node": "Pre-Processing", "type": "main", "index": 0 } ] ] },
+      "Pre-Processing": { "main": [ [ { "node": "OpenAI Chat", "type": "main", "index": 0 } ] ] },
+      "OpenAI Chat": { "main": [ [ { "node": "Post-Processing", "type": "main", "index": 0 } ] ] },
+      "Post-Processing": { "main": [ [ { "node": "Respond to Webhook", "type": "main", "index": 0 } ] ] }
+    }
+  }
+  \`\`\`
 
   Generate the response in the required JSON format.
   `
@@ -66,4 +96,3 @@ const generateAgentRoadmapFlow = ai.defineFlow(
     return output!;
   }
 );
-
