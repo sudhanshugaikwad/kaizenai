@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import logo from "../Kaizenai.png"
+import logo from "../Kaizenai_about.png"
 
 import { Linkedin, Github, Newspaper, Home } from "lucide-react";
 import ServicesSection from "./ServicesSection";

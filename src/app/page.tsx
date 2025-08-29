@@ -3,7 +3,6 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
   Rocket,
@@ -40,87 +39,7 @@ import LatestArticlesSection from './LatestArticlesSection';
 import PricingSection from './PricingSection';
 import { PageFooter } from './PageFooter';
 import ProductShowcaseSection from './ProductShowcaseSection';
-
-const features = [
-  {
-    icon: <MessageSquare className="h-6 w-6 text-primary" />,
-    title: 'Kaizen Ai Chat',
-    description: 'Get instant career advice from our AI coach.',
-    href: '/dashboard/kaizen-ai-chat',
-  },
-  {
-    icon: <FileText className="h-6 w-6 text-primary" />,
-    title: 'AI Resume Analyzer',
-    description: 'Optimize your resume with AI-powered feedback.',
-    href: '/dashboard/resume-analyzer',
-  },
-  {
-    icon: <PenSquare className="h-6 w-6 text-primary" />,
-    title: 'AI Cover Letter Writer',
-    description: 'Generate compelling cover letters in seconds.',
-    href: '/dashboard/cover-letter-writer',
-  },
-  {
-    icon: <Sparkles className="h-6 w-6 text-primary" />,
-    title: 'Dream Career Finder',
-    description: 'Answer a few questions to discover the career path.',
-    href: '/dashboard/dream-career-finder',
-  },
-  {
-    icon: <Rocket className="h-6 w-6 text-primary" />,
-    title: 'AI Roadmap Generator',
-    description: 'Get a personalized career plan with resources.',
-    href: '/dashboard/roadmap-generator',
-  },
-  {
-    icon: <Bot className="h-6 w-6 text-primary" />,
-    title: 'AI Agent Roadmap Generator',
-    description: 'Generate a full-fledged roadmap for building AI agents on platforms like n8n.',
-    href: '/dashboard/agent-generator',
-  },
-  {
-    icon: <Briefcase className="h-6 w-6 text-primary" />,
-    title: 'AI Job Search and Matching',
-    description: 'Let our AI find the best job openings for you.',
-    href: '/dashboard/job-matcher',
-  },
-  {
-    icon: <BookOpenCheck className="h-6 w-6 text-primary" />,
-    title: 'Interview Practice',
-    description: 'Ace interviews with AI-powered mock sessions.',
-    href: '/dashboard/interview-practice',
-  },
-  {
-    icon: <UserSearch className="h-6 w-6 text-primary" />,
-    title: 'HR Contact Finder',
-    description: 'Discover HR contacts by department or resume.',
-    href: '/dashboard/hr-contact-finder',
-  },
-  {
-    icon: <CalendarCheck className="h-6 w-6 text-primary" />,
-    title: 'Events & Hackathons',
-    description: 'Find relevant events, hackathons, and challenges.',
-    href: '/dashboard/events-hackathons',
-  },
-  {
-    icon: <Globe className="h-6 w-6 text-primary" />,
-    title: 'Website Builder',
-    description: 'Create and deploy simple websites using AI.',
-    href: '/dashboard/website-builder',
-  },
-  {
-    icon: <StickyNote className="h-6 w-6 text-primary" />,
-    title: 'Sticky Notes',
-    description: 'Organize your daily tasks and boost productivity.',
-    href: '/dashboard/sticky-notes',
-  },
-  {
-    icon: <Zap className="h-6 w-6 text-primary" />,
-    title: 'Powerful AI Core',
-    description: 'Powered by advanced generative AI for best results.',
-    href: '/dashboard',
-  },
-];
+import ToolkitShowcase from './ToolkitShowcase';
 
 const howItWorksSteps = [
   {
@@ -350,32 +269,7 @@ export default function Home() {
           variants={sectionVariants}
           viewport={{ once: true, amount: 0.1 }}
         >
-          <div className="text-center mb-12">
-             <ScrollRevealText
-                className="text-3xl md:text-4xl font-bold tracking-tight"
-                text="Your Personal AI Career Toolkit"
-            />
-            <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
-          </div>
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {features.map((feature) => (
-              <motion.div key={feature.title} variants={itemVariants}>
-                  <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 transform hover:-translate-y-1 h-full">
-                    <CardContent className="p-4">
-                        <div className="flex items-center gap-4">
-                            <div className="p-2.5 rounded-md bg-primary/10 border border-primary/20">
-                                {feature.icon}
-                            </div>
-                            <div>
-                                <p className="font-semibold text-foreground">{feature.title}</p>
-                                <p className="text-sm text-muted-foreground">{feature.description}</p>
-                            </div>
-                        </div>
-                    </CardContent>
-                  </Card>
-              </motion.div>
-            ))}
-          </div>
+          <ToolkitShowcase />
         </motion.section>
 
         <motion.section
