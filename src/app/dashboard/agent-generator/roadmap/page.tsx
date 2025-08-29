@@ -159,8 +159,13 @@ export default function AgentRoadmapGeneratorPage() {
   const prettyJson = useMemo(() => {
     if (!generatedOutput?.n8nWorkflowJson) return '';
     try {
+      // The output is a string, but it might be a stringified JSON.
+      // Let's try parsing and re-stringifying for pretty print.
+      // If it fails, just return the original string.
       return JSON.stringify(JSON.parse(generatedOutput.n8nWorkflowJson), null, 2);
     } catch (e) {
+      // If parsing fails, it's likely not a JSON string, or it's malformed.
+      // Return the raw string to be displayed in the editor.
       return generatedOutput.n8nWorkflowJson;
     }
   }, [generatedOutput?.n8nWorkflowJson]);
@@ -183,8 +188,8 @@ export default function AgentRoadmapGeneratorPage() {
             <p className="text-muted-foreground">Select an agent type to generate and visualize its workflow roadmap.</p>
         </div>
         <div className="flex gap-2">
-            <Link href="/dashboard/agent-generator">
-                <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4"/> Go Back</Button>
+            <Link href="/dashboard">
+                <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4"/> Go to Dashboard</Button>
             </Link>
              <Button onClick={handleNew}><Plus className="mr-2 h-4 w-4"/> New</Button>
         </div>
