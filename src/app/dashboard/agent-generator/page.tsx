@@ -50,8 +50,8 @@ export default function AgentGeneratorLandingPage() {
         variants={containerVariants}
       >
         {features.map((feature) => (
-          <motion.div key={feature.title} variants={itemVariants} className="md:col-span-1 lg:col-span-1">
-            <Card className="flex flex-col h-full text-center">
+          <motion.div key={feature.title} variants={itemVariants} className="md:col-span-1 lg:col-span-1 flex">
+            <Card className="flex flex-col h-full text-center w-full">
               <CardHeader className="items-center">
                 <div className="p-3 bg-primary/10 rounded-full border border-primary/20">
                     <feature.icon className="h-8 w-8 text-primary" />

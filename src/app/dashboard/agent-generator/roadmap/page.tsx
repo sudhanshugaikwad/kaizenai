@@ -3,25 +3,23 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { generateAgentRoadmap, type AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator';
+import { generateAgentDescription } from '@/ai/flows/agent-description-generator';
 import Editor from '@monaco-editor/react';
-import ReactFlow, {
-  Controls,
-  Background,
-  Panel,
-  type Node,
-  type Edge,
-} from 'reactflow';
+import ReactFlow, { Controls, Background, type Node, type Edge } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, Sparkles, ArrowLeft, Plus, Milestone, Check, ChevronsUpDown, XIcon, Bot, Copy, Download, FileJson } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Sparkles, ArrowLeft, Plus, Milestone, Copy, Download, FileJson, Bot, Wand2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
@@ -38,7 +36,12 @@ const agentTypes = [
     "Virtual Companion Agent", "Smart Home Control Agent"
 ];
 
-// Function to arrange nodes in a simple top-to-bottom layout
+const formSchema = z.object({
+    agentName: z.string().min(3, "Agent name must be at least 3 characters."),
+    agentType: z.string({ required_error: "Please select an agent type." }),
+    agentDescription: z.string().min(10, "Description must be at least 10 characters."),
+});
+
 const getLayoutedElements = (steps: any[], yOffset = 0) => {
     const nodes: Node[] = [];
     const edges: Edge[] = [];
@@ -65,53 +68,63 @@ const getLayoutedElements = (steps: any[], yOffset = 0) => {
             });
         }
     });
-
     return { nodes, edges };
 };
 
-
 export default function AgentRoadmapGeneratorPage() {
-  const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
   const [generatedOutput, setGeneratedOutput] = useState<AgentRoadmapOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isDescLoading, setIsDescLoading] = useState(false);
   const { toast } = useToast();
   const { theme } = useTheme();
 
-  const handleSelectAgent = (agent: string) => {
-    setSelectedAgents(prev => 
-        prev.includes(agent) ? prev.filter(a => a !== agent) : [...prev, agent]
-    );
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { agentName: '', agentType: '', agentDescription: '' },
+  });
 
-  const onSubmit = useCallback(async () => {
-    if (selectedAgents.length === 0) {
-        toast({ title: "No agents selected", description: "Please select at least one agent type to generate a roadmap.", variant: "destructive" });
-        return;
-    }
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setGeneratedOutput(null);
     try {
-      const result = await generateAgentRoadmap({ agentTypes: selectedAgents });
+      const result = await generateAgentRoadmap(values);
       setGeneratedOutput(result);
-      toast({ title: "Roadmaps Generated!", description: "Your AI agent roadmaps and JSON file are ready."});
+      toast({ title: "Roadmap Generated!", description: "Your AI agent roadmap and JSON file are ready."});
     } catch (error) {
-      console.error('Failed to generate agent roadmaps:', error);
+      console.error('Failed to generate agent roadmap:', error);
       toast({
         title: "Error",
-        description: "Failed to generate roadmaps. Please try again.",
+        description: "Failed to generate roadmap. Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
-  }, [selectedAgents, toast]);
+  }, [toast]);
+
+  const handleGenerateDescription = async () => {
+    const agentName = form.getValues('agentName');
+    const agentType = form.getValues('agentType');
+    if (!agentName || !agentType) {
+        toast({ title: "Name and Type required", description: "Please enter an agent name and select a type first.", variant: "destructive" });
+        return;
+    }
+    setIsDescLoading(true);
+    try {
+        const result = await generateAgentDescription({ agentName, agentType });
+        form.setValue('agentDescription', result.description);
+    } catch (error) {
+        toast({ title: "Error", description: "Could not generate description.", variant: "destructive" });
+    } finally {
+        setIsDescLoading(false);
+    }
+  };
 
   const handleNew = () => {
-    setSelectedAgents([]);
+    form.reset({ agentName: '', agentType: '', agentDescription: '' });
     setGeneratedOutput(null);
     setIsLoading(false);
-  }
+  };
   
   const handleCopyJson = () => {
     if (!generatedOutput?.n8nWorkflowJson) return;
@@ -125,7 +138,7 @@ export default function AgentRoadmapGeneratorPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `kaizen-ai-n8n-workflow.json`;
+    a.download = `${form.getValues('agentName') || 'kaizen-ai'}-n8n-workflow.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -146,16 +159,16 @@ export default function AgentRoadmapGeneratorPage() {
   const prettyJson = useMemo(() => {
     if (!generatedOutput?.n8nWorkflowJson) return '';
     try {
-        // The output is already a string, but it might not be pretty-printed.
-        const parsed = JSON.parse(generatedOutput.n8nWorkflowJson);
-        return JSON.stringify(parsed, null, 2);
+      return JSON.stringify(JSON.parse(generatedOutput.n8nWorkflowJson), null, 2);
     } catch (e) {
-        // If it fails to parse, it might be an invalid JSON string from the AI.
-        // Return the raw string to display the error.
-        return generatedOutput.n8nWorkflowJson;
+      return generatedOutput.n8nWorkflowJson;
     }
   }, [generatedOutput?.n8nWorkflowJson]);
 
+  const { nodes, edges } = useMemo(() => {
+    if (!generatedOutput) return { nodes: [], edges: [] };
+    return getLayoutedElements(generatedOutput.roadmap.workflowSteps);
+  }, [generatedOutput]);
 
   return (
     <motion.div 
@@ -167,11 +180,11 @@ export default function AgentRoadmapGeneratorPage() {
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div className="space-y-1">
             <h1 className="text-3xl font-bold tracking-tight">AI Agent Roadmap Generator</h1>
-            <p className="text-muted-foreground">Select agent types to generate and visualize their workflow roadmaps.</p>
+            <p className="text-muted-foreground">Select an agent type to generate and visualize its workflow roadmap.</p>
         </div>
         <div className="flex gap-2">
-            <Link href="/dashboard">
-                <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4"/> Dashboard</Button>
+            <Link href="/dashboard/agent-generator">
+                <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4"/> Go Back</Button>
             </Link>
              <Button onClick={handleNew}><Plus className="mr-2 h-4 w-4"/> New</Button>
         </div>
@@ -179,61 +192,51 @@ export default function AgentRoadmapGeneratorPage() {
 
       <motion.div variants={itemVariants}>
         <Card>
-            <CardContent className="p-6">
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-grow space-y-2">
-                        <label className="text-sm font-medium">Select Agent Types</label>
-                         <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={open}
-                                className="w-full justify-between"
-                                >
-                                {selectedAgents.length > 0 ? `${selectedAgents.length} selected` : "Select agent types..."}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search agent type..." />
-                                    <CommandList>
-                                        <CommandEmpty>No agent type found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {agentTypes.map((agent) => (
-                                            <CommandItem
-                                                key={agent}
-                                                value={agent}
-                                                onSelect={() => handleSelectAgent(agent)}
-                                            >
-                                                <Check className="mr-2 h-4 w-4" style={{ opacity: selectedAgents.includes(agent) ? 1 : 0 }} />
-                                                {agent}
-                                            </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="p-6 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label htmlFor="agentName" className="text-sm font-medium">Agent Name</label>
+                        <Input id="agentName" {...form.register('agentName')} placeholder="e.g., Customer Support Bot" />
+                        {form.formState.errors.agentName && <p className="text-sm text-destructive">{form.formState.errors.agentName.message}</p>}
                     </div>
-                     <Button onClick={onSubmit} disabled={isLoading || selectedAgents.length === 0} className="self-end">
-                        {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Roadmaps</>}
-                    </Button>
+                    <div className="space-y-1">
+                        <label htmlFor="agentType" className="text-sm font-medium">Agent Type</label>
+                         <Controller
+                            name="agentType"
+                            control={form.control}
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select an agent type..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {agentTypes.map(type => (
+                                            <SelectItem key={type} value={type}>{type}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {form.formState.errors.agentType && <p className="text-sm text-destructive">{form.formState.errors.agentType.message}</p>}
+                    </div>
                 </div>
-                 {selectedAgents.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                        {selectedAgents.map(agent => (
-                            <Badge key={agent} variant="secondary">
-                                {agent}
-                                <button onClick={() => handleSelectAgent(agent)} className="ml-1.5 rounded-full p-0.5 hover:bg-background/50">
-                                    <XIcon className="h-3 w-3" />
-                                </button>
-                            </Badge>
-                        ))}
+                <div className="space-y-1">
+                    <label htmlFor="agentDescription" className="text-sm font-medium">Agent Description</label>
+                    <div className="flex items-start gap-2">
+                        <Textarea id="agentDescription" {...form.register('agentDescription')} placeholder="Describe what this agent will do." rows={3} />
+                        <Button type="button" variant="outline" size="sm" onClick={handleGenerateDescription} disabled={isDescLoading}>
+                             {isDescLoading ? <Loader2 className="h-4 w-4 animate-spin"/> : <Wand2 className="h-4 w-4" />}
+                             <span className="ml-2 hidden sm:inline">Generate</span>
+                        </Button>
                     </div>
-                 )}
+                     {form.formState.errors.agentDescription && <p className="text-sm text-destructive">{form.formState.errors.agentDescription.message}</p>}
+                </div>
+                 <Button type="submit" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Agent Roadmap</>}
+                </Button>
             </CardContent>
+            </form>
         </Card>
       </motion.div>
         
@@ -241,69 +244,53 @@ export default function AgentRoadmapGeneratorPage() {
         {isLoading && (
         <motion.div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed h-96" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="mt-4 text-lg text-muted-foreground">Our AI architect is designing your agent roadmaps...</p>
+            <p className="mt-4 text-lg text-muted-foreground">Our AI architect is designing your agent roadmap...</p>
         </motion.div>
         )}
 
         {!isLoading && !generatedOutput && (
         <motion.div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed h-96 text-center p-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Bot className="h-16 w-16 text-muted-foreground/30" />
-            <p className="mt-4 text-lg font-medium">Your agent roadmaps will appear here</p>
-            <p className="text-muted-foreground">Select one or more agent types and click "Generate" to get started.</p>
+            <p className="mt-4 text-lg font-medium">Your agent roadmap will appear here</p>
+            <p className="text-muted-foreground">Fill in the details above and click "Generate" to get started.</p>
         </motion.div>
         )}
             
-        {generatedOutput && generatedOutput.roadmaps.length > 0 && (
+        {generatedOutput && (
         <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-6">
-            <Tabs defaultValue={generatedOutput.roadmaps[0].agentType}>
+            <Tabs defaultValue="workflow">
                 <div className="flex justify-between items-center">
                     <TabsList>
-                        {generatedOutput.roadmaps.map(roadmap => (
-                            <TabsTrigger key={roadmap.agentType} value={roadmap.agentType}>{roadmap.agentType}</TabsTrigger>
-                        ))}
-                         <TabsTrigger value="export-json"><FileJson className="mr-2 h-4 w-4"/>Export</TabsTrigger>
+                        <TabsTrigger value="workflow">Workflow Visualization</TabsTrigger>
+                        <TabsTrigger value="export-json"><FileJson className="mr-2 h-4 w-4"/>Export</TabsTrigger>
                     </TabsList>
                 </div>
-                {generatedOutput.roadmaps.map(roadmap => {
-                    const { nodes, edges } = getLayoutedElements(roadmap.workflowSteps);
-                    return (
-                         <TabsContent value={roadmap.agentType} key={roadmap.agentType}>
-                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Workflow for {roadmap.agentType}</CardTitle>
-                                    <CardDescription>{roadmap.summary}</CardDescription>
-                                </CardHeader>
-                                <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <div className="lg:col-span-1">
-                                         <Accordion type="single" collapsible className="w-full" defaultValue="step-1">
-                                            {roadmap.workflowSteps.map((step) => (
-                                                <AccordionItem value={step.id} key={step.id}>
-                                                    <AccordionTrigger><Milestone className="mr-2 h-4 w-4 text-primary"/>{step.title}</AccordionTrigger>
-                                                    <AccordionContent>{step.description}</AccordionContent>
-                                                </AccordionItem>
-                                            ))}
-                                        </Accordion>
-                                    </div>
-                                    <div className="lg:col-span-2 h-[500px] border rounded-lg">
-                                        <ReactFlow
-                                            nodes={nodes}
-                                            edges={edges}
-                                            fitView
-                                        >
-                                            <Controls />
-                                            <Background />
-                                            <Panel position="top-right">
-                                                <div className="p-2 bg-card border rounded-md shadow-md">
-                                                    Workflow Visualization
-                                                </div>
-                                            </Panel>
-                                        </ReactFlow>
-                                    </div>
-                                </CardContent>
-                             </Card>
-                         </TabsContent>
-                    )
-                })}
+                <TabsContent value="workflow">
+                    <Card>
+                    <CardHeader>
+                        <CardTitle>Workflow for {generatedOutput.roadmap.agentType}</CardTitle>
+                        <CardDescription>{generatedOutput.roadmap.summary}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-1">
+                            <Accordion type="single" collapsible className="w-full" defaultValue="step-1">
+                                {generatedOutput.roadmap.workflowSteps.map((step) => (
+                                    <AccordionItem value={step.id} key={step.id}>
+                                        <AccordionTrigger><Milestone className="mr-2 h-4 w-4 text-primary"/>{step.title}</AccordionTrigger>
+                                        <AccordionContent>{step.description}</AccordionContent>
+                                    </AccordionItem>
+                                ))}
+                            </Accordion>
+                        </div>
+                        <div className="lg:col-span-2 h-[500px] border rounded-lg">
+                            <ReactFlow nodes={nodes} edges={edges} fitView>
+                                <Controls />
+                                <Background />
+                            </ReactFlow>
+                        </div>
+                    </CardContent>
+                    </Card>
+                </TabsContent>
                  <TabsContent value="export-json">
                     <Card>
                         <CardHeader>
