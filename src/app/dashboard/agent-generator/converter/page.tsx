@@ -35,6 +35,139 @@ import { Label } from '@/components/ui/label';
 
 const platformNames = ["n8n", "Make.com", "Zapier", "General Purpose"];
 
+const defaultN8nWorkflow = `{
+  "name": "Genkit AI Chat Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "genkit-ai",
+        "options": {}
+      },
+      "name": "Webhook Input",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: { prompt: \`User said: \${$json[\\"userMessage\\"]}\`, context: $json[\\"context\\"] || {} } }];"
+      },
+      "name": "Pre-Processing",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "resource": "completion",
+        "operation": "create",
+        "model": "gpt-3.5-turbo",
+        "prompt": "={{$json[\\"prompt\\"]}}",
+        "temperature": 0.7,
+        "maxTokens": 300
+      },
+      "name": "OpenAI Chat",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-credential-id",
+          "name": "OpenAI Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const responseText = $json[\\"data\\"]?.[0]?.[\\"text\\"] || ($json[\\"choices\\"] && $json[\\"choices\\"][0]?.[\\"message\\"]?.[\\"content\\"]) || \\"(no response)\\";\\nreturn [{ json: { response: responseText, context: $json[\\"context\\"], timestamp: new Date().toISOString() } }];"
+      },
+      "name": "Post-Processing",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "options": {}
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\\"response\\"]}}",
+              "operation": "contains",
+              "value2": "code"
+            }
+          ]
+        }
+      },
+      "name": "Conditional Branch",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1000, 500]
+    }
+  ],
+  "connections": {
+    "Webhook Input": {
+      "main": [
+        [
+          {
+            "node": "Pre-Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Processing": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat": {
+      "main": [
+        [
+          {
+            "node": "Post-Processing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Conditional Branch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post-Processing": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}`;
+
 const formSchema = z.object({
   jsonString: z.string().refine(val => {
     try {
@@ -55,7 +188,7 @@ export default function JsonConverterPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            jsonString: '',
+            jsonString: defaultN8nWorkflow,
             targetPlatform: 'n8n',
         },
     });
