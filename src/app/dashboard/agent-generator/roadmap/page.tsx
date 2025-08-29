@@ -143,6 +143,20 @@ export default function AgentRoadmapGeneratorPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
   
+  const prettyJson = useMemo(() => {
+    if (!generatedOutput?.n8nWorkflowJson) return '';
+    try {
+        // The output is already a string, but it might not be pretty-printed.
+        const parsed = JSON.parse(generatedOutput.n8nWorkflowJson);
+        return JSON.stringify(parsed, null, 2);
+    } catch (e) {
+        // If it fails to parse, it might be an invalid JSON string from the AI.
+        // Return the raw string to display the error.
+        return generatedOutput.n8nWorkflowJson;
+    }
+  }, [generatedOutput?.n8nWorkflowJson]);
+
+
   return (
     <motion.div 
       className="space-y-6"
@@ -305,7 +319,7 @@ export default function AgentRoadmapGeneratorPage() {
                                 <Editor
                                     height="100%"
                                     language="json"
-                                    value={JSON.stringify(JSON.parse(generatedOutput.n8nWorkflowJson), null, 2)}
+                                    value={prettyJson}
                                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                                     options={{ readOnly: true, minimap: { enabled: false }, fontSize: 14 }}
                                 />
