@@ -13,7 +13,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 
-const codeSnippets = {
+export const codeSnippets = {
   default: `
 import { generate } from '@genkit-ai/ai';
 import { defineFlow } from 'genkit';
@@ -21,229 +21,145 @@ import { z } from 'zod';
 
 function selectATool(toolName) {
   console.log(\`Loading Genkit code for \${toolName}...\`);
-  // Your journey into AI-powered development starts here.
 }
 `,
-  'Kaizen Ai Chat': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
 
+  'Kaizen Ai Chat': `
 export const kaizenChatFlow = defineFlow(
-  {
-    name: 'kaizenChatFlow',
-    inputSchema: z.object({ message: z.string() }),
-    outputSchema: z.string(),
-  },
+  { name: 'kaizenChatFlow', inputSchema: z.object({ message: z.string() }), outputSchema: z.string() },
   async ({ message }) => {
-    const response = await generate({
-      prompt: \`You are a helpful career coach. Respond to: \${message}\`,
-    });
+    const response = await generate({ prompt: \`You are a helpful career coach. Respond: \${message}\` });
     return response.text();
   }
 );
 `,
+
   'AI Resume Analyzer': `
 export const resumeAnalyzerFlow = defineFlow(
-  {
-    name: 'resumeAnalyzerFlow',
-    inputSchema: z.object({ resume: z.string() }),
-    outputSchema: z.object({
-      feedback: z.string(),
-      keywords: z.array(z.string()),
-    }),
-  },
+  { name: 'resumeAnalyzerFlow', inputSchema: z.object({ resume: z.string() }),
+    outputSchema: z.object({ feedback: z.string(), keywords: z.array(z.string()) }) },
   async ({ resume }) => {
-    const response = await generate({
-      prompt: \`Analyze resume: \${resume} and suggest improvements and keywords.\`,
-    });
-    // In a real flow, you'd parse the response into the schema.
-    return {
-      feedback: response.text(),
-      keywords: response.usage.custom?.keywords || [],
-    };
+    const response = await generate({ prompt: \`Analyze resume and suggest improvements: \${resume}\` });
+    return { feedback: response.text(), keywords: [] };
   }
 );
 `,
+
   'AI Cover Letter Writer': `
 export const coverLetterFlow = defineFlow(
-  {
-    name: 'coverLetterFlow',
-    inputSchema: z.object({
-      resume: z.string(),
-      jobDesc: z.string(),
-    }),
-    outputSchema: z.string(),
-  },
+  { name: 'coverLetterFlow',
+    inputSchema: z.object({ resume: z.string(), jobDesc: z.string() }), outputSchema: z.string() },
   async ({ resume, jobDesc }) => {
-    const response = await generate({
-      prompt: \`Write a compelling cover letter using the provided resume for the following job: \${jobDesc}. Resume: \${resume}\`,
-    });
+    const response = await generate({ prompt: \`Write a cover letter for job: \${jobDesc} using resume: \${resume}\` });
     return response.text();
   }
 );
 `,
+
   'Dream Career Finder': `
 export const careerFinderFlow = defineFlow(
-  {
-    name: 'careerFinderFlow',
-    inputSchema: z.object({
-      skills: z.array(z.string()),
-      preferences: z.string(),
-    }),
-    outputSchema: z.array(z.string()),
-  },
+  { name: 'careerFinderFlow',
+    inputSchema: z.object({ skills: z.array(z.string()), preferences: z.string() }), outputSchema: z.array(z.string()) },
   async ({ skills, preferences }) => {
-    const response = await generate({
-      prompt: \`Find careers matching skills: \${skills.join(', ')} and preferences: \${preferences}.\`,
-    });
-    return response.text().split('\\n').filter(line => line.trim());
+    const response = await generate({ prompt: \`Find careers for skills: \${skills} and preferences: \${preferences}\` });
+    return response.text().split('\\n').filter(Boolean);
   }
 );
 `,
+
   'AI Roadmap Generator': `
 export const roadmapGeneratorFlow = defineFlow(
-  {
-    name: 'roadmapGeneratorFlow',
-    inputSchema: z.object({ goal: z.string() }),
-    outputSchema: z.array(z.string()),
-  },
+  { name: 'roadmapGeneratorFlow', inputSchema: z.object({ goal: z.string() }), outputSchema: z.array(z.string()) },
   async ({ goal }) => {
-    const response = await generate({
-      prompt: \`Generate a detailed, step-by-step roadmap for a user whose goal is: \${goal}.\`,
-    });
-    return response.text().split('\\n').filter(line => line.trim());
+    const response = await generate({ prompt: \`Generate a roadmap for goal: \${goal}\` });
+    return response.text().split('\\n').filter(Boolean);
   }
 );
 `,
+
   'AI Agent Roadmap Generator': `
 export const agentRoadmapFlow = defineFlow(
-  {
-    name: 'agentRoadmapFlow',
-    inputSchema: z.object({ agentGoal: z.string() }),
-    outputSchema: z.array(z.string()),
-  },
+  { name: 'agentRoadmapFlow', inputSchema: z.object({ agentGoal: z.string() }), outputSchema: z.array(z.string()) },
   async ({ agentGoal }) => {
-    const response = await generate({
-      prompt: \`Generate a detailed AI agent development roadmap for the following task: \${agentGoal}.\`,
-    });
-    return response.text().split('\\n').filter(line => line.trim());
+    const response = await generate({ prompt: \`Generate agent roadmap for: \${agentGoal}\` });
+    return response.text().split('\\n').filter(Boolean);
   }
 );
 `,
+
   'AI Job Search and Matching': `
 export const jobSearchFlow = defineFlow(
-  {
-    name: 'jobSearchFlow',
-    inputSchema: z.object({ profile: z.string() }),
-    outputSchema: z.array(z.string()),
-  },
+  { name: 'jobSearchFlow', inputSchema: z.object({ profile: z.string() }), outputSchema: z.array(z.string()) },
   async ({ profile }) => {
-    const response = await generate({
-      prompt: \`Based on this profile, find 5 matching job titles and companies: \${profile}.\`,
-    });
-    return response.text().split('\\n').filter(line => line.trim());
+    const response = await generate({ prompt: \`Find 5 matching jobs for profile: \${profile}\` });
+    return response.text().split('\\n').filter(Boolean);
   }
 );
 `,
+
   'Interview Practice': `
 export const interviewPracticeFlow = defineFlow(
-  {
-    name: 'interviewPracticeFlow',
-    inputSchema: z.object({ jobRole: z.string() }),
-    outputSchema: z.object({
-      questions: z.array(z.string()),
-      feedback: z.string(),
-    }),
-  },
+  { name: 'interviewPracticeFlow', inputSchema: z.object({ jobRole: z.string() }),
+    outputSchema: z.object({ questions: z.array(z.string()), feedback: z.string() }) },
   async ({ jobRole }) => {
-    const response = await generate({
-      prompt: \`Generate 5 interview questions for a \${jobRole} and provide general feedback.\`
-    });
-    // In a real flow, you'd parse the response into the schema.
-    return {
-        questions: response.text().split('?').map(q => q.trim() + '?'),
-        feedback: "Practice answering concisely and with confidence."
-    };
+    const response = await generate({ prompt: \`Generate 5 interview questions for: \${jobRole}\` });
+    return { questions: response.text().split('?').map(q => q.trim() + '?').filter(Boolean), feedback: "Answer confidently." };
   }
 );
 `,
+
   'HR Contact Finder': `
 export const hrContactFinderFlow = defineFlow(
-  {
-    name: 'hrContactFinderFlow',
+  { name: 'hrContactFinderFlow',
     inputSchema: z.object({ company: z.string(), role: z.string() }),
-    outputSchema: z.array(z.object({ name: z.string(), email: z.string() })),
-  },
+    outputSchema: z.array(z.object({ name: z.string(), email: z.string() })) },
   async ({ company, role }) => {
-    // This is a placeholder for a real data lookup tool
-    console.log(\`Searching for HR contacts at \${company} for \${role}\`);
-    return [
-      { name: 'Jane Doe', email: 'jane.doe@example.com' },
-      { name: 'John Smith', email: 'john.smith@example.com' },
-    ];
+    return [{ name: 'Jane Doe', email: 'jane@example.com' }];
   }
 );
 `,
+
   'Events & Hackathons': `
 export const eventFinderFlow = defineFlow(
-  {
-    name: 'eventFinderFlow',
-    inputSchema: z.object({ topic: z.string() }),
-    outputSchema: z.array(z.string()),
-  },
+  { name: 'eventFinderFlow', inputSchema: z.object({ topic: z.string() }), outputSchema: z.array(z.string()) },
   async ({ topic }) => {
-    // const results = await search({ domain: 'events', query: topic });
-    console.log(\`Searching for events related to \${topic}\`);
-    return ["AI Conference 2024", "Web Dev Hackathon"];
+    return ["AI Conference 2025", "Hackathon Week"];
   }
 );
 `,
+
   'Website Builder': `
 export const websiteBuilderFlow = defineFlow(
-  {
-    name: 'websiteBuilderFlow',
-    inputSchema: z.object({ idea: z.string() }),
-    outputSchema: z.object({ html: z.string(), css: z.string() }),
-  },
+  { name: 'websiteBuilderFlow', inputSchema: z.object({ idea: z.string() }),
+    outputSchema: z.object({ html: z.string(), css: z.string() }) },
   async ({ idea }) => {
-    const response = await generate({
-      prompt: \`Generate HTML and CSS for a simple landing page about: \${idea}.\`
-    });
-    // In a real flow, you'd parse the response.
-    return { html: '<h1>Welcome</h1>', css: 'body { font-family: sans-serif; }'};
+    return { html: '<h1>Welcome to ' + idea + '</h1>', css: 'body { font-family: sans-serif; }' };
   }
 );
 `,
+
   'Sticky Notes': `
 export const stickyNoteFlow = defineFlow(
-  {
-    name: 'stickyNoteFlow',
-    inputSchema: z.object({ content: z.string() }),
-    outputSchema: z.string(),
-  },
+  { name: 'stickyNoteFlow', inputSchema: z.object({ content: z.string() }), outputSchema: z.string() },
   async ({ content }) => {
     const noteId = \`note_\${Date.now()}\`;
-    await state.set(noteId, { content });
     return \`Note saved with ID: \${noteId}\`;
   }
 );
 `,
+
   'Powerful AI Core': `
 async function runCoreQuery(promptText) {
   const llmResponse = await generate({
     prompt: promptText,
     model: 'googleai/gemini-1.5-flash',
-    output: {
-      format: 'json',
-      schema: z.object({ result: z.string() })
-    },
-    config: { temperature: 0.7 },
+    output: { format: 'json', schema: z.object({ result: z.string() }) },
   });
-
   return llmResponse.output()?.result;
 }
 `,
 };
+
 
 
 const features = [

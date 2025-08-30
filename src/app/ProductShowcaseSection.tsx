@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -43,15 +44,26 @@ export default function ProductShowcaseSection() {
 
   return (
     <motion.section
-        className="py-16 sm:py-20 md:py-24 h-[920px] overflow-hidden"
+        className="relative py-16 sm:py-20 md:py-24 h-[920px] overflow-hidden"
        
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
     >
+        <div 
+            className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-blue-500/20 opacity-30 blur-3xl"
+            style={{
+                WebkitMaskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)',
+                maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)'
+            }}
+        />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+           
+           
             <div className="relative flex items-center justify-center h-[600px]">
+              
+              
                 {/* Background Window */}
                 <motion.div 
                     className="absolute w-full max-w-6xl h-4/5 z-0"
@@ -59,6 +71,9 @@ export default function ProductShowcaseSection() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                 >
+                    <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+       <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+      
                     <WindowFrame>
                         <Image
                             src={Kaizenaiwebsite}
