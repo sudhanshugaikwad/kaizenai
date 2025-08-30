@@ -254,14 +254,15 @@ export default function Home() {
               </motion.div>
             </motion.div>
         </section>
+
+
+        {/* Product Showcase Section */}
         
         <ProductShowcaseSection />
 
-        {/* How It Works Section Component */}
-        <HowItWorksSection />
         
-        {/* Features Section */}
-        <motion.section
+          {/* Features Section */}
+          <motion.section
           id="features"
           className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
           initial="hidden"
@@ -271,6 +272,11 @@ export default function Home() {
         >
           <ToolkitShowcase />
         </motion.section>
+
+        {/* How It Works Section Component */}
+        <HowItWorksSection />
+        
+      
 
         <motion.section
           id="promo-section"

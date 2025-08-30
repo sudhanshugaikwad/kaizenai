@@ -2,60 +2,172 @@
 'use client';
 
 import { useState } from 'react';
-import Image, { type StaticImageData } from 'next/image';
 import {
   MessageSquare, FileText, PenSquare, Sparkles, Rocket, Bot,
-  Briefcase, BookOpenCheck, UserSearch, CalendarCheck, Globe, StickyNote, Zap
+  Briefcase, BookOpenCheck, UserSearch, CalendarCheck, Globe, StickyNote, Zap, Copy
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import kaizenChatImg from './assets/kaizen-chat.png';
-import resumeAnalyzerImg from './assets/resume-analyzer.png';
-import coverLetterImg from './assets/resume-analyzer.png';
-import dreamCareerImg from './assets/dream-career-finder.png';
-import roadmapGeneratorImg from './assets/roadmap-generator.png';
-import jobMatcherImg from './assets/job-matcher.png';
-import interviewPracticeImg from './assets/interview-practice.png';
-import hrFinderImg from './assets/hr-finder.png';
-import eventsImg from './assets/events.png';
-import websiteBuilderImg from './assets/website-builder.png';
-import stickyNotesImg from './assets/sticky-notes.png';
+import { useToast } from "@/hooks/use-toast";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+
+const codeSnippets = {
+  default: `// Welcome to the Kaizen AI Toolkit!
+// Click any feature to see its code.
+
+function welcome() {
+  console.log("Explore the power of Genkit AI!");
+}`,
+  'Kaizen Ai Chat': `// 1. Kaizen Ai Chat
+async function kaizenAiChat(message) {
+  return await genkit.chat({ prompt: message });
+}`,
+  'AI Resume Analyzer': `// 2. AI Resume Analyzer
+async function resumeAnalyzer(resumeText) {
+  return await genkit.analyze({ type: "resume", content: resumeText });
+}`,
+  'AI Cover Letter Writer': `// 3. AI Cover Letter Writer
+async function coverLetterWriter(jobDesc, resume) {
+  return await genkit.generate({
+    task: "coverLetter",
+    inputs: { job: jobDesc, resume },
+  });
+}`,
+  'Dream Career Finder': `// 4. Dream Career Finder
+async function dreamCareerFinder(skills, interests) {
+  return await genkit.match({
+    domain: "career",
+    profile: { skills, interests },
+  });
+}`,
+  'AI Roadmap Generator': `// 5. AI Roadmap Generator
+async function aiRoadmapGenerator(goal) {
+  return await genkit.plan({
+    task: "roadmap",
+    target: goal,
+  });
+}`,
+  'AI Agent Roadmap Generator': `// 6. AI Agent Roadmap Generator
+async function agentRoadmapGenerator(agentType) {
+  return await genkit.plan({
+    task: "agentRoadmap",
+    type: agentType,
+  });
+}`,
+  'AI Job Search and Matching': `// 7. AI Job Search and Matching
+async function jobSearchMatching(profile) {
+  return await genkit.search({
+    domain: "jobs",
+    query: profile,
+  });
+}`,
+  'Interview Practice': `// 8. Interview Practice
+async function interviewPractice(role) {
+  return await genkit.simulate({
+    scenario: "interview",
+    role,
+  });
+}`,
+  'HR Contact Finder': `// 9. HR Contact Finder
+async function hrContactFinder(company) {
+  return await genkit.search({
+    domain: "contacts",
+    query: { company, role: "HR" },
+  });
+}`,
+  'Events & Hackathons': `// 10. Events & Hackathons
+async function eventsHackathons(topic) {
+  return await genkit.search({
+    domain: "events",
+    query: topic,
+  });
+}`,
+  'Website Builder': `// 11. Website Builder
+async function websiteBuilder(idea) {
+  return await genkit.generate({
+    task: "website",
+    inputs: { concept: idea },
+  });
+}`,
+  'Sticky Notes': `// 12. Sticky Notes
+async function stickyNotes(content) {
+  return await genkit.memory.save({
+    type: "note",
+    data: content,
+  });
+}`,
+  'Powerful AI Core': `// 13. Powerful AI Core
+async function powerfulAiCore(query) {
+  return await genkit.core({ query });
+}`,
+};
+
 
 const features = [
-  { icon: MessageSquare, label: 'Kaizen Ai Chat', image: kaizenChatImg },
-  { icon: FileText, label: 'AI Resume Analyzer', image: resumeAnalyzerImg },
-  { icon: PenSquare, label: 'AI Cover Letter Writer', image: coverLetterImg },
-  { icon: Sparkles, label: 'Dream Career Finder', image: dreamCareerImg },
-  { icon: Rocket, label: 'AI Roadmap Generator', image: roadmapGeneratorImg },
-  { icon: Bot, label: 'AI Agent Roadmap Generator', image: roadmapGeneratorImg },
-  { icon: Briefcase, label: 'AI Job Search and Matching', image: jobMatcherImg },
-  { icon: BookOpenCheck, label: 'Interview Practice', image: interviewPracticeImg },
-  { icon: UserSearch, label: 'HR Contact Finder', image: hrFinderImg },
-  { icon: CalendarCheck, label: 'Events & Hackathons', image: eventsImg },
-  { icon: Globe, label: 'Website Builder', image: websiteBuilderImg },
-  { icon: StickyNote, label: 'Sticky Notes', image: stickyNotesImg },
-  { icon: Zap, label: 'Powerful AI Core', image: kaizenChatImg },
+  { icon: MessageSquare, label: 'Kaizen Ai Chat' },
+  { icon: FileText, label: 'AI Resume Analyzer' },
+  { icon: PenSquare, label: 'AI Cover Letter Writer' },
+  { icon: Sparkles, label: 'Dream Career Finder' },
+  { icon: Rocket, label: 'AI Roadmap Generator' },
+  { icon: Bot, label: 'AI Agent Roadmap Generator' },
+  { icon: Briefcase, label: 'AI Job Search and Matching' },
+  { icon: BookOpenCheck, label: 'Interview Practice' },
+  { icon: UserSearch, label: 'HR Contact Finder' },
+  { icon: CalendarCheck, label: 'Events & Hackathons' },
+  { icon: Globe, label: 'Website Builder' },
+  { icon: StickyNote, label: 'Sticky Notes' },
+  { icon: Zap, label: 'Powerful AI Core' },
 ];
 
 type Feature = typeof features[0];
 
-const WindowFrame = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <div className={cn('relative rounded-lg border border-white/20 bg-black/50 backdrop-blur-sm', className)}>
-        <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+const CodeBlock = ({ code }: { code: string }) => {
+    const { toast } = useToast();
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(code);
+        toast({ title: 'Copied to clipboard!' });
+    };
+
+    return (
+        <div className="relative rounded-lg bg-[#1E1E1E] text-sm font-code h-full">
+            <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 h-7 w-7 text-white/50 hover:text-white hover:bg-white/10"
+                onClick={handleCopy}
+            >
+                <Copy className="h-4 w-4" />
+            </Button>
+            <SyntaxHighlighter
+                language="javascript"
+                style={vscDarkPlus}
+                customStyle={{
+                    background: 'transparent',
+                    margin: 0,
+                    padding: '1.25rem',
+                    height: '100%',
+                    overflow: 'auto',
+                }}
+                codeTagProps={{
+                  style: {
+                    fontFamily: "var(--font-code), monospace"
+                  }
+                }}
+            >
+                {code}
+            </SyntaxHighlighter>
         </div>
-        <div className="p-4 pt-10 h-full flex items-center justify-center">
-            {children}
-        </div>
-    </div>
-);
+    );
+};
 
 
 export default function ToolkitShowcase() {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
+
+  const currentCode = selectedFeature ? codeSnippets[selectedFeature.label as keyof typeof codeSnippets] : codeSnippets.default;
 
   return (
     <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
@@ -64,9 +176,9 @@ export default function ToolkitShowcase() {
         <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by AI.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Left side: Buttons */}
-        <div className="flex flex-wrap gap-3 justify-center">
+        <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
           {features.map((feature) => (
             <Button
               key={feature.label}
@@ -80,33 +192,20 @@ export default function ToolkitShowcase() {
           ))}
         </div>
 
-        {/* Right side: Image Display */}
-        <div className="w-full h-80">
-            <WindowFrame className="h-full">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selectedFeature ? selectedFeature.label : 'empty'}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="w-full h-full"
-                    >
-                        {selectedFeature ? (
-                            <Image
-                            src={selectedFeature.image}
-                            alt={selectedFeature.label}
-                            className="object-contain w-full h-full rounded-md"
-                            placeholder="blur"
-                            />
-                        ) : (
-                            <div className="flex items-center justify-center h-full text-muted-foreground">
-                                <p className="text-lg font-medium">Image</p>
-                            </div>
-                        )}
-                    </motion.div>
-                </AnimatePresence>
-            </WindowFrame>
+        {/* Right side: Code Display */}
+        <div className="w-full h-80 lg:h-96">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={selectedFeature ? selectedFeature.label : 'empty'}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full h-full"
+                >
+                   <CodeBlock code={currentCode} />
+                </motion.div>
+            </AnimatePresence>
         </div>
       </div>
     </div>
