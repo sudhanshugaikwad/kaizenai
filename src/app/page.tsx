@@ -92,6 +92,8 @@ const HowItWorksSection = () => {
 
     const WindowFrame = ({ children, className }: { children: React.ReactNode, className?: string }) => (
         <div className={cn('relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm', className)}>
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
             <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -213,12 +215,14 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative">
+          
             <motion.div
               className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
               initial="hidden"
               animate="visible"
               variants={sectionVariants}
             >
+              
               <motion.h1 
                 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4"
                 variants={itemVariants}

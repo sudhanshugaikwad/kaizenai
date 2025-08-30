@@ -50,6 +50,7 @@ export default function LatestArticlesSection() {
                 Stay updated with the latest insights on Agentic AI, LLMs, and modern web technologies.
             </p>
             <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 mt-12 max-w-6xl mx-auto">
+              
                 {[...Array(6)].map((_, i) => (
                     <Card key={i} className="p-4">
                         <div className="flex items-center gap-4">

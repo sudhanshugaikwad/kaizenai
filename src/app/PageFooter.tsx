@@ -46,7 +46,9 @@ export const PageFooter = () => {
     }, []);
 
     return (
-        <footer className="bg-card/20 border-t border-border/50">
+        <footer className="relative overflow-hidden bg-card/20 border-t border-border/50">
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid gap-8 grid-cols-2 md:grid-cols-5 text-sm">
                     <div className="space-y-4 col-span-2 md:col-span-1">

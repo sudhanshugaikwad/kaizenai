@@ -15,9 +15,6 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const codeSnippets = {
   default: `
-// Welcome to the Genkit Functions Showcase!
-// Select a tool to see its core AI function.
-
 import { generate } from '@genkit-ai/ai';
 import { defineFlow } from 'genkit';
 import { z } from 'zod';
@@ -46,9 +43,6 @@ export const kaizenChatFlow = defineFlow(
 );
 `,
   'AI Resume Analyzer': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const resumeAnalyzerFlow = defineFlow(
   {
     name: 'resumeAnalyzerFlow',
@@ -71,9 +65,6 @@ export const resumeAnalyzerFlow = defineFlow(
 );
 `,
   'AI Cover Letter Writer': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const coverLetterFlow = defineFlow(
   {
     name: 'coverLetterFlow',
@@ -92,9 +83,6 @@ export const coverLetterFlow = defineFlow(
 );
 `,
   'Dream Career Finder': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const careerFinderFlow = defineFlow(
   {
     name: 'careerFinderFlow',
@@ -113,9 +101,6 @@ export const careerFinderFlow = defineFlow(
 );
 `,
   'AI Roadmap Generator': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const roadmapGeneratorFlow = defineFlow(
   {
     name: 'roadmapGeneratorFlow',
@@ -131,9 +116,6 @@ export const roadmapGeneratorFlow = defineFlow(
 );
 `,
   'AI Agent Roadmap Generator': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const agentRoadmapFlow = defineFlow(
   {
     name: 'agentRoadmapFlow',
@@ -149,9 +131,6 @@ export const agentRoadmapFlow = defineFlow(
 );
 `,
   'AI Job Search and Matching': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const jobSearchFlow = defineFlow(
   {
     name: 'jobSearchFlow',
@@ -167,9 +146,6 @@ export const jobSearchFlow = defineFlow(
 );
 `,
   'Interview Practice': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const interviewPracticeFlow = defineFlow(
   {
     name: 'interviewPracticeFlow',
@@ -192,9 +168,6 @@ export const interviewPracticeFlow = defineFlow(
 );
 `,
   'HR Contact Finder': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const hrContactFinderFlow = defineFlow(
   {
     name: 'hrContactFinderFlow',
@@ -212,12 +185,6 @@ export const hrContactFinderFlow = defineFlow(
 );
 `,
   'Events & Hackathons': `
-import { defineFlow } from 'genkit';
-import { z } from 'zod';
-
-// Assumes a 'search' tool is defined elsewhere
-// import { search } from './tools';
-
 export const eventFinderFlow = defineFlow(
   {
     name: 'eventFinderFlow',
@@ -232,9 +199,6 @@ export const eventFinderFlow = defineFlow(
 );
 `,
   'Website Builder': `
-import { defineFlow, generate } from 'genkit';
-import { z } from 'zod';
-
 export const websiteBuilderFlow = defineFlow(
   {
     name: 'websiteBuilderFlow',
@@ -251,9 +215,6 @@ export const websiteBuilderFlow = defineFlow(
 );
 `,
   'Sticky Notes': `
-import { defineFlow, state } from 'genkit';
-import { z } from 'zod';
-
 export const stickyNoteFlow = defineFlow(
   {
     name: 'stickyNoteFlow',
@@ -268,12 +229,6 @@ export const stickyNoteFlow = defineFlow(
 );
 `,
   'Powerful AI Core': `
-import { generate } from '@genkit-ai/ai';
-
-// The core of Genkit is the 'generate' function,
-// which provides a unified interface to interact
-// with various AI models.
-
 async function runCoreQuery(promptText) {
   const llmResponse = await generate({
     prompt: promptText,
@@ -319,7 +274,9 @@ function CodeBlock({ code }: { code: string }) {
     }
 
     return (
-        <div className="relative h-full rounded-lg bg-[#1E1E1E] p-4 font-mono text-sm">
+        <div className="relative h-full  rounded-lg bg-[#1E1E1E] p-4 font-mono text-sm">
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
              <Button
                 variant="ghost"
                 size="icon"
@@ -340,6 +297,9 @@ export default function ToolkitShowcase() {
 
   return (
     <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
+       <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+       <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+      
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
         <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">Everything you need to land your dream job, powered by Genkit AI.</p>
@@ -349,7 +309,8 @@ export default function ToolkitShowcase() {
         {/* Left side: Buttons */}
         <div className="flex flex-wrap gap-3 justify-center">
           {features.map((feature) => (
-            <Button
+          
+          <Button
               key={feature.label}
               variant={selectedFeature === feature.label ? 'default' : 'secondary'}
               onClick={() => setSelectedFeature(feature.label as Feature)}
