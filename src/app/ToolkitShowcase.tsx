@@ -223,17 +223,17 @@ export default function ToolkitShowcase() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Left side: Buttons */}
-        <div className="flex flex-wrap gap-3 justify-center">
+        <div className="grid grid-cols-2 gap-3">
           {features.map((feature) => (
           
           <Button
               key={feature.label}
               variant={selectedFeature === feature.label ? 'default' : 'secondary'}
               onClick={() => setSelectedFeature(feature.label as Feature)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 justify-start"
             >
               <feature.icon className="h-4 w-4" />
-              {feature.label}
+              <span className="truncate">{feature.label}</span>
             </Button>
           ))}
         </div>

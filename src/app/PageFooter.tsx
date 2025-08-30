@@ -6,9 +6,14 @@ import Image from "next/image";
 import logo from "./Kaizenai.png"
 import Link from "next/link";
 import {
-    LayoutDashboard,
+    House,
+    Building2,
+    ShieldCheck,
+    Siren,
+    Newspaper,
     MessageSquare,
     Sparkles,
+    HeartHandshake,
     Rocket,
     Bot,
     FileText,
@@ -18,17 +23,14 @@ import {
     UserSearch,
     CalendarCheck,
     Globe,
-    Newspaper,
     StickyNote,
   } from "lucide-react";
 
 export const PageFooter = () => {
     const footerTools = [
-      { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
       { title: 'Kaizen AI Chat', href: '/dashboard/kaizen-ai-chat', icon: MessageSquare },
       { title: 'Dream Career Finder', href: '/dashboard/dream-career-finder', icon: Sparkles },
       { title: 'AI Roadmap Generator', href: '/dashboard/roadmap-generator', icon: Rocket },
-      { title: 'AI Agent Tools', href: '/dashboard/agent-generator', icon: Bot },
       { title: 'AI Resume Analyzer', href: '/dashboard/resume-analyzer', icon: FileText },
       { title: 'AI Cover Letter Writer', href: '/dashboard/cover-letter-writer', icon: PenSquare },
       { title: 'AI Job Search & Matching', href: '/dashboard/job-matcher', icon: Briefcase },
@@ -41,14 +43,14 @@ export const PageFooter = () => {
     ];
     
     const companyLinks = [
-        { title: 'Home', href: '/' },
-        { title: 'About', href: '/about' },
-        { title: 'Verify Certificate', href: '/verify-certificate' },
+        { title: 'Home', href: '/', icon: House},
+        { title: 'About', href: '/about', icon: Building2},
+        { title: 'Verify Certificate', href: '/verify-certificate', icon: ShieldCheck},
     ];
 
     const legalLinks = [
-        { title: 'Terms of Service', href: '/terms-of-service' },
-        { title: 'Privacy Policy', href: '/privacy-policy' },
+        { title: 'Terms of Service', href: '/terms-of-service' , icon: HeartHandshake},
+        { title: 'Privacy Policy', href: '/privacy-policy', icon: Siren},
     ];
 
     const [articles, setArticles] = useState<{ title: string, url: string }[]>([]);
@@ -101,8 +103,9 @@ export const PageFooter = () => {
                         <ul className="space-y-2 text-muted-foreground">
                             {companyLinks.map((item) => (
                                 <li key={item.title}>
-                                    <Link href={item.href} className="hover:text-primary transition-colors">
-                                        {item.title}
+                                    <Link href={item.href}  className="flex items-center gap-2 hover:text-primary transition-colors">
+                                    <item.icon className="w-4 h-4" />
+                                    <span>{item.title}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -113,8 +116,9 @@ export const PageFooter = () => {
                         <ul className="space-y-2 text-muted-foreground">
                             {legalLinks.map((item) => (
                                 <li key={item.title}>
-                                    <Link href={item.href} className="hover:text-primary transition-colors">
-                                        {item.title}
+                                    <Link href={item.href} className="flex items-center gap-2 hover:text-primary transition-colors">
+                                    <item.icon className="w-4 h-4" />
+                                    <span>{item.title}</span>
                                     </Link>
                                 </li>
                             ))}
