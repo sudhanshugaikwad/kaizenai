@@ -95,6 +95,7 @@ const plans = [
 export default function PricingSection() {
     return (
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            
             <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Pricing Plans</h2>
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">
@@ -102,8 +103,10 @@ export default function PricingSection() {
                 </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                
                 {plans.map((plan) => (
                     <Card key={plan.name} className={cn('flex flex-col', plan.highlight && 'border-primary ring-2 ring-primary shadow-lg')}>
+                        
                         <CardHeader className="relative">
                             {plan.badge && <div className="absolute top-0 -translate-y-1/2 w-full flex justify-center"><div className="bg-primary text-primary-foreground px-3 py-1 text-sm font-semibold rounded-full">{plan.badge}</div></div>}
                             <CardTitle>{plan.name}</CardTitle>
@@ -129,6 +132,7 @@ export default function PricingSection() {
                                     <Button variant="link">See More</Button>
                                 </DialogTrigger>
                                 <DialogContent>
+                                    
                                     <DialogHeader>
                                         <DialogTitle>{plan.name} Features</DialogTitle>
                                         <DialogDescription>

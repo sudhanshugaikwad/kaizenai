@@ -5,16 +5,39 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "./Kaizenai.png"
 import Link from "next/link";
+import {
+    LayoutDashboard,
+    MessageSquare,
+    Sparkles,
+    Rocket,
+    Bot,
+    FileText,
+    PenSquare,
+    Briefcase,
+    BookOpenCheck,
+    UserSearch,
+    CalendarCheck,
+    Globe,
+    Newspaper,
+    StickyNote,
+  } from "lucide-react";
 
 export const PageFooter = () => {
     const footerTools = [
-        { title: 'AI Roadmap Generator', href: '/dashboard/roadmap-generator' },
-        { title: 'AI Resume Analyzer', href: '/dashboard/resume-analyzer' },
-        { title: 'AI Cover Letter Writer', href: '/dashboard/cover-letter-writer' },
-        { title: 'AI Job Search', href: '/dashboard/job-matcher' },
-        { title: 'Kaizen AI Chat', href: '/dashboard/kaizen-ai-chat' },
-        { title: 'Interview Practice', href: '/dashboard/interview-practice' },
-        { title: 'HR Contact Finder', href: '/dashboard/hr-contact-finder' },
+      { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { title: 'Kaizen AI Chat', href: '/dashboard/kaizen-ai-chat', icon: MessageSquare },
+      { title: 'Dream Career Finder', href: '/dashboard/dream-career-finder', icon: Sparkles },
+      { title: 'AI Roadmap Generator', href: '/dashboard/roadmap-generator', icon: Rocket },
+      { title: 'AI Agent Tools', href: '/dashboard/agent-generator', icon: Bot },
+      { title: 'AI Resume Analyzer', href: '/dashboard/resume-analyzer', icon: FileText },
+      { title: 'AI Cover Letter Writer', href: '/dashboard/cover-letter-writer', icon: PenSquare },
+      { title: 'AI Job Search & Matching', href: '/dashboard/job-matcher', icon: Briefcase },
+      { title: 'Interview Practice', href: '/dashboard/interview-practice', icon: BookOpenCheck },
+      { title: 'HR Contact Finder', href: '/dashboard/hr-contact-finder', icon: UserSearch },
+      { title: 'Events & Hackathons', href: '/dashboard/events-hackathons', icon: CalendarCheck },
+      { title: 'Website Builder', href: '/dashboard/website-builder', icon: Globe },
+      { title: 'Articles', href: '/dashboard/articles', icon: Newspaper },
+      { title: 'Sticky Notes', href: '/dashboard/sticky-notes', icon: StickyNote },
     ];
     
     const companyLinks = [
@@ -62,9 +85,13 @@ export const PageFooter = () => {
                         <ul className="space-y-2 text-muted-foreground">
                             {footerTools.map((item) => (
                                 <li key={item.title}>
-                                    <Link href={item.href} className="hover:text-primary transition-colors">
-                                        {item.title}
-                                    </Link>
+                                <Link
+                                    href={item.href}
+                                    className="flex items-center gap-2 hover:text-primary transition-colors"
+                                >
+                                    <item.icon className="w-4 h-4" />
+                                    <span>{item.title}</span>
+                                </Link>
                                 </li>
                             ))}
                         </ul>

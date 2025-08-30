@@ -345,8 +345,8 @@ export default function Home() {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="bg-card border border-border/50 rounded-lg p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
             <div className="relative z-10">
                 <ScrollRevealText className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight" text="Ready to Find Your Dream Job?" />
                 <p className="max-w-2xl mx-auto mt-2 text-muted-foreground mb-8">

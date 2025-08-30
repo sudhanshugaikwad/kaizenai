@@ -191,8 +191,8 @@ function CodeBlock({ code }: { code: string }) {
 
     return (
         <div className="relative h-full  rounded-lg bg-[#1E1E1E] p-4 font-mono text-sm">
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
              <Button
                 variant="ghost"
                 size="icon"
