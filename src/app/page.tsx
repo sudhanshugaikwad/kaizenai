@@ -92,8 +92,8 @@ const HowItWorksSection = () => {
 
     const WindowFrame = ({ children, className }: { children: React.ReactNode, className?: string }) => (
         <div className={cn('relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm', className)}>
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
             <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -178,6 +178,7 @@ export default function Home() {
               <Link href="/">
                 <Button variant="ghost" size="sm">Home</Button>
               </Link>
+              <div className="h-4 w-px bg-border mx-1" />
               <Link href="/about">
                 <Button variant="ghost" size="sm">About</Button>
               </Link>
@@ -194,10 +195,9 @@ export default function Home() {
                     <Link href="https://github.com/sudhanshugaikwad/kaizenai" target="_blank" rel="noopener noreferrer">
                             <Button variant="outline" size="sm" className="gap-1">
                                 <Github className="h-4 w-4" />
-                                GitHub
-                                <div className="h-4 w-px bg-border mx-1" />
-                                <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-                                <span>130k</span>
+                               
+                               
+                              
                             </Button>
                         </Link>
                         <Link href="/sign-in">

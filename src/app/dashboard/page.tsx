@@ -39,7 +39,7 @@ const features = [
     pro: true,
   },
   {
-    title: "AI Resume Builder",
+    title: "AI Resume Analyzer",
     description: "Build a professional, ATS-friendly resume with AI-driven suggestions and templates.",
     href: "/dashboard/resume-analyzer",
     icon: FileText,

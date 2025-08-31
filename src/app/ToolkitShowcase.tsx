@@ -148,16 +148,6 @@ export const stickyNoteFlow = defineFlow(
 );
 `,
 
-  'Powerful AI Core': `
-async function runCoreQuery(promptText) {
-  const llmResponse = await generate({
-    prompt: promptText,
-    model: 'googleai/gemini-1.5-flash',
-    output: { format: 'json', schema: z.object({ result: z.string() }) },
-  });
-  return llmResponse.output()?.result;
-}
-`,
 };
 
 
@@ -175,7 +165,6 @@ const features = [
   { icon: CalendarCheck, label: 'Events & Hackathons' },
   { icon: Globe, label: 'Website Builder' },
   { icon: StickyNote, label: 'Sticky Notes' },
-  { icon: Zap, label: 'Powerful AI Core' },
 ];
 
 type Feature = keyof typeof codeSnippets;
@@ -191,8 +180,8 @@ function CodeBlock({ code }: { code: string }) {
 
     return (
         <div className="relative h-full  rounded-lg bg-[#1E1E1E] p-4 font-mono text-sm">
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-[50px]" />
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
              <Button
                 variant="ghost"
                 size="icon"
@@ -213,8 +202,8 @@ export default function ToolkitShowcase() {
 
   return (
     <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
-       <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
-       <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" />
+       <div className="absolute -bottom-20 -left-0 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
+       <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
       
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Personal AI Career Toolkit</h2>
@@ -223,7 +212,7 @@ export default function ToolkitShowcase() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Left side: Buttons */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           {features.map((feature) => (
           
           <Button
