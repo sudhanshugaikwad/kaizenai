@@ -14,6 +14,8 @@ import {
     type AgentRoadmapOutput
 } from './agent-roadmap-generator.types';
 
+export { type AgentRoadmapInput, type AgentRoadmapOutput };
+
 export async function generateAgentRoadmap(input: AgentRoadmapInput): Promise<AgentRoadmapOutput> {
   return agentRoadmapFlow(input);
 }

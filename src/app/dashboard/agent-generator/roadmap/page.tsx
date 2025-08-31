@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { generateAgentRoadmap, type AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator';
+import { generateAgentRoadmap } from '@/ai/flows/agent-roadmap-generator';
+import type { AgentRoadmapOutput } from '@/ai/flows/agent-roadmap-generator.types';
 import { generateAgentDescription } from '@/ai/flows/agent-description-generator';
 import Editor from '@monaco-editor/react';
 import ReactFlow, { Controls, Background, type Node, type Edge } from 'reactflow';
@@ -159,13 +160,8 @@ export default function AgentRoadmapGeneratorPage() {
   const prettyJson = useMemo(() => {
     if (!generatedOutput?.n8nWorkflowJson) return '';
     try {
-      // The output is a string, but it might be a stringified JSON.
-      // Let's try parsing and re-stringifying for pretty print.
-      // If it fails, just return the original string.
       return JSON.stringify(JSON.parse(generatedOutput.n8nWorkflowJson), null, 2);
     } catch (e) {
-      // If parsing fails, it's likely not a JSON string, or it's malformed.
-      // Return the raw string to be displayed in the editor.
       return generatedOutput.n8nWorkflowJson;
     }
   }, [generatedOutput?.n8nWorkflowJson]);

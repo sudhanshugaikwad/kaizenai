@@ -141,7 +141,9 @@ export const PageFooter = () => {
                 </div>
                 <div className="mt-8 pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
                     <p>&copy; {new Date().getFullYear()} Kaizen Ai. All rights reserved.</p>
-                    <p>Designed by Sudhanshu Gaikwad</p>
+                    <p>Designed by  <Link href="https://sudhanshugaikwad.netlify.app/" className="hover:text-primary transition-colors">Sudhanshu Gaikwad</Link> </p>
+                   
+
                 </div>
             </div>
         </footer>
