@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { Logo } from '@/components/icons';
 import Link from 'next/link';
+import Image from "next/image";
+import logo from "../Kaizenai.png"
 
 type CertificateData = {
   name: string;
@@ -17,6 +19,27 @@ type CertificateData = {
   issueDate: string;
   certNumber: string;
 };
+
+const mockCertificates: CertificateData[] = [
+    {
+        name: 'Sudhanshu Gaikwad',
+        certification: 'Full Stack AI Developer',
+        issueDate: '14/07/2024',
+        certNumber: 'KAIZEN-2024-07-001'
+    },
+    {
+        name: 'Rohan Verma',
+        certification: 'AI/ML Engineer',
+        issueDate: '15/06/2024',
+        certNumber: 'KAIZEN-2024-06-002'
+    },
+    {
+        name: 'Anjali Mehta',
+        certification: 'Prompt Engineer',
+        issueDate: '16/05/2024',
+        certNumber: 'KAIZEN-2024-05-003'
+    }
+];
 
 export default function VerifyCertificatePage() {
   const [certNumber, setCertNumber] = useState('');
@@ -43,14 +66,9 @@ export default function VerifyCertificatePage() {
     // This is a placeholder for a real backend verification.
     // In a real application, you would make an API call here.
     setTimeout(() => {
-      // Simulate finding a certificate
-      if (certNumber === 'KAIZEN-1689366099534-472') {
-         setFoundCertificate({
-            name: 'Priya Sharma',
-            certification: 'Frontend Developer',
-            issueDate: '14/07/2023',
-            certNumber: 'KAIZEN-1689366099534-472'
-        });
+      const certificate = mockCertificates.find(c => c.certNumber === certNumber);
+      if (certificate) {
+         setFoundCertificate(certificate);
       } else {
         setFoundCertificate(null);
       }
@@ -74,7 +92,7 @@ export default function VerifyCertificatePage() {
     <div className="bg-background text-foreground">
          <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-                <Logo className="w-auto h-8 text-primary" />
+               <Image src={logo} alt="Kaizen Ai" width={150} height={100}/>
             </Link>
             <Link href="/dashboard">
                 <Button variant="outline">Go to Dashboard</Button>
@@ -171,5 +189,3 @@ export default function VerifyCertificatePage() {
     </div>
   );
 }
-
-    
