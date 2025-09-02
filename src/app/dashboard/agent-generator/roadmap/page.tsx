@@ -223,19 +223,23 @@ export default function AgentRoadmapGeneratorPage() {
                     </div>
                 </div>
                 <div className="space-y-1">
+                    
                     <label htmlFor="agentDescription" className="text-sm font-medium">Agent Description</label>
                     <div className="flex items-start gap-2">
                         <Textarea id="agentDescription" {...form.register('agentDescription')} placeholder="Describe what this agent will do." rows={3} />
-                        <Button type="button" variant="outline" size="sm" onClick={handleGenerateDescription} disabled={isDescLoading}>
-                             {isDescLoading ? <Loader2 className="h-4 w-4 animate-spin"/> : <Wand2 className="h-4 w-4" />}
-                             <span className="ml-2 hidden sm:inline">Generate</span>
-                        </Button>
+                       
                     </div>
                      {form.formState.errors.agentDescription && <p className="text-sm text-destructive">{form.formState.errors.agentDescription.message}</p>}
                 </div>
+               
+                <Button className="mx-2" type="button" variant="outline" size="sm" onClick={handleGenerateDescription} disabled={isDescLoading}>
+                             {isDescLoading ? <Loader2 className="h-4 w-4 animate-spin"/> : <Wand2 className="h-4 w-4" />}
+                             <span className="ml-2 hidden sm:inline">Generate</span>
+                        </Button>
                  <Button type="submit" disabled={isLoading}>
                     {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Sparkles className="mr-2 h-4 w-4" />Generate Agent Roadmap</>}
                 </Button>
+              
             </CardContent>
             </form>
         </Card>

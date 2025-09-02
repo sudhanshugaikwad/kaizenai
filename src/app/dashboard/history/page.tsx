@@ -221,39 +221,33 @@ export default function HistoryPage() {
                     key={index}
                     className="border-b"
                   >
-                    <AccordionTrigger className="px-6 py-4 hover:bg-muted/50">
-                      <div className="flex items-center justify-between w-full">
+                    <AccordionTrigger className="px-6 py-4 hover:bg-muted/50 w-full text-left">
                         <div className="flex items-center gap-4">
                             <Icon className="h-6 w-6 text-primary" />
-                            <div className="text-left">
-                            <p className="font-semibold">{item.type}</p>
-                            <p className="text-sm text-muted-foreground">
-                                {item.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground/80 mt-1">
-                                {new Date(item.timestamp).toLocaleString()}
-                            </p>
+                            <div>
+                                <p className="font-semibold">{item.type}</p>
+                                <p className="text-sm text-muted-foreground">
+                                    {item.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground/80 mt-1">
+                                    {new Date(item.timestamp).toLocaleString()}
+                                </p>
                             </div>
                         </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-6 bg-muted/20 space-y-4">
                         {isReusable && (
                             <Button 
-                                variant="ghost" 
+                                variant="outline" 
                                 size="sm" 
-                                className="mr-4"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleReuse(item);
-                                }}
+                                onClick={() => handleReuse(item)}
                             >
                                 <RefreshCw className="mr-2 h-4 w-4"/> Reuse
                             </Button>
                         )}
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-6 bg-muted/20">
-                      <pre className="mt-4 w-full overflow-auto rounded-md bg-muted p-4 text-xs">
-                        {JSON.stringify(item.data, null, 2)}
-                      </pre>
+                        <pre className="w-full overflow-auto rounded-md bg-muted p-4 text-xs">
+                            {JSON.stringify(item.data, null, 2)}
+                        </pre>
                     </AccordionContent>
                   </AccordionItem>
                 );
