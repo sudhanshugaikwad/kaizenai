@@ -40,15 +40,13 @@ const prompt = ai.definePrompt({
   1. Analyze the user's prompt and the existing code.
   2. Generate the **complete, updated code** for all three files: \`index.html\`, \`style.css\`, and \`script.js\`.
   3. **Return the entire file content for each file**, not just the changed parts.
-  4. Ensure the code is:
-     - **Professional and Modern**: Use clean typography, consistent color schemes, and modern design principles (e.g., minimalistic layouts, smooth animations).
-     - **Responsive**: Optimize for all screen sizes using Tailwind CSS responsive classes or Bootstrap's grid system.
+  4. Ensure the final code is:
+     - **Professional and Modern**: Use clean typography, consistent color schemes, and modern design principles.
+     - **Fully Responsive**: Ensure the navigation bar and all content works perfectly on mobile, tablet, and desktop screens.
      - **Accessible**: Include semantic HTML, ARIA attributes, and proper contrast ratios.
-     - **Performant**: Minimize CSS/JavaScript bloat and optimize for fast loading.
-  5. If the user requests features requiring frameworks (e.g., React components), implement them using vanilla HTML/CSS/JS, Tailwind CSS, or Bootstrap as best as possible.
-  6. Preserve existing CDN links for Tailwind CSS and Bootstrap.
-  7. Ensure code is well-structured, commented, and maintainable.
-  8. Use Tailwind CSS for primary styling, with Bootstrap for grid or component utilities if needed.
+  5. Preserve existing CDN links for Tailwind CSS and Bootstrap.
+  6. Ensure code is well-structured and maintainable.
+  7. If you modify the HTML, ensure the JavaScript for the responsive navbar in \`script.js\` still functions correctly with the new structure.
 
   **Current HTML (\`index.html\`):**
   \`\`\`html
@@ -65,7 +63,7 @@ const prompt = ai.definePrompt({
   {{{javascript}}}
   \`\`\`
 
-  Now, provide the complete and updated code for each file based on the user's request, prioritizing a professional and modern UI.
+  Now, provide the complete and updated code for each file based on the user's request.
   `,
 });
 

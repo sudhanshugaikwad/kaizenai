@@ -26,7 +26,7 @@ const prompt = ai.definePrompt({
   model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: WebsiteBuilderInputSchema},
   output: {schema: WebsiteBuilderOutputSchema},
-  prompt: `You are an expert web developer specializing in creating modern, responsive, and professional websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to generate the complete code for a multi-page website based on the user's requirements.
+  prompt: `You are an expert web developer specializing in creating modern, responsive, and professional websites using HTML, CSS, JavaScript, Tailwind CSS, and Bootstrap. Your task is to generate the complete code for a single-page website based on the user's requirements.
 
   **Website Details:**
   - **Name:** {{{name}}}
@@ -34,42 +34,33 @@ const prompt = ai.definePrompt({
   - **Prompt:** {{{prompt}}}
 
   **Instructions:**
-  1. **Generate a complete, runnable HTML file for each required page** (e.g., \`index.html\`, \`about.html\`, \`services.html\`, \`contact.html\`, or others based on the user prompt).  
-     - Each file must be a full HTML document including \`<!DOCTYPE html>\`, \`<html>\`, \`head\`, and \`<body>\` tags.  
-     - Include a consistent **navigation bar and footer** across all pages.  
+  1. **Generate a complete, runnable \`index.html\` file.**  
+     - It must be a full HTML document including \`<!DOCTYPE html>\`, \`<html>\`, \`head\`, and \`<body>\` tags.  
+     - Include a consistent **navigation bar and footer**. The navigation must be responsive and functional (e.g., hamburger menu on mobile).
 
-  2. Inside the \`<head>\` of every page:
-     - Add a \`<title>\` tag using the website name + page name.  
-     - Include the necessary **CDN links for Tailwind CSS (v3) and Bootstrap (v5)**.  
+  2. **Inside the \`<head>\`:**
+     - Add a \`<title>\` tag using the website name.  
+     - Include the necessary **CDN links for Tailwind CSS (v3), Bootstrap (v5), and Bootstrap Icons**.
      - Link to an external stylesheet named "style.css".  
 
   3. **Generate the complete CSS code for \`style.css\`**:  
      - Add custom styles that complement Tailwind/Bootstrap.  
-     - Use modern CSS practices.  
-     - Ensure consistent branding, typography, spacing, and color schemes across all pages.  
+     - Use modern CSS practices for a professional look (e.g., smooth transitions, subtle shadows).
+     - Ensure consistent branding, typography, spacing, and color schemes.  
 
   4. **Generate the JavaScript code for \`script.js\`**:  
-     - Include functionality for navigation (mobile menu toggle, smooth scrolling, etc.).  
-     - Add interactivity required by the user’s prompt (sliders, modals, form validation, etc.).  
-     - Link this file before the closing \`</body>\` tag on every page.  
-     - If no interactivity is required, keep the script minimal but linked.  
+     - Include functionality for a **responsive mobile navigation menu toggle**.
+     - Add interactivity required by the user’s prompt (e.g., smooth scrolling, form validation).  
+     - Link this file before the closing \`</body>\` tag.  
+     - If no interactivity is required, keep the script minimal but functional for the navbar.  
 
-  5. **Responsive Design:**  
-     - Ensure the website is fully responsive on mobile, tablet, and desktop.  
-     - Use a mix of Tailwind/Bootstrap utility classes and media queries in \`style.css\`.  
+  5. **Design and Content:**
+     - Use semantic HTML tags (\`header\`, \`nav\`, \`main\`, \`section\`, \`footer\`).  
+     - Create a professional, modern, and visually appealing layout. Sections should be well-defined and flow logically.
+     - Populate the site with high-quality, relevant placeholder text and images based on the user's prompt. Use "https://picsum.photos/width/height" for placeholder images.
 
-  6. **Design Quality:**  
-     - Use semantic HTML tags (\`header\`, \`nav\`, \`main\`, \`section\`, \`article\`, \`footer\`).  
-     - Create a professional, modern, and visually appealing layout.  
-     - Maintain consistent design across all pages.  
-
-  7. **Output Format:**  
-     - Provide the full code for:  
-       - \`index.html\` and additional pages as required  
-       - \`style.css\`  
-       - \`script.js\`  
-
-  The final output must be a **ready-to-run, multi-page responsive website** with clean and well-structured code.`,
+  The final output must be a **ready-to-run, single-page responsive website** with clean, well-structured, and professional-quality code.
+  `,
 });
 
 const generateWebsiteFlow = ai.defineFlow(
