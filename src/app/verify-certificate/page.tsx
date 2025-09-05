@@ -24,20 +24,20 @@ const mockCertificates: CertificateData[] = [
     {
         name: 'Sudhanshu Gaikwad',
         certification: 'Full Stack AI Developer',
-        issueDate: '14/07/2024',
-        certNumber: 'KAIZEN-2024-07-001'
+        issueDate: '18/08/2025',
+        certNumber: 'KAIZEN-2025-08-001'
     },
     {
         name: 'Rohan Verma',
         certification: 'AI/ML Engineer',
-        issueDate: '15/06/2024',
-        certNumber: 'KAIZEN-2024-06-002'
+        issueDate: '15/06/2025',
+        certNumber: 'KAIZEN-2025-06-002'
     },
     {
         name: 'Anjali Mehta',
         certification: 'Prompt Engineer',
-        issueDate: '16/05/2024',
-        certNumber: 'KAIZEN-2024-05-003'
+        issueDate: '16/05/2025',
+        certNumber: 'KAIZEN-2025-05-003'
     }
 ];
 

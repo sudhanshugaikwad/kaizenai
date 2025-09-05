@@ -27,7 +27,7 @@ export async function generateAgentDescription(input: AgentDescriptionInput): Pr
 
 const prompt = ai.definePrompt({
   name: 'agentDescriptionGeneratorPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-1.5-pro-latest'),
   input: {schema: AgentDescriptionInputSchema},
   output: {schema: AgentDescriptionOutputSchema},
   prompt: `You are an expert technical writer. Based on the provided agent name and type, generate a concise, one-paragraph description of what the agent does. The description should be suitable for use in documentation or as a summary.

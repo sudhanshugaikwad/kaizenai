@@ -57,7 +57,7 @@ export async function generateRoadmap(input: RoadmapInput): Promise<RoadmapOutpu
 
 const prompt = ai.definePrompt({
   name: 'roadmapPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
+  model: googleAI.model('gemini-1.5-pro-latest'),
   input: {schema: RoadmapInputSchema},
   output: {schema: RoadmapOutputSchema},
   prompt: `You are a career coach who helps people achieve their career goals.

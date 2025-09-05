@@ -183,7 +183,10 @@ export default function Home() {
                 <Button variant="ghost" size="sm">About</Button>
               </Link>
             </nav>
+           
+            
             <div className='flex items-center gap-2'>
+              
                 <SignedIn>
                 <div className="flex items-center gap-4">
                     <span className="hidden sm:inline text-sm font-medium">Welcome, {user?.firstName}</span>

@@ -45,7 +45,7 @@ export const PageFooter = () => {
     const companyLinks = [
         { title: 'Home', href: '/', icon: House},
         { title: 'About', href: '/about', icon: Building2},
-        { title: 'Verify Certificate', href: '/verify-certificate', icon: ShieldCheck},
+        // { title: 'Verify Certificate', href: '/verify-certificate', icon: ShieldCheck},
     ];
 
     const legalLinks = [
