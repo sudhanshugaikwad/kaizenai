@@ -22,7 +22,7 @@ export async function getQuestionsFromBank(input: QuestionBankInput): Promise<Qu
 
 const prompt = ai.definePrompt({
   name: 'questionBankPrompt',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: QuestionBankInputSchema},
   output: {schema: QuestionBankOutputSchema},
   prompt: `You are an expert career coach and interviewer. Your task is to generate a list of 20 high-quality interview questions based on the provided criteria. For each question, provide a detailed, expert-level sample answer.

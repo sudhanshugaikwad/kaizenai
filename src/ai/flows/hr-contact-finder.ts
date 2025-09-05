@@ -46,7 +46,7 @@ export async function findHrContacts(input: HrContactInput): Promise<HrContactOu
 
 const prompt = ai.definePrompt({
   name: 'hrContactPrompt',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: HrContactInputSchema},
   output: {schema: HrContactOutputSchema},
   prompt: `You are an expert global recruitment consultant with deep knowledge of the international job market. Your task is to find detailed contact information for HR professionals from companies worldwide, including startups and large global corporations. You pull HR details from trusted platforms like LinkedIn, Naukri, Xing, and many others.

@@ -22,7 +22,7 @@ export async function generateAgentRoadmap(input: AgentRoadmapInput): Promise<Ag
 
 const prompt = ai.definePrompt({
   name: 'agentRoadmapGeneratorPrompt',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: AgentRoadmapInputSchema},
   output: {schema: AgentRoadmapOutputSchema},
   prompt: `You are an expert AI agent architect and n8n workflow specialist. Your task is to generate a comprehensive roadmap and a complete, importable n8n workflow JSON for the AI agent requested by the user.

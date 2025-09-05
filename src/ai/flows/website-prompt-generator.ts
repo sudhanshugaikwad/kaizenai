@@ -29,7 +29,7 @@ export async function generateWebsitePrompt(input: WebsitePromptGeneratorInput):
 
 const prompt = ai.definePrompt({
   name: 'websitePromptGenerator',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: WebsitePromptGeneratorInputSchema},
   output: {schema: WebsitePromptGeneratorOutputSchema},
   prompt: `You are a creative director and prompt engineer specializing in modern, professional, and accessible web design. Based on the provided website name, generate a detailed and descriptive prompt for an AI web developer to build a single-page website with a polished, responsive, and user-friendly UI using HTML, CSS, JavaScript, Tailwind CSS, Bootstrap, and Bootstrap Icons.
@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
      - An **About Section** with a professional introduction and a high-quality image or icon.
      - A **Services/Features Section** with responsive cards using Bootstrap Icons or custom images.
      - A **Portfolio/Gallery Section** (if applicable) in a grid layout with hover effects.
-     - A **Testimonials Section** with styled quotes or reviews, either as cards or a carousel.
+     - A **Testimonials Section** with styled quotes or reviews, either as a cards or a carousel.
      - A **Contact Section** with a clean form (name, email, message) and social media icons.
   5. **Specify Interactivity:** Recommend subtle animations (e.g., "fade-in effects on scroll for sections", "smooth hover transitions on buttons and cards") and interactive elements (e.g., "a sticky navigation bar with active link highlighting").
   6. **Emphasize Professional UI Principles:**
