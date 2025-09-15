@@ -5,7 +5,8 @@ import { useState, useMemo, useCallback, useRef } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { generateProjectReport, type ProjectReportOutput } from '@/ai/flows/project-report-generator';
+import { generateProjectReport } from '@/ai/flows/project-report-generator';
+import type { ProjectReportOutput } from '@/ai/flows/project-report-generator.types';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
