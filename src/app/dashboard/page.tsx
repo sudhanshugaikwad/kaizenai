@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe, Lightbulb, Newspaper, Bot, FileBarChart } from 'lucide-react';
+import { Rocket, FileText, PenSquare, ArrowRight, MessageSquare, Briefcase, BookOpenCheck, StickyNote, UserSearch, CalendarCheck, Sparkles, Globe, Lightbulb, Newspaper, Bot } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeedbackForm from './FeedbackForm';
 import { useAuth } from '@clerk/nextjs';
@@ -37,12 +37,6 @@ const features = [
     href: "/dashboard/agent-generator",
     icon: Bot,
     pro: true,
-  },
-  {
-    title: "AI Project Report Generator",
-    description: "Generate professional academic project reports with AI-powered content creation.",
-    href: "/dashboard/project-report-generator",
-    icon: FileBarChart,
   },
   {
     title: "AI Resume Analyzer",
