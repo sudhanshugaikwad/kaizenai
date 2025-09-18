@@ -20,8 +20,8 @@ export default {
       backgroundImage: {
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "sans-serif"],
-        headline: ["var(--font-sans)", "sans-serif"],
+        sans: ["Inter", "Inter Fallback", "sans-serif"],
+        headline: ["Inter", "Inter Fallback", "sans-serif"],
         script: ["var(--font-script)", "cursive"],
         code: ['monospace'],
       },
