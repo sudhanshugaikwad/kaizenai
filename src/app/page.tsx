@@ -28,7 +28,7 @@ import Image from "next/image";
 import logo from "./Kaizenai.png"
 import React from 'react';
 import { cn } from '@/lib/utils';
-import CreateAccount from "./assets/pic-step-1.png"
+import CreateAccount from "./assets/CreateYourAccountwithkaizen.png"
 import UsetheAITools from "./assets/UsetheAIToolswithkaizen.png"
 import GetInstantFeedback from "./assets/GetInstantFeedbackwithkaizen.png"
 import LandYourDreamJob from "./assets/LandYourDreamJobwithkaizen.png"
@@ -40,6 +40,7 @@ import PricingSection from './PricingSection';
 import { PageFooter } from './PageFooter';
 import ProductShowcaseSection from './ProductShowcaseSection';
 import ToolkitShowcase from './ToolkitShowcase';
+import Herobg from "./assets/Herobg.jpg";
 
 const howItWorksSteps = [
   {
@@ -190,10 +191,20 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative">
+        <section className="relative overflow-hidden">
+             <Image
+                src={Herobg}
+                alt="Abstract background"
+                layout="fill"
+                objectFit="cover"
+                className="-z-10 opacity-30"
+                data-ai-hint="abstract background"
+                priority
+            />
+            <div className="absolute inset-0 bg-background/60 -z-10" />
           
             <motion.div
-              className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32"
+              className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-20 md:py-32 relative z-10"
               initial="hidden"
               animate="visible"
               variants={sectionVariants}
