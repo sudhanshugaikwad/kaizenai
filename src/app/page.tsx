@@ -28,7 +28,7 @@ import Image from "next/image";
 import logo from "./Kaizenai.png"
 import React from 'react';
 import { cn } from '@/lib/utils';
-import CreateAccount from "./assets/CreateYourAccountwithkaizen.png"
+import CreateAccount from "./assets/pic-step-1.png"
 import UsetheAITools from "./assets/UsetheAIToolswithkaizen.png"
 import GetInstantFeedback from "./assets/GetInstantFeedbackwithkaizen.png"
 import LandYourDreamJob from "./assets/LandYourDreamJobwithkaizen.png"
