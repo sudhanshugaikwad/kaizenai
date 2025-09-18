@@ -88,23 +88,6 @@ const itemVariants = {
 
 
 const HowItWorksSection = () => {
-    const [activeStep, setActiveStep] = React.useState(0);
-
-    const WindowFrame = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-        <div className={cn('relative rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm', className)}>
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/30 rounded-full blur-[50px]" />
-            <div className="absolute top-0 left-0 flex items-center gap-1.5 p-3">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            </div>
-            <div className="p-4 pt-10 h-full flex items-center justify-center">
-                {children}
-            </div>
-        </div>
-    );
-
     return (
         <motion.section
           id="how-it-works"
@@ -116,48 +99,38 @@ const HowItWorksSection = () => {
         >
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How does it work?</h2>
+            <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">
+                It only takes four steps to accelerate your career with Kaizen AI.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {howItWorksSteps.map((step, index) => (
                     <motion.div
                         key={index}
-                        onClick={() => setActiveStep(index)}
-                        className={cn(
-                            'p-6 rounded-lg cursor-pointer border-2 transition-all',
-                            activeStep === index
-                            ? 'border-primary bg-primary/10 shadow-lg'
-                            : 'border-transparent bg-muted/50 hover:bg-muted'
-                        )}
+                        className="relative overflow-hidden p-8 rounded-xl bg-card/50 border border-border/50 flex flex-col group"
                         variants={itemVariants}
                     >
-                        <div className="flex items-start gap-4">
-                            <div className={cn(
-                                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold transition-all",
-                                activeStep === index ? 'bg-primary text-primary-foreground' : 'bg-border text-muted-foreground'
-                            )}>
-                                {index + 1}
-                            </div>
-                            <div>
-                                <p className="text-md font-medium">{step.title}</p>
-                                <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
-                            </div>
+                        <div className="absolute top-0 right-8 text-[6rem] font-bold text-foreground/5 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                           0{index + 1}
+                        </div>
+                        <div className="relative z-10 flex-grow">
+                           <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                           <p className="text-sm text-muted-foreground">{step.description}</p>
+                        </div>
+                        <div className="relative z-10 mt-6 h-40">
+                             <Image 
+                                src={step.image}
+                                alt={step.title}
+                                fill
+                                style={{objectFit:"contain"}}
+                                className="transition-transform duration-300 group-hover:scale-105"
+                                data-ai-hint={step['data-ai-hint']}
+                                placeholder="blur"
+                            />
                         </div>
                     </motion.div>
                 ))}
             </div>
-             <motion.div className="relative h-[450px] w-full" variants={itemVariants}>
-                 <WindowFrame className="absolute inset-0">
-                    <Image 
-                        src={howItWorksSteps[activeStep].image}
-                        alt={howItWorksSteps[activeStep].title}
-                        className="rounded-md object-contain"
-                        data-ai-hint={howItWorksSteps[activeStep]['data-ai-hint']}
-                        placeholder="blur"
-                    />
-                </WindowFrame>
-            </motion.div>
-          </div>
         </motion.section>
     );
 };
