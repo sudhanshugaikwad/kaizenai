@@ -23,7 +23,7 @@ export async function coachBehavioralAnswer(input: BehavioralCoachInput): Promis
 
 const prompt = ai.definePrompt({
   name: 'behavioralCoachPrompt',
-  model: googleAI.model('gemini-1.5-flash-latest'),
+  model: googleAI.model('gemini-pro'),
   input: {schema: BehavioralCoachInputSchema},
   output: {schema: BehavioralCoachOutputSchema},
   prompt: `You are an expert interview coach specializing in behavioral questions. Your task is to take a user's real-life experience and restructure it into a compelling answer using the STAR (Situation, Task, Action, Result) method. Provide three distinct variations of the answer.
