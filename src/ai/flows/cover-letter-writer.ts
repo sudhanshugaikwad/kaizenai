@@ -33,7 +33,7 @@ export async function generateCoverLetter(input: CoverLetterInput): Promise<Cove
 
 const prompt = ai.definePrompt({
   name: 'coverLetterPrompt',
-  model: googleAI.model('gemini-pro'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: CoverLetterInputSchema},
   output: {schema: CoverLetterOutputSchema},
   prompt: `You are an expert career coach specializing in crafting compelling cover letters.
