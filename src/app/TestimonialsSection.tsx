@@ -20,42 +20,42 @@ const defaultTestimonials: Feedback[] = [
         feedback: "This website is very useful for students, it solves all the problems they face, such as interview preparation, resume analysis, finding jobs and internships, and many more options available on the website.",
         rating: 5,
         avatar: "https://github.com/sudhanshugaikwad.png",
-        date: "June 2024"
+        date: "August 2025"
     },
     {
         name: "Nivedita Kalyankar",
         feedback: "Kaizen AI’s Agent Generator is powerful and user friendly. It lets you create custom AI agents to automate tasks, handle workflows, and interact with users without any coding. It saves me hours every week and is highly recommended for anyone wanting to scale work effortlessly.",
         rating: 5,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhZSXpBRnVZREN2bGJjNTMyV09SajVZV1cifQ?width=96",
-        date: "June 2024"
+        date: "September 2025"
     },
     {
         name: "Anjali Sonkamble",
         feedback: "Kaizen AI’s Roadmap Generator is a game-changer. It creates clear step-by-step plans in minutes, highlights risks and dependencies, and makes strategic planning effortless—like having a strategist and project manager in one.",
         rating: 4,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhnZXZjVDZUY0R1UmtMelIxSzRvQzVHNWUifQ?width=96",
-        date: "May 2024"
+        date: "September 2025"
     },
     {
         name: "Sanika Pimpalgaonkar",
         feedback: "The Al Roadmap Generator makes planning effortless. It gives structured, smart, and achievable roadmaps in minutes. A must-have for anyone managing projects or startups",
         rating: 5,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhmZkJQdnR5d08wM0ptOVJqcWtSOVhFY1gifQ?width=96",
-        date: "May 2024"
+        date: "October 2025"
     },
     {
         name: "Pritam Patil",
         feedback: "The AI chat feature is like having a career coach in your pocket. I got great advice on negotiating my salary.",
         rating: 5,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhXV0w4QnJCakFWOXVGc1hVdVo1ZWhpSGEifQ?width=96",
-        date: "April 2024"
+        date: "January 2026"
     },
     {
         name: "Savio Dsouza",
         feedback: "I used the Job Matcher and found an internship within a week. The recommendations were spot on!",
-        rating: 5,
+        rating: 4,
         avatar: "https://i.pravatar.cc/150?img=60",
-        date: "April 2024"
+        date: "February 2026"
     }
 ];
 
@@ -96,7 +96,7 @@ export default function TestimonialsSection() {
 
   return (
     <div className="text-center">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">What Our Users Say</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight">What Our Users Say</h2>
         <p className="max-w-2xl mx-auto mt-2 text-muted-foreground">
             Hear from professionals who have supercharged their careers with Kaizen Ai.
         </p>

@@ -41,6 +41,7 @@ import { PageFooter } from './PageFooter';
 import ProductShowcaseSection from './ProductShowcaseSection';
 import ToolkitShowcase from './ToolkitShowcase';
 import Herobg from "./assets/Herobg.jpg";
+import TestimonialsSection from './TestimonialsSection';
 
 const howItWorksSteps = [
   {
@@ -347,6 +348,19 @@ export default function Home() {
             </div>
           </div>
         </motion.section>
+
+        {/* Testimonials Section */}
+        <motion.section
+          id="testimonials"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
+          initial="hidden"
+          whileInView="visible"
+          variants={sectionVariants}
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <TestimonialsSection />
+        </motion.section>
+
       </main>
 
       <PageFooter />
