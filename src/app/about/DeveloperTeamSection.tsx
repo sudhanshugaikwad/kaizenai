@@ -8,31 +8,31 @@ import Link from 'next/link';
 
 const teamMembers = [
     {
-        name: 'Sudhanshu Gaikwad',
-        role: 'Founder & Lead Developer',
-        description: 'Visionary leader and core developer behind Kaizen AI, driving innovation in career tech.',
-        avatar: 'https://github.com/sudhanshugaikwad.png',
-        linkedin: 'https://www.linkedin.com/in/sudhanshugaikwad',
-        github: 'https://github.com/sudhanshugaikwad'
+      name: 'Sudhanshu Gaikwad',
+      role: 'Founder, Lead Developer & Frontend Developer',
+      description: 'Founder and main innovator of Kaizen AI, leading advancements in career tech.',
+      avatar: 'https://github.com/sudhanshugaikwad.png',
+      linkedin: 'https://www.linkedin.com/in/sudhanshugaikwad',
+      github: 'https://github.com/sudhanshugaikwad'
     },
     {
-        name: 'Jane Doe',
-        role: 'Frontend Developer',
-        description: 'Specializes in creating responsive and intuitive user interfaces with React and Next.js.',
-        avatar: 'https://i.pravatar.cc/150?img=25',
-        linkedin: '#',
-        github: '#'
+      name: 'Jane Doe',
+      role: 'AI Agent Developer & Figma Designer',
+      description: 'Specializes in designing intuitive user experiences and building responsive interfaces with React and Next.js.',
+      avatar: 'https://i.pravatar.cc/150?img=25',
+      linkedin: '#',
+      github: '#'
     },
     {
-        name: 'John Smith',
-        role: 'AI & Backend Developer',
-        description: 'Expert in Python and GenAI, building the intelligent core of our application.',
-        avatar: 'https://i.pravatar.cc/150?img=32',
-        linkedin: '#',
-        github: '#'
+      name: 'John Smith',
+      role: 'Backend Developer',
+      description: 'Expert in Python and GenAI, building the intelligent core of Kaizen AI applications.',
+      avatar: 'https://i.pravatar.cc/150?img=32',
+      linkedin: '#',
+      github: '#'
     }
-];
-
+  ];
+  
 export default function DeveloperTeamSection() {
     return (
         <section className="py-12">

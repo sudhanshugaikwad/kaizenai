@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
+import { Star, ShieldCheck } from 'lucide-react';
 
 type Feedback = {
   name: string;
@@ -102,7 +102,7 @@ export default function TestimonialsSection() {
         </p>
         <div className="grid grid-cols-1 gap-6 pt-12 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
-            <Card key={index} className="text-left">
+            <Card key={index} className="text-left relative overflow-hidden">
                 <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                     <Avatar className="h-12 w-12 border">
@@ -128,10 +128,13 @@ export default function TestimonialsSection() {
                 </p>
                 <p className="mt-4 text-xs text-muted-foreground/80">{testimonial.date}</p>
                 </CardContent>
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-background/80 backdrop-blur-sm px-3 py-1 text-xs font-medium text-foreground border">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                    <span>Verified</span>
+                </div>
             </Card>
             ))}
         </div>
     </div>
   );
 }
-
