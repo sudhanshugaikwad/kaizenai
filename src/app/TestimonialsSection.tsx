@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, ShieldCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type Feedback = {
   name: string;
@@ -31,14 +32,14 @@ const defaultTestimonials: Feedback[] = [
     },
     {
         name: "Anjali Sonkamble",
-        feedback: "Kaizen AI’s Roadmap Generator is a game-changer. It creates clear step-by-step plans in minutes, highlights risks and dependencies, and makes strategic planning effortless—like having a strategist and project manager in one.",
+        feedback: "Kaizen AI’s Roadmap Generator is a game changer. It creates clear step by step plans in minutes, highlights risks and dependencies, and makes strategic planning effortless like having a strategist and project manager in one.",
         rating: 4,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhnZXZjVDZUY0R1UmtMelIxSzRvQzVHNWUifQ?width=96",
         date: "September 2025"
     },
     {
         name: "Sanika Pimpalgaonkar",
-        feedback: "The Al Roadmap Generator makes planning effortless. It gives structured, smart, and achievable roadmaps in minutes. A must-have for anyone managing projects or startups",
+        feedback: "The Al Roadmap Generator makes planning effortless. It gives structured, smart, and achievable roadmaps in minutes. A must have for anyone managing projects or startups",
         rating: 5,
         avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMzhmZkJQdnR5d08wM0ptOVJqcWtSOVhFY1gifQ?width=96",
         date: "October 2025"
@@ -94,6 +95,8 @@ export default function TestimonialsSection() {
       return null;
   }
 
+  const displayedTestimonials = testimonials.slice(0, 6);
+
   return (
     <div className="text-center">
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight">What Our Users Say</h2>
@@ -101,7 +104,7 @@ export default function TestimonialsSection() {
             Hear from professionals who have supercharged their careers with Kaizen Ai.
         </p>
         <div className="grid grid-cols-1 gap-6 pt-12 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
+            {displayedTestimonials.map((testimonial, index) => (
             <Card key={index} className="text-left relative overflow-hidden">
                 <CardContent className="p-6">
                 <div className="flex items-center gap-4">
@@ -135,6 +138,12 @@ export default function TestimonialsSection() {
             </Card>
             ))}
         </div>
+        {testimonials.length > 6 && (
+          <div className="mt-8">
+            <Button variant="link">See more</Button>
+          </div>
+        )}
     </div>
   );
 }
+
